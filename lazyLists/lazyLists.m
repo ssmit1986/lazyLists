@@ -29,20 +29,24 @@ $lazyIterationLimit = Infinity;
 Attributes[lazyList] = {HoldRest};
 
 (* For efficiency reasons, these lazy list generatorss are defined by self-referential anynomous functions. Note that #0 refers to the function itself *)
-lazyRange[min : _ : 1, step : _ : 1] := Function[
+lazyRange[start : _ : 1, step : _ : 1] /; !TrueQ[step == 0] := Function[
     lazyList[#1, #0[#2 + #1, #2]]
-][min, step];
+][start, step];
 
-lazyPowerRange = Function[
+lazyRange[start_, step_ /; TrueQ[step == 0]] := lazyConstantArray[start];
+
+lazyPowerRange[start_, r_ /; !TrueQ[r == 1]] := Function[
     lazyList[#1, #0[#2 * #1, #2]]
-];
+][start, r];
+
+lazyPowerRange[min_, r_ /; TrueQ[r == 1]] := lazyConstantArray[min]
 
 lazyNestList[f_, elem_] := Function[
     lazyList[
         #1,
-        #0[f[#1]]
+        #0[f[#1], #2 + 1]
     ]
-][elem];
+][elem, 1];
 
 lazyStream[stream_InputStream] := Function[
     lazyList[
@@ -55,7 +59,7 @@ lazyConstantArray[const_] := Function[
     lazyList[
         const,
         (* Increase an iterator to make sure that ReplaceRepeated in Take doesn't stop *)
-        #0[1 + #]
+        #0[1 + #1]
     ]
 ][1];
 
