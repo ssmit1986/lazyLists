@@ -46,16 +46,16 @@ lazyNestList[f_, elem_] := Function[
 
 lazyStream[stream_InputStream] := Function[
     lazyList[
-        Read[#],
-        #0[#]
+        Read[#1],
+        #0[#1, 1 + #2] (* Increase an iterator to make sure that ReplaceRepeated in Take doesn't stop *)
     ]
-][stream];
+][stream, 1];
 
 lazyConstantArray[const_] := Function[
     lazyList[
         const,
         (* Increase an iterator to make sure that ReplaceRepeated in Take doesn't stop *)
-        #0[# + 1]
+        #0[1 + #]
     ]
 ][1];
 
