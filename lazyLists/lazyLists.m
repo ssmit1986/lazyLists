@@ -17,10 +17,14 @@ lazyNestList::usage = "lazyNestList[f, elem] is the infinite list {elem, f[elem]
 
 lazyStream::usage = "lazyStream[streamObject] creates a lazyList that streams from streamObject";
 
-lazyConstantArray::usage = "lazyConstantArray[elem] produces an infinite list where each element is elem"
+lazyConstantArray::usage = "lazyConstantArray[elem] produces an infinite list where each element is elem";
+
+$lazyIterationLimit::usage = "Iteration limit used for finding successive elements in a lazy list";
 
 Begin["`Private`"]
 (* Implementation of the package *)
+
+$lazyIterationLimit = Infinity;
 
 Attributes[lazyList] = {HoldRest};
 
@@ -62,12 +66,14 @@ lazyList /: Take[l_lazyList, n_Integer /; n > 0] := MapAt[
     Reverse @ Reap[
         Replace[
             Quiet[
-                ReplaceRepeated[
-                    l,
-                    {
-                        lazyList[first_, last_] :> (Sow[first, "take"]; last)
-                    },
-                    MaxIterations -> n - 1
+                Block[{$IterationLimit = $lazyIterationLimit},
+                    ReplaceRepeated[
+                        l,
+                        {
+                            lazyList[first_, last_] :> (Sow[first, "take"]; last)
+                        },
+                        MaxIterations -> n - 1
+                    ]
                 ],
                 {ReplaceRepeated::rrlim}
             ],
@@ -84,19 +90,21 @@ lazyList /: TakeWhile[l_lazyList, function_, OptionsPattern[MaxIterations -> Inf
     Reverse @ Reap[
         Quiet[
             Catch[
-                ReplaceRepeated[
-                    l,
-                    {
-                        lazyList[first_, last_] :> If[function[first]
-                            ,
-                            Sow[first, "take"];
-                            last
-                            ,
-                            Throw[lazyList[first, last], "break"],
-                            Throw[lazyList[first, last], "break"]
-                        ]
-                    },
-                    MaxIterations -> OptionValue[MaxIterations]
+                Block[{$IterationLimit = $lazyIterationLimit},
+                    ReplaceRepeated[
+                        l,
+                        {
+                            lazyList[first_, last_] :> If[function[first]
+                                ,
+                                Sow[first, "take"];
+                                last
+                                ,
+                                Throw[lazyList[first, last], "break"],
+                                Throw[lazyList[first, last], "break"]
+                            ]
+                        },
+                        MaxIterations -> OptionValue[MaxIterations]
+                    ]
                 ],
                 "break"
             ],
@@ -109,12 +117,14 @@ lazyList /: TakeWhile[l_lazyList, function_, OptionsPattern[MaxIterations -> Inf
 
 lazyList /: Part[l_lazyList, 1] := l;
 lazyList /: Part[l_lazyList, n_Integer] := Quiet[
-    ReplaceRepeated[
-        l,
-        {
-            lazyList[first_, last_] :> last
-        },
-        MaxIterations -> n - 1
+    Block[{$IterationLimit = $lazyIterationLimit},
+        ReplaceRepeated[
+            l,
+            {
+                lazyList[first_, last_] :> last
+            },
+            MaxIterations -> n - 1
+        ]
     ],
     {ReplaceRepeated::rrlim}
 ];
