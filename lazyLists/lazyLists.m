@@ -9,7 +9,7 @@ BeginPackage["lazyLists`"]
 lazyList::usage = "lazyList is linked list data structure that should contain 2 elements: the first is the first element, the second a held expression that will generate the next linked list when evaluated.
 You can extract these elements with First and Last. Part and Take will not work because they have been overloaded with special functionalities when used on lazyList";
 
-lazyRange::usage = "lazyRange[] is a lazy representation of the Integers from 1 to \[Infinity]. lazyRange[min, delta] represents values values from min onwards in steps of delta";
+lazyRange::usage = "lazyRange[] is a lazy representation of the Integers from 1 to \[Infinity]. lazyRange[min, delta] represents values values from min onwards in steps of delta. lazyRange has no upper limit";
 
 lazyPowerRange::usage = "lazyPowerRange[min, r] is the infinite list {min, r \[Times] min, r^2 \[Times] min, ...}";
 
@@ -17,17 +17,19 @@ lazyNestList::usage = "lazyNestList[f, elem] is the infinite list {elem, f[elem]
 
 lazyStream::usage = "lazyStream[streamObject] creates a lazyList that streams from streamObject";
 
+lazyConstantArray::usage = "lazyConstantArray[elem] produces an infinite list where each element is elem"
+
 Begin["`Private`"]
 (* Implementation of the package *)
 
 Attributes[lazyList] = {HoldRest};
 
-(* All generating lazy lists are defined by self-referential anynomous functions. Note that #0 refers to the function itself *)
+(* For efficiency reasons, these lazy list generatorss are defined by self-referential anynomous functions. Note that #0 refers to the function itself *)
 lazyRange[min : _ : 1, step : _ : 1] := Function[
     lazyList[#1, #0[#2 + #1, #2]]
 ][min, step];
 
-lazyPowerRange := Function[
+lazyPowerRange = Function[
     lazyList[#1, #0[#2 * #1, #2]]
 ];
 
@@ -44,6 +46,10 @@ lazyStream[stream_InputStream] := Function[
         #0[#]
     ]
 ][stream];
+
+lazyConstantArray[const_] := Function[
+    lazyList[const, #0[]]
+][];
 
 (* Set threading behaviour for lazyLists to make it possible to add and multiply them and use powers on them *)
 lazyList /: (op : Plus | Times)[first___, l__lazyList, rest___] :=  op @@@ Thread[{first, l, rest}, lazyList];

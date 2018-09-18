@@ -11,7 +11,8 @@ Cell[BoxData[{
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"Get", "[", "\"\<lazyLists`\>\"", "]"}], ";"}]}], "Input",
- CellLabel->"In[80]:=",ExpressionUUID->"2d6a87cf-3ef1-4832-b8b9-0995d6d1b646"],
+ CellLabel->
+  "In[207]:=",ExpressionUUID->"2d6a87cf-3ef1-4832-b8b9-0995d6d1b646"],
 
 Cell[CellGroupData[{
 
@@ -517,11 +518,11 @@ Cell[BoxData[{
  RowBox[{"Write", "[", 
   RowBox[{"stmp", ",", "\"\<Hello\>\""}], "]"}], "\[IndentingNewLine]", 
  RowBox[{"Close", "[", "stmp", "]"}]}], "Input",
- CellLabel->"In[60]:=",
+ CellLabel->"In[93]:=",
  CellID->28621,ExpressionUUID->"56e7c7ce-37ef-4877-9931-7dd9f3a12e91"],
 
 Cell[BoxData["\<\"tmp\"\>"], "Output",
- CellLabel->"Out[64]=",ExpressionUUID->"25d49f24-34ad-4ae3-9043-d5482be112e2"]
+ CellLabel->"Out[97]=",ExpressionUUID->"9ae4f2c1-238c-4686-97a1-86c0e1bcde22"]
 }, Open  ]],
 
 Cell["Open a reading stream and make a lazyList out of it:", \
@@ -543,7 +544,7 @@ Cell[BoxData[{
      RowBox[{"#", "=!=", "EndOfFile"}], "&"}]}], 
    "]"}]}], "\[IndentingNewLine]", 
  RowBox[{"Close", "[", "stream", "]"}]}], "Input",
- CellLabel->"In[76]:=",ExpressionUUID->"397a2c85-f736-4613-8c9b-d8a642960c89"],
+ CellLabel->"In[98]:=",ExpressionUUID->"397a2c85-f736-4613-8c9b-d8a642960c89"],
 
 Cell[BoxData[
  RowBox[{"lazyList", "[", 
@@ -895,15 +896,78 @@ Cell[BoxData[
      Editable->False,
      SelectWithContents->True,
      Selectable->False], "]"}]}], "]"}]], "Output",
- CellLabel->"Out[77]=",ExpressionUUID->"676f77f1-3f10-4776-b169-4f447aa8ed7d"],
+ CellLabel->"Out[99]=",ExpressionUUID->"bd80b72f-391f-491d-a007-5dbfe81089a8"],
 
 Cell[BoxData[
  RowBox[{"{", 
   RowBox[{"abc", ",", "x", ",", "\<\"Hello\"\>"}], "}"}]], "Output",
- CellLabel->"Out[78]=",ExpressionUUID->"1e1a221d-22b9-4bf3-b8dc-5872088fe8bd"],
+ CellLabel->
+  "Out[100]=",ExpressionUUID->"9a39580e-40d1-4288-91d3-c3646e33c8f6"],
 
 Cell[BoxData["\<\"tmp\"\>"], "Output",
- CellLabel->"Out[79]=",ExpressionUUID->"b7a1d147-4286-40b9-86f1-4f68a158fbf6"]
+ CellLabel->"Out[101]=",ExpressionUUID->"b71a19ce-6ff4-47e7-9058-ccd0c6fbf9bf"]
+}, Open  ]],
+
+Cell[TextData[{
+ StyleBox["Plus",
+  FontWeight->"Bold"],
+ ", ",
+ StyleBox["Times",
+  FontWeight->"Bold"],
+ " and ",
+ StyleBox["Power",
+  FontWeight->"Bold"],
+ " thread over lazyLists, though these functionalities are far less efficient \
+than for ordinary lists and should probably be avoided if the same can be \
+achieved with FoldList or Map"
+}], "Text",ExpressionUUID->"d3f5e510-6511-42f7-bf7f-18d13a7c0060"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"First", " ", "@", " ", 
+  RowBox[{"Take", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"lazyRange", "[", "]"}], "+", 
+     RowBox[{"lazyRange", "[", "2", "]"}]}], ",", "5"}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"First", " ", "@", " ", 
+  RowBox[{"Take", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"2", "*", " ", 
+      RowBox[{"lazyRange", "[", "]"}]}], "+", 
+     RowBox[{"3", " ", 
+      RowBox[{"lazyRange", "[", 
+       RowBox[{"1", ",", "2"}], "]"}]}]}], ",", "5"}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"First", " ", "@", " ", 
+  RowBox[{"Take", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"lazyRange", "[", "]"}], "^", 
+     RowBox[{"lazyRange", "[", "]"}]}], ",", "5"}], "]"}]}]}], "Input",
+ CellLabel->
+  "In[198]:=",ExpressionUUID->"431c46dd-1989-4038-a8a6-287ac92d6e53"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"3", ",", "5", ",", "7", ",", "9", ",", "11"}], "}"}]], "Output",
+ CellLabel->
+  "Out[198]=",ExpressionUUID->"b45e6cfa-a57c-41a7-b5bd-b17a9972e04a"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"5", ",", "13", ",", "21", ",", "29", ",", "37"}], "}"}]], "Output",
+ CellLabel->
+  "Out[199]=",ExpressionUUID->"0bbf7e29-2421-4046-babb-bfbfc3dfef7d"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"1", ",", "4", ",", "27", ",", "256", ",", "3125"}], 
+  "}"}]], "Output",
+ CellLabel->"Out[200]=",ExpressionUUID->"16bda758-0fb9-4875-80c8-fc642dcfedfc"]
 }, Open  ]]
 }, Open  ]]
 },
