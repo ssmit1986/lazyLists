@@ -7,7 +7,8 @@ BeginPackage["lazyLists`"]
 (* Exported symbols added here with SymbolName::usage *) 
 
 lazyList::usage = "lazyList is linked list data structure that should contain 2 elements: the first is the first element, the second a held expression that will generate the next linked list when evaluated.
-You can extract these elements with First and Last. Part and Take will not work because they have been overloaded with special functionalities when used on lazyList";
+You can extract these elements with First and Last. Part and Take will not work because they have been overloaded with special functionalities when used on lazyList.
+lazyList[list] or lazyList[Hold[var]] is a special constructor that generates a lazyList from an ordinary list";
 
 lazyRange::usage = "lazyRange[] is a lazy representation of the Integers from 1 to \[Infinity]. lazyRange[min, delta] represents values values from min onwards in steps of delta. lazyRange has no upper limit";
 
@@ -27,6 +28,30 @@ Begin["`Private`"]
 $lazyIterationLimit = Infinity;
 
 Attributes[lazyList] = {HoldRest};
+
+lazyList[list_List] := Module[{
+    listVar = list
+},
+    lazyList[Hold[listVar]]
+];
+
+lazyList[Hold[list_Symbol]] := With[{
+    msgs = {Part::partw}
+},
+    Function[
+        Quiet[
+            Check[
+                lazyList[
+                    list[[#1]],
+                    #0[1 + #1]
+                ],
+                lazyList[],
+                msgs
+            ],
+            msgs
+        ]
+    ][1]
+];
 
 (* For efficiency reasons, these lazy list generatorss are defined by self-referential anynomous functions. Note that #0 refers to the function itself *)
 lazyRange[start : _ : 1, step : _ : 1] /; !TrueQ[step == 0] := Function[
@@ -56,7 +81,7 @@ lazyStream[stream_InputStream] := Function[
             read,
             If[ read =!= EndOfFile,
                 #0[#1, 1 + #2], (* Increase an iterator to make sure that ReplaceRepeated in Take doesn't stop *)
-                Null (* don't return a lazyList to end stream *)
+                lazyList[] (* return an empty lazyList to end stream *)
             ]
         ]
     ]
