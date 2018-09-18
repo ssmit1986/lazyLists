@@ -17,7 +17,7 @@ lazyNestList::usage = "lazyNestList[f, elem] is the infinite list {elem, f[elem]
 
 lazyStream::usage = "lazyStream[streamObject] creates a lazyList that streams from streamObject";
 
-lazyConstantArray::usage = "lazyConstantArray[elem] produces an infinite list where each element is elem";
+lazyConstantArray::usage = "lazyConstantArray[elem] produces an infinite list of copies of elem";
 
 $lazyIterationLimit::usage = "Iteration limit used for finding successive elements in a lazy list";
 
@@ -52,8 +52,12 @@ lazyStream[stream_InputStream] := Function[
 ][stream];
 
 lazyConstantArray[const_] := Function[
-    lazyList[const, #0[]]
-][];
+    lazyList[
+        const,
+        (* Increase an iterator to make sure that ReplaceRepeated in Take doesn't stop *)
+        #0[# + 1]
+    ]
+][1];
 
 (* Set threading behaviour for lazyLists to make it possible to add and multiply them and use powers on them *)
 lazyList /: (op : Plus | Times)[first___, l__lazyList, rest___] :=  op @@@ Thread[{first, l, rest}, lazyList];
