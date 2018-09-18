@@ -45,6 +45,11 @@ lazyStream[stream_InputStream] := Function[
     ]
 ][stream];
 
+(* Set threading behaviour for lazyLists to make it possible to add and multiply them and use powers on them *)
+lazyList /: (op : Plus | Times)[first___, l__lazyList, rest___] :=  op @@@ Thread[{first, l, rest}, lazyList];
+lazyList /: Power[l__lazyList, rest_] :=  Power @@@ Thread[{l, rest}, lazyList];
+lazyList /: Power[first_, l__lazyList] :=  Power @@@ Thread[{first, l}, lazyList];
+
 (* Elements from lazyLists are extracted by repeatedly evaluating the next element and sowing the results *)
 lazyList /: Take[l_lazyList, n_Integer /; n > 0] := MapAt[
     First[#, {}]&,
