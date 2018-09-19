@@ -7,7 +7,7 @@ BeginPackage["lazyLists`"]
 (* Exported symbols added here with SymbolName::usage *) 
 
 lazyList::usage = "lazyList is linked list data structure that should contain 2 elements: the first is the first element, the second a held expression that will generate the next linked list when evaluated.
-You can extract these elements with First and Last. Part and Take will not work because they have been overloaded with special functionalities when used on lazyList.
+You can extract these elements explicitely with First and Last/Rest. Part and Take will not work because they have been overloaded with special functionalities when used on lazyList.
 lazyList[list] or lazyList[Hold[var]] is a special constructor that generates a lazyList from an ordinary list";
 
 lazyRange::usage = "lazyRange[] is a lazy representation of the Integers from 1 to \[Infinity]. lazyRange[min, delta] represents values values from min onwards in steps of delta. lazyRange has no upper limit";
@@ -58,6 +58,8 @@ lazyList[Hold[list_Symbol]] := With[{
     ][1]
 ];
 
+lazyList /: Rest[lazyList[_, last_]] := last;
+
 (* For efficiency reasons, these lazy list generatorss are defined by self-referential anynomous functions. Note that #0 refers to the function itself *)
 lazyRange[start : _ : 1, step : _ : 1] /; !TrueQ[step == 0] := Function[
     lazyList[#1, #0[#2 + #1, #2]]
@@ -101,24 +103,11 @@ lazyConstantArray[const_] := Function[
 ][1];
 
 (* Set threading behaviour for lazyLists to make it possible to add and multiply them and use powers on them *)
-lazyThreading = True;
-
-lazyList /: (op : Plus | Times)[first___, l__lazyList, rest___] /; lazyThreading :=  Block[{
-    lazyThreading = False
-},
-    Thread[Unevaluated[op[first, l, rest]], lazyList]
-];
-
-lazyList /: (op : Power | Divide | Subtract)[l_lazyList, rest_] /; lazyThreading :=  Block[{
-    lazyThreading = False
-},
-    Thread[Unevaluated[op[l, rest]], lazyList]
-];
-lazyList /: (op : Power | Divide | Subtract)[first_, l_lazyList] /; lazyThreading :=  Block[{
-    lazyThreading = False
-},
-    Thread[Unevaluated[op[first, l]], lazyList]
-];
+lazyList /: (op : Plus | Times | Power | Divide | Subtract)[first___, l__lazyList, rest___] :=
+    Thread[
+        Unevaluated[op[first, l, rest]],
+        lazyList
+    ];
 
 (* Elements from lazyLists are extracted by repeatedly evaluating the next element and sowing the results *)
 lazyList /: Take[l_lazyList, n_Integer?Positive] := MapAt[
@@ -175,8 +164,11 @@ lazyList /: TakeWhile[l_lazyList, function_, OptionsPattern[MaxIterations -> Inf
     1
 ];
 
-lazyList /: Part[l_lazyList, 1] := l;
-lazyList /: Part[l_lazyList, n_Integer] := Quiet[
+lazyList /: Part[lazyList[first_, _], 1] := first;
+lazyList /: Part[l : lazyList[_, _], {1}] := l;
+lazyList /: Part[l_lazyList, n_Integer] := First @ Part[l, {n}];
+
+lazyList /: Part[l_lazyList, {n_Integer}] := Quiet[
     Block[{$IterationLimit = $lazyIterationLimit},
         ReplaceRepeated[
             l,
