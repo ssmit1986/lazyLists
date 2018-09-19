@@ -20,7 +20,10 @@ lazyStream::usage = "lazyStream[streamObject] creates a lazyList that streams fr
 
 lazyConstantArray::usage = "lazyConstantArray[elem] produces an infinite list of copies of elem";
 
-lazyMapThread::usage = "lazyMapThread[f, {lazyList1, lazyList2}], except all elements from the lazyLists are fed to the first slot of f as a regular List"
+lazyMapThread::usage = "lazyMapThread[f, {lz1, lz2, ...}] is similar to MapTrhead, except all elements from the lazyLists are fed to the first slot of f as a regular List"
+
+lazyTranspose::usage = "lazyTranspose[{lz1, lz2, ...}] creates a lazyList with tuples of elements from lz1, lz2, etc. 
+Equivalent to lazyMapThread[Identity, {lz1, lz2, ...}]"
 
 $lazyIterationLimit::usage = "Iteration limit used for finding successive elements in a lazy list";
 
@@ -196,10 +199,14 @@ lazyList /: MapIndexed[f_, lazyList[fst_, last_], index : (_Integer?Positive) : 
     MapIndexed[f, last, index + 1]
 ];
 
-lazyMapThread[f_, list : {__lazyList}] := lazyList[
+lazyMapThread[f_, list : {lazyList[_, _]..}] := lazyList[
     f[list[[All, 1]]],
     lazyMapThread[f, list[[All, 2]]]
 ];
+
+lazyMapThread[_, _] := lazyList[];
+
+lazyTranspose[list : {__lazyList}] := lazyMapThread[Identity, list];
 
 lazyList /: FoldList[f_, lazyList[first_, last_]] := FoldList[f, first, last];
 
