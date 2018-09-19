@@ -110,7 +110,7 @@ lazyList /: (op : Plus | Times | Power | Divide | Subtract)[first___, l__lazyLis
     ];
 
 (* Elements from lazyLists are extracted by repeatedly evaluating the next element and sowing the results *)
-lazyList /: Take[l_lazyList, n_Integer?Positive] := MapAt[
+lazyList /: Take[l_lazyList, n_Integer?Positive] := lazyList @@ MapAt[
     First[#, {}]&,
     Reverse @ Reap[
         Replace[
@@ -134,7 +134,22 @@ lazyList /: Take[l_lazyList, n_Integer?Positive] := MapAt[
     1
 ];
 
-lazyList /: TakeWhile[l_lazyList, function_, OptionsPattern[MaxIterations -> Infinity]] := MapAt[
+lazyList /: Take[l_lazyList, {m_Integer?Positive, n_Integer?Positive}] /; n < m := Replace[
+    Take[l, {n, m}],
+    {
+        lazyList[list_List, rest_] :> lazyList[Reverse[list], rest]
+    }
+];
+
+lazyList /: Take[l_lazyList, {m_Integer?Positive, n_Integer?Positive}] /; n > m := Replace[
+    Quiet[l[[{m}]], {Part::partw}],
+    {
+        lz : lazyList[_, _] :> Take[lz, n - m + 1],
+        _ -> lazyList[]
+    }
+];
+
+lazyList /: TakeWhile[l_lazyList, function_, OptionsPattern[MaxIterations -> Infinity]] := lazyList @@ MapAt[
     First[#, {}]&,
     Reverse @ Reap[
         Quiet[
@@ -166,19 +181,50 @@ lazyList /: TakeWhile[l_lazyList, function_, OptionsPattern[MaxIterations -> Inf
 
 lazyList /: Part[lazyList[first_, _], 1] := first;
 lazyList /: Part[l : lazyList[_, _], {1}] := l;
-lazyList /: Part[l_lazyList, n_Integer] := First @ Part[l, {n}];
+lazyList /: Part[l_lazyList, n_Integer] := First[Part[l, {n}], $Failed];
 
-lazyList /: Part[l_lazyList, {n_Integer}] := Quiet[
-    Block[{$IterationLimit = $lazyIterationLimit},
-        ReplaceRepeated[
-            l,
-            {
-                lazyList[first_, last_] :> last
-            },
-            MaxIterations -> n - 1
+lazyList /: Part[l_lazyList, indices : {__Integer}] := Catch[
+    Module[{
+        sortedIndices = Sort[indices],
+        eval
+    },
+        lazyList[
+            Part[
+                FoldPairList[
+                    Function[
+                        eval = Check[Part[#1, {#2}], Throw[$Failed, "part"], {Part::partw}];
+                        {
+                            First[eval],
+                            eval (* and return the lazyList to the next iteration *)
+                        }
+                    ],
+                    l,
+                    Prepend[Differences[sortedIndices] + 1, First[sortedIndices]]
+                ],
+                Ordering[indices]
+            ],
+            Evaluate[eval]
         ]
     ],
-    {ReplaceRepeated::rrlim}
+    "part"
+];
+
+lazyList /: Part[l_lazyList, {n_Integer}] := Replace[
+    Quiet[
+        Block[{$IterationLimit = $lazyIterationLimit},
+            ReplaceRepeated[
+                l,
+                {
+                    lazyList[first_, last_] :> last
+                },
+                MaxIterations -> n - 1
+            ]
+        ],
+        {ReplaceRepeated::rrlim}
+    ],
+    {
+        lazyList[] :> (Message[Part::partw, n, Short[l]]; $Failed)
+    }
 ];
 
 lazyList /: Map[f_, lazyList[fst_, last_]] := lazyList[
