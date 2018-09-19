@@ -201,16 +201,14 @@ lazyMapThread[f_, list : {__lazyList}] := lazyList[
     lazyMapThread[f, list[[All, 2]]]
 ];
 
-lazyList /: FoldList[f_, elem_, l_lazyList] := FoldList[f, lazyList[elem, l]];
+lazyList /: FoldList[f_, lazyList[first_, last_]] := FoldList[f, first, last];
 
-lazyList /: FoldList[f_, lazyList[first_, last_]] := With[{
-    l = last
-},
-    lazyList[
-        first,
-        FoldList[f, lazyList[f[first, First[l]], Last[l]]]
-    ]
-]; 
+lazyList /: FoldList[f_, current_, lazyList[first_, last_]] := lazyList[
+    current,
+    FoldList[f, f[current, first], last]
+];
+
+lazyList /: FoldList[f_, current_, lazyList[]] := lazyList[current, lazyList[]];
 
 lazyList /: Cases[l_lazyList, patt_] := Module[{
     case
