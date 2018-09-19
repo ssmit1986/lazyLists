@@ -20,6 +20,8 @@ lazyStream::usage = "lazyStream[streamObject] creates a lazyList that streams fr
 
 lazyConstantArray::usage = "lazyConstantArray[elem] produces an infinite list of copies of elem";
 
+lazyMapThread::usage = "lazyMapThread[f, {lazyList1, lazyList2}], except all elements from the lazyLists are fed to the first slot of f as a regular List"
+
 $lazyIterationLimit::usage = "Iteration limit used for finding successive elements in a lazy list";
 
 Begin["`Private`"]
@@ -43,7 +45,7 @@ lazyList[Hold[list_Symbol]] := With[{
             Check[
                 lazyList[
                     list[[#1]],
-                    #0[1 + #1]
+                    #0[#1 + 1]
                 ],
                 lazyList[],
                 msgs
@@ -80,7 +82,7 @@ lazyStream[stream_InputStream] := Function[
         lazyList[
             read,
             If[ read =!= EndOfFile,
-                #0[#1, 1 + #2], (* Increase an iterator to make sure that ReplaceRepeated in Take doesn't stop *)
+                #0[#1, #2 + 1], (* Increase an iterator to make sure that ReplaceRepeated in Take doesn't stop *)
                 lazyList[] (* return an empty lazyList to end stream *)
             ]
         ]
@@ -91,7 +93,7 @@ lazyConstantArray[const_] := Function[
     lazyList[
         const,
         (* Increase an iterator to make sure that ReplaceRepeated in Take doesn't stop *)
-        #0[1 + #1]
+        #0[#1 + 1]
     ]
 ][1];
 
@@ -101,22 +103,22 @@ lazyThreading = True;
 lazyList /: (op : Plus | Times)[first___, l__lazyList, rest___] /; lazyThreading :=  Block[{
     lazyThreading = False
 },
-    Thread[op[first, l, rest], lazyList]
+    Thread[Unevaluated[op[first, l, rest]], lazyList]
 ];
 
-lazyList /: Power[l_lazyList, rest_] /; lazyThreading :=  Block[{
+lazyList /: (op : Power | Divide | Subtract)[l_lazyList, rest_] /; lazyThreading :=  Block[{
     lazyThreading = False
 },
-    Thread[Power[l, rest], lazyList]
+    Thread[Unevaluated[op[l, rest]], lazyList]
 ];
-lazyList /: Power[first_, l_lazyList] /; lazyThreading :=  Block[{
+lazyList /: (op : Power | Divide | Subtract)[first_, l_lazyList] /; lazyThreading :=  Block[{
     lazyThreading = False
 },
-    Thread[Power[first, l], lazyList]
+    Thread[Unevaluated[op[first, l]], lazyList]
 ];
 
 (* Elements from lazyLists are extracted by repeatedly evaluating the next element and sowing the results *)
-lazyList /: Take[l_lazyList, n_Integer /; n > 0] := MapAt[
+lazyList /: Take[l_lazyList, n_Integer?Positive] := MapAt[
     First[#, {}]&,
     Reverse @ Reap[
         Replace[
@@ -187,6 +189,16 @@ lazyList /: Part[l_lazyList, n_Integer] := Quiet[
 lazyList /: Map[f_, lazyList[fst_, last_]] := lazyList[
     f[fst],
     Map[f, last]
+];
+
+lazyList /: MapIndexed[f_, lazyList[fst_, last_], index : (_Integer?Positive) : 1] := lazyList[
+    f[fst, index],
+    MapIndexed[f, last, index + 1]
+];
+
+lazyMapThread[f_, list : {__lazyList}] := lazyList[
+    f[list[[All, 1]]],
+    lazyMapThread[f, list[[All, 2]]]
 ];
 
 lazyList /: FoldList[f_, elem_, l_lazyList] := FoldList[f, lazyList[elem, l]];
