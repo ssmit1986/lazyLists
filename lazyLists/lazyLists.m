@@ -25,6 +25,8 @@ lazyMapThread::usage = "lazyMapThread[f, {lz1, lz2, ...}] is similar to MapThrea
 lazyTranspose::usage = "lazyTranspose[{lz1, lz2, ...}] creates a lazyList with tuples of elements from lz1, lz2, etc. 
 Equivalent to lazyMapThread[Identity, {lz1, lz2, ...}]"
 
+lazyPartMap::usage = "lazyPartMap[l, {i, j, k, ...}] is equivalent to Map[Part[l, {#}]&, {i, j, k, ...}] but faster"
+
 $lazyIterationLimit::usage = "Iteration limit used for finding successive elements in a lazy list";
 
 Begin["`Private`"]
@@ -179,6 +181,7 @@ lazyList /: TakeWhile[l_lazyList, function_, OptionsPattern[MaxIterations -> Inf
     1
 ];
 
+lazyList /: Part[lazyList[___], 0 | {0}] := lazyList;
 lazyList /: Part[lazyList[first_, _], 1] := first;
 lazyList /: Part[l : lazyList[_, _], {1}] := l;
 lazyList /: Part[l_lazyList, n_Integer] := First[Part[l, {n}], $Failed];
@@ -206,7 +209,7 @@ lazyList /: Part[l_lazyList, indices : {__Integer}] := Catch[
                     Function[
                         eval = Check[Part[#1, {#2}], Throw[$Failed, "part"], {Part::partw}];
                         {
-                            First[eval],
+                            First[eval], (* emit the value at this position *)
                             eval (* and return the lazyList to the next iteration *)
                         }
                     ],
@@ -219,6 +222,21 @@ lazyList /: Part[l_lazyList, indices : {__Integer}] := Catch[
         ]
     ],
     "part"
+];
+
+lazyPartMap[l_lazyList, indices : {__Integer}] := Module[{
+    sortedIndices = Sort[indices]
+},
+    Part[
+        FoldList[
+            Function[
+                Part[#1, {#2}]
+            ],
+            Part[l, sortedIndices[[{1}]]],
+            Differences[sortedIndices] + 1
+        ],
+        Ordering[indices]
+    ]
 ];
 
 lazyList /: Part[l_lazyList, {n_Integer}] := Replace[
