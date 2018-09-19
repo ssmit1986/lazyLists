@@ -183,6 +183,18 @@ lazyList /: Part[lazyList[first_, _], 1] := first;
 lazyList /: Part[l : lazyList[_, _], {1}] := l;
 lazyList /: Part[l_lazyList, n_Integer] := First[Part[l, {n}], $Failed];
 
+lazyList /: Part[l_lazyList, Span[m_Integer, n_Integer]] := Replace[
+    Take[l, {m, n}],
+    {
+        lazyList[] | lazyList[_, lazyList[]] :> (Message[Part::partw, Max[m, n], Short[l]]; $Failed)
+    }
+];
+
+lazyList /: Part[l_lazyList, Span[m_Integer, n_Integer, incr_Integer]] := Part[
+    l,
+    Range[m, n, incr]
+];
+
 lazyList /: Part[l_lazyList, indices : {__Integer}] := Catch[
     Module[{
         sortedIndices = Sort[indices],

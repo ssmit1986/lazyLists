@@ -9,7 +9,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Get", "[", "\"\<lazyLists`\>\"", "]"}], ";"}]}], "Input",
  CellLabel->
-  "In[649]:=",ExpressionUUID->"2d6a87cf-3ef1-4832-b8b9-0995d6d1b646"],
+  "In[733]:=",ExpressionUUID->"2d6a87cf-3ef1-4832-b8b9-0995d6d1b646"],
 
 Cell[CellGroupData[{
 
@@ -163,11 +163,11 @@ Cell[BoxData[{
    RowBox[{"lazyRange", "[", "]"}], ",", 
    RowBox[{"{", "4", "}"}]}], "]"}]}], "Input",
  CellLabel->
-  "In[662]:=",ExpressionUUID->"62f4563c-892f-4239-8057-70dc5511ffaf"],
+  "In[752]:=",ExpressionUUID->"62f4563c-892f-4239-8057-70dc5511ffaf"],
 
 Cell[BoxData["4"], "Output",
  CellLabel->
-  "Out[662]=",ExpressionUUID->"51425169-35db-498e-a3ac-213c87721194"],
+  "Out[752]=",ExpressionUUID->"55e0418f-afa1-4205-bde4-d8a0876cd344"],
 
 Cell[BoxData[
  RowBox[{"lazyList", "[", 
@@ -183,7 +183,7 @@ Cell[BoxData[
      ")"}], "[", 
     RowBox[{
      RowBox[{"1", "+", "4"}], ",", "1"}], "]"}]}], "]"}]], "Output",
- CellLabel->"Out[663]=",ExpressionUUID->"ff232001-9855-4e60-83b1-ce66833b4b77"]
+ CellLabel->"Out[753]=",ExpressionUUID->"97e46015-29e1-426c-82b5-ff95a155ee42"]
 }, Open  ]],
 
 Cell[TextData[{
@@ -238,23 +238,31 @@ Cell[BoxData[
  CellLabel->"Out[665]=",ExpressionUUID->"b15855a1-b45b-4320-9307-bf163ab221d1"]
 }, Open  ]],
 
-Cell["\<\
-Multiple indices can be extracted in one go. In this case, the extracted \
+Cell[TextData[{
+ "Multiple indices can be extracted in one go. In this case, the extracted \
 elements will go in the first element of the returned lazyList while the tail \
-will be left in the state of the highest visited index:\
-\>", "Text",ExpressionUUID->"b80e232f-0514-4341-9156-760672a0e40a"],
+will be left in the state of the highest visited index. ",
+ StyleBox["Span",
+  FontWeight->"Bold"],
+ " is also supported for integers:"
+}], "Text",ExpressionUUID->"b80e232f-0514-4341-9156-760672a0e40a"],
 
 Cell[CellGroupData[{
 
-Cell[BoxData[
+Cell[BoxData[{
  RowBox[{"Part", "[", 
   RowBox[{
    RowBox[{"lazyRange", "[", "]"}], ",", 
    RowBox[{"{", 
     RowBox[{"1", ",", "4", ",", " ", "10", ",", " ", "5"}], "}"}]}], 
-  "]"}]], "Input",
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"Part", "[", 
+  RowBox[{
+   RowBox[{"lazyRange", "[", "]"}], ",", 
+   RowBox[{"10", ";;", "2", ";;", 
+    RowBox[{"-", "2"}]}]}], "]"}]}], "Input",
  CellLabel->
-  "In[666]:=",ExpressionUUID->"34dac2ad-2f9f-4764-b2c2-1e8b2142915d"],
+  "In[754]:=",ExpressionUUID->"34dac2ad-2f9f-4764-b2c2-1e8b2142915d"],
 
 Cell[BoxData[
  RowBox[{"lazyList", "[", 
@@ -275,7 +283,29 @@ Cell[BoxData[
       RowBox[{
        RowBox[{"1", "+", "10"}], ",", "1"}], "]"}]}], "]"}]}], 
   "]"}]], "Output",
- CellLabel->"Out[666]=",ExpressionUUID->"dd8bc22f-0ad4-4252-9d50-8948adef26d4"]
+ CellLabel->
+  "Out[754]=",ExpressionUUID->"1d05b149-6f48-40c2-90d5-c06122bfd3e1"],
+
+Cell[BoxData[
+ RowBox[{"lazyList", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"10", ",", "8", ",", "6", ",", "4", ",", "2"}], "}"}], ",", 
+   RowBox[{"lazyList", "[", 
+    RowBox[{"10", ",", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"lazyList", "[", 
+         RowBox[{"#1", ",", 
+          RowBox[{"#0", "[", 
+           RowBox[{
+            RowBox[{"#2", "+", "#1"}], ",", "#2"}], "]"}]}], "]"}], "&"}], 
+       ")"}], "[", 
+      RowBox[{
+       RowBox[{"1", "+", "10"}], ",", "1"}], "]"}]}], "]"}]}], 
+  "]"}]], "Output",
+ CellLabel->"Out[755]=",ExpressionUUID->"d22fb535-3502-49f0-a044-bc8f54277d36"]
 }, Open  ]],
 
 Cell["\<\
@@ -298,9 +328,12 @@ Cell[BoxData[{
  RowBox[{"lz", "[", 
   RowBox[{"[", 
    RowBox[{"{", 
-    RowBox[{"2", ",", "5"}], "}"}], "]"}], "]"}]}], "Input",
+    RowBox[{"2", ",", "5"}], "}"}], "]"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"lz", "[", 
+  RowBox[{"[", 
+   RowBox[{"2", ";;", "5"}], "]"}], "]"}]}], "Input",
  CellLabel->
-  "In[667]:=",ExpressionUUID->"32163113-6f5c-4fd9-8bf8-56f7acf65b56"],
+  "In[766]:=",ExpressionUUID->"32163113-6f5c-4fd9-8bf8-56f7acf65b56"],
 
 Cell[BoxData[
  TemplateBox[{
@@ -313,15 +346,15 @@ RowBox[{RowBox[{\\\"Quiet\\\", \\\"[\\\", RowBox[{RowBox[{\\\"Check\\\", \
 StyleBox[RowBox[{\\\"Part\\\", \\\"::\\\", \\\"partw\\\"}], \\\"MessageName\\\
 \"], \\\"}\\\"}]}], \\\"]\\\"}], \\\"&\\\"}], \\\")\\\"}], \\\"[\\\", \
 RowBox[{\\\"1\\\", \\\"+\\\", \\\"1\\\"}], \\\"]\\\"}]}], \\\"]\\\"}]\\) does \
-not exist.\"",2,668,67,16511597886903173751,"Local"},
+not exist.\"",2,767,78,16511597886903173751,"Local"},
   "MessageTemplate"]], "Message", "MSG",
  CellLabel->
   "During evaluation of \
-In[667]:=",ExpressionUUID->"87e2ab29-1b72-48de-8cb3-6d87dbc94b30"],
+In[766]:=",ExpressionUUID->"b62ef255-a5d2-4746-8733-f0bcd7a05afc"],
 
 Cell[BoxData["$Failed"], "Output",
  CellLabel->
-  "Out[668]=",ExpressionUUID->"717b211c-685e-4fab-9fdd-af25f8790e6b"],
+  "Out[767]=",ExpressionUUID->"780a419b-2f90-4f91-b1ed-10aa400df827"],
 
 Cell[BoxData[
  TemplateBox[{
@@ -334,15 +367,15 @@ RowBox[{RowBox[{\\\"Quiet\\\", \\\"[\\\", RowBox[{RowBox[{\\\"Check\\\", \
 StyleBox[RowBox[{\\\"Part\\\", \\\"::\\\", \\\"partw\\\"}], \\\"MessageName\\\
 \"], \\\"}\\\"}]}], \\\"]\\\"}], \\\"&\\\"}], \\\")\\\"}], \\\"[\\\", \
 RowBox[{\\\"1\\\", \\\"+\\\", \\\"1\\\"}], \\\"]\\\"}]}], \\\"]\\\"}]\\) does \
-not exist.\"",2,669,68,16511597886903173751,"Local"},
+not exist.\"",2,768,79,16511597886903173751,"Local"},
   "MessageTemplate"]], "Message", "MSG",
  CellLabel->
   "During evaluation of \
-In[667]:=",ExpressionUUID->"142f85e3-f8c1-453c-bc41-94bf97778509"],
+In[766]:=",ExpressionUUID->"4cca7232-f090-4b39-b96d-f3bb9e4067f9"],
 
 Cell[BoxData["$Failed"], "Output",
  CellLabel->
-  "Out[669]=",ExpressionUUID->"08df0d93-d535-4f91-a56c-85100f1c20aa"],
+  "Out[768]=",ExpressionUUID->"e2278835-6966-4abf-9767-810abd0ffa1e"],
 
 Cell[BoxData[
  TemplateBox[{
@@ -355,14 +388,35 @@ RowBox[{RowBox[{\\\"Quiet\\\", \\\"[\\\", RowBox[{RowBox[{\\\"Check\\\", \
 StyleBox[RowBox[{\\\"Part\\\", \\\"::\\\", \\\"partw\\\"}], \\\"MessageName\\\
 \"], \\\"}\\\"}]}], \\\"]\\\"}], \\\"&\\\"}], \\\")\\\"}], \\\"[\\\", \
 RowBox[{\\\"2\\\", \\\"+\\\", \\\"1\\\"}], \\\"]\\\"}]}], \\\"]\\\"}]\\) does \
-not exist.\"",2,670,69,16511597886903173751,"Local"},
+not exist.\"",2,769,80,16511597886903173751,"Local"},
   "MessageTemplate"]], "Message", "MSG",
  CellLabel->
   "During evaluation of \
-In[667]:=",ExpressionUUID->"c50b7003-94db-460f-8287-18dca147e15d"],
+In[766]:=",ExpressionUUID->"4851a66f-edbe-4273-9733-4372846abd56"],
 
 Cell[BoxData["$Failed"], "Output",
- CellLabel->"Out[670]=",ExpressionUUID->"772b31ea-a1a5-439e-a8fa-5e0a72d26b4a"]
+ CellLabel->
+  "Out[769]=",ExpressionUUID->"33b2cdb8-9451-45fa-81ab-073058feee65"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "Part","partw",
+   "\"Part \\!\\(\\*RowBox[{\\\"5\\\"}]\\) of \\!\\(\\*RowBox[{\\\"lazyList\\\
+\", \\\"[\\\", RowBox[{\\\"1\\\", \\\",\\\", RowBox[{RowBox[{\\\"(\\\", \
+RowBox[{RowBox[{\\\"Quiet\\\", \\\"[\\\", RowBox[{RowBox[{\\\"Check\\\", \
+\\\"[\\\", RowBox[{\\\"\[LeftSkeleton]\\\", \\\"1\\\", \\\"\[RightSkeleton]\\\
+\"}], \\\"]\\\"}], \\\",\\\", RowBox[{\\\"{\\\", \
+StyleBox[RowBox[{\\\"Part\\\", \\\"::\\\", \\\"partw\\\"}], \\\"MessageName\\\
+\"], \\\"}\\\"}]}], \\\"]\\\"}], \\\"&\\\"}], \\\")\\\"}], \\\"[\\\", \
+RowBox[{\\\"1\\\", \\\"+\\\", \\\"1\\\"}], \\\"]\\\"}]}], \\\"]\\\"}]\\) does \
+not exist.\"",2,770,81,16511597886903173751,"Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellLabel->
+  "During evaluation of \
+In[766]:=",ExpressionUUID->"57811289-1cb7-47e9-b915-48ed149c797a"],
+
+Cell[BoxData["$Failed"], "Output",
+ CellLabel->"Out[770]=",ExpressionUUID->"40843cca-171f-4d43-b051-7aa177ce0502"]
 }, Open  ]],
 
 Cell[TextData[{
