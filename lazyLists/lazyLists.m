@@ -60,7 +60,7 @@ lazyList[Hold[list_Symbol]] := With[{
     ][1]
 ];
 
-lazyList /: Rest[lazyList[_, last_]] := last;
+lazyList /: Rest[lazyList[_, tail_]] := tail;
 
 (* For efficiency reasons, these lazy list generatorss are defined by self-referential anynomous functions. Note that #0 refers to the function itself *)
 lazyRange[start : _ : 1, step : _ : 1] /; !TrueQ[step == 0] := Function[
@@ -121,15 +121,15 @@ lazyList /: Take[l_lazyList, n_Integer?Positive] := lazyList @@ MapAt[
                     ReplaceRepeated[
                         l,
                         {
-                            lazyList[first_, last_] :> (Sow[first, "take"]; last)
+                            lazyList[first_, tail_] :> (Sow[first, "take"]; tail)
                         },
                         MaxIterations -> n - 1
                     ]
                 ],
                 {ReplaceRepeated::rrlim}
             ],
-            (* The last element should only be Sown without evaluating the next element *)
-            lazyList[first_, last_] :> (Sow[first, "take"]; lazyList[first, last]) 
+            (* The last element should only be Sown without evaluating the tail *)
+            lazyList[first_, tail_] :> (Sow[first, "take"]; lazyList[first, tail]) 
         ],
         "take"
     ],
@@ -160,13 +160,13 @@ lazyList /: TakeWhile[l_lazyList, function_, OptionsPattern[MaxIterations -> Inf
                     ReplaceRepeated[
                         l,
                         {
-                            lazyList[first_, last_] :> If[function[first]
+                            lazyList[first_, tail_] :> If[function[first]
                                 ,
                                 Sow[first, "take"];
-                                last
+                                tail
                                 ,
-                                Throw[lazyList[first, last], "break"],
-                                Throw[lazyList[first, last], "break"]
+                                Throw[lazyList[first, tail], "break"],
+                                Throw[lazyList[first, tail], "break"]
                             ]
                         },
                         MaxIterations -> OptionValue[MaxIterations]
@@ -245,7 +245,7 @@ lazyList /: Part[l_lazyList, {n_Integer}] := Replace[
             ReplaceRepeated[
                 l,
                 {
-                    lazyList[first_, last_] :> last
+                    lazyList[first_, tail_] :> tail
                 },
                 MaxIterations -> n - 1
             ]
@@ -257,14 +257,14 @@ lazyList /: Part[l_lazyList, {n_Integer}] := Replace[
     }
 ];
 
-lazyList /: Map[f_, lazyList[fst_, last_]] := lazyList[
-    f[fst],
-    Map[f, last]
+lazyList /: Map[f_, lazyList[first_, tail_]] := lazyList[
+    f[first],
+    Map[f, tail]
 ];
 
-lazyList /: MapIndexed[f_, lazyList[fst_, last_], index : (_Integer?Positive) : 1] := lazyList[
-    f[fst, index],
-    MapIndexed[f, last, index + 1]
+lazyList /: MapIndexed[f_, lazyList[first_, tail_], index : (_Integer?Positive) : 1] := lazyList[
+    f[first, index],
+    MapIndexed[f, tail, index + 1]
 ];
 
 lazyMapThread[f_, list : {lazyList[_, _]..}] := lazyList[
@@ -276,11 +276,11 @@ lazyMapThread[_, _] := lazyList[];
 
 lazyTranspose[list : {__lazyList}] := lazyMapThread[Identity, list];
 
-lazyList /: FoldList[f_, lazyList[first_, last_]] := FoldList[f, first, last];
+lazyList /: FoldList[f_, lazyList[first_, tail_]] := FoldList[f, first, tail];
 
-lazyList /: FoldList[f_, current_, lazyList[first_, last_]] := lazyList[
+lazyList /: FoldList[f_, current_, lazyList[first_, tail_]] := lazyList[
     current,
-    FoldList[f, f[current, first], last]
+    FoldList[f, f[current, first], tail]
 ];
 
 lazyList /: FoldList[f_, current_, empty : lazyList[]] := lazyList[current, empty];
@@ -289,8 +289,8 @@ lazyList /: Cases[l_lazyList, patt_] := Module[{
     case
  },
     (* Define helper function to match patterns faster *)
-    case[lazyList[first : patt, last_]] := lazyList[first, case[last]];
-    case[lazyList[first_, last_]] := case[last];
+    case[lazyList[first : patt, tail_]] := lazyList[first, case[tail]];
+    case[lazyList[first_, tail_]] := case[tail];
     
     case[l]
 ];
@@ -299,16 +299,16 @@ lazyList /: Pick[l_lazyList, select_lazyList, patt_] := Module[{
     pick
 },
     (* Define helper function, just like with Cases *)
-    pick[lazyList[first_, last1_], lazyList[match : patt, last2_]] :=
-        lazyList[first, pick[last1, last2]];
-    pick[lazyList[first_, last1_], lazyList[first2_, last2_]] :=
-        pick[last1, last2];
+    pick[lazyList[first_, tail1_], lazyList[match : patt, tail2_]] :=
+        lazyList[first, pick[tail1, tail2]];
+    pick[lazyList[first_, tail1_], lazyList[first2_, tail2_]] :=
+        pick[tail1, tail2];
         
     pick[l, select] 
 ];
 
-lazyList /: Select[lazyList[first_, last_], f_] /; f[first] := lazyList[first, Select[last, f]];
-lazyList /: Select[lazyList[first_, last_], f_] := Select[last, f];
+lazyList /: Select[lazyList[first_, tail_], f_] /; f[first] := lazyList[first, Select[tail, f]];
+lazyList /: Select[lazyList[first_, tail_], f_] := Select[tail, f];
 
 End[]
 
