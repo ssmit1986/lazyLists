@@ -208,7 +208,7 @@ lazyList /: FoldList[f_, current_, lazyList[first_, last_]] := lazyList[
     FoldList[f, f[current, first], last]
 ];
 
-lazyList /: FoldList[f_, current_, lazyList[]] := lazyList[current, lazyList[]];
+lazyList /: FoldList[f_, current_, empty : lazyList[]] := lazyList[current, empty];
 
 lazyList /: Cases[l_lazyList, patt_] := Module[{
     case
