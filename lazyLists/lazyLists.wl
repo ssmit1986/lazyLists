@@ -33,7 +33,7 @@ It is equivalent to Part[list, i, j, k, ...]";
 lazyFiniteTake::usage = "lazyFiniteTake[lz, spec] directly applies Take to finite lazyLists constructed with lazyList[list] or lazyList[Hold[sym]] without having to traverse the lazyList element-by-element. 
 It is equivalent to Take[list, spec]";
 
-lazySetIndex::usage = "lazySetIndex[lz, index] with lz a supported lazyList returns a lazyList at the specified index. Finite lists and lists generated with lazyGenerator are supported";
+lazySetState::usage = "lazySetState[lz, index] with lz a supported lazyList returns a lazyList at the specified index. Finite lists and lists generated with lazyGenerator are supported";
 
 lazyGenerator::usage = "lazyGenerator[f, start, min, max, step] generates a lazyList that applies f to values {start, start + step, start + 2 step, ...} for values between min and max (which are allowed to be infinite).
 When min and max are both infinite, symbolic values for start and step are allowed";
@@ -79,22 +79,22 @@ lazyFinitePart[l_lazyList, _] := (Message[lazyList::notFinite, Short[l]]; $Faile
 lazyFiniteTake[lazyList[_, lazyFiniteList[list_, _]], spec_] := Take[list, spec];
 lazyFiniteTake[l_lazyList, _] := (Message[lazyList::notFinite, Short[l]]; $Failed);
 
-lazySetIndex[lazyList[_, l : lazyFiniteList[list_, _]], index_Integer] /; 0 < index <= Length[list] :=
+lazySetState[lazyList[_, l : lazyFiniteList[list_, _]], index_Integer] /; 0 < index <= Length[list] :=
     lazyFiniteList[list, index];
 
-lazySetIndex[l : lazyList[_, lazyFiniteList[list_, _]], index_Integer] /; -Length[list] <= index < 0 := 
-    lazySetIndex[l, index + Length[list] + 1];
+lazySetState[l : lazyList[_, lazyFiniteList[list_, _]], index_Integer] /; -Length[list] <= index < 0 := 
+    lazySetState[l, index + Length[list] + 1];
 
-lazySetIndex[l : lazyList[_, lazyFiniteList[list_, _]], index_Integer] := (
+lazySetState[l : lazyList[_, lazyFiniteList[list_, _]], index_Integer] := (
     Message[Part::partw, index, Short[l]];
     l
 );
 
-lazySetIndex[l_lazyList, _] := (Message[lazyList::notFinite, Short[l]]; $Failed)
+lazySetState[l_lazyList, _] := (Message[lazyList::notFinite, Short[l]]; $Failed)
 
 lazyGenerator[
     f_,
-    start_,
+    start : _ : 1,
     min : _ : DirectedInfinity[-1], max : _ : DirectedInfinity[1], step : _ : 1
 ] := Switch[ {min, max, start, step},
     {DirectedInfinity[-1], DirectedInfinity[1], __},
@@ -103,7 +103,7 @@ lazyGenerator[
         leftSidedGenerator[f, start, max, step],
     {_?NumericQ, DirectedInfinity[1], _?NumericQ, _?NumericQ},
         rightSidedGenerator[f, start, min, step],
-    {_?NumericQ, _?NumericQ,_?NumericQ, _?(NumericQ[#] && Negative[#]&)},
+    {_?NumericQ, _?NumericQ,_?NumericQ, _?NumericQ},
         finiteGenerator[f, start, min, max, step],
     _,
         lazyList[]
@@ -132,7 +132,7 @@ finiteGenerator[f_, pos_, min_, max_, step_] /; Between[pos, {min, max}] := lazy
 ];
 finiteGenerator[___] := lazyList[];
 
-lazySetIndex[
+lazySetState[
     l : lazyList[
         _,
         (gen : (twoSidedGenerator | leftSidedGenerator | rightSidedGenerator | finiteGenerator))[f_, pos_, rest___]
