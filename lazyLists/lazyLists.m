@@ -20,12 +20,20 @@ lazyStream::usage = "lazyStream[streamObject] creates a lazyList that streams fr
 
 lazyConstantArray::usage = "lazyConstantArray[elem] produces an infinite list of copies of elem";
 
-lazyMapThread::usage = "lazyMapThread[f, {lz1, lz2, ...}] is similar to MapThread, except all elements from the lazyLists are fed to the first slot of f as a regular List"
+lazyMapThread::usage = "lazyMapThread[f, {lz1, lz2, ...}] is similar to MapThread, except all elements from the lazyLists are fed to the first slot of f as a regular List";
 
 lazyTranspose::usage = "lazyTranspose[{lz1, lz2, ...}] creates a lazyList with tuples of elements from lz1, lz2, etc. 
-Equivalent to lazyMapThread[Identity, {lz1, lz2, ...}]"
+Equivalent to lazyMapThread[Identity, {lz1, lz2, ...}]";
 
-lazyPartMap::usage = "lazyPartMap[l, {i, j, k, ...}] is equivalent to Map[Part[l, {#}]&, {i, j, k, ...}] but faster"
+lazyPartMap::usage = "lazyPartMap[l, {i, j, k, ...}] is equivalent to Map[Part[l, {#}]&, {i, j, k, ...}] but faster";
+
+lazyFinitePart::usage = "lazyFinitePart[lz, i, j, k,...] directly extracts Part from finite lazyLists constructed with lazyList[list] or lazyList[Hold[sym]] without having to traverse the lazyList element-by-element. 
+It is equivalent to Part[list, i, j, k, ...]";
+
+lazyFiniteTake::usage = "lazyFiniteTake[lz, spec] directly applies Take to finite lazyLists constructed with lazyList[list] or lazyList[Hold[sym]] without having to traverse the lazyList element-by-element. 
+It is equivalent to Take[list, spec]";
+
+lazyFiniteSetIndex::usage = "lazyFiniteSetIndex[lz, index] with lz a finite lazyList returns a lazyList at the specified index";
 
 $lazyIterationLimit::usage = "Iteration limit used for finding successive elements in a lazy list";
 
@@ -35,6 +43,7 @@ Begin["`Private`"]
 $lazyIterationLimit = Infinity;
 
 Attributes[lazyList] = {HoldRest};
+lazyList /: Rest[lazyList[_, tail_]] := tail;
 
 lazyList[list_List] := Module[{
     listVar = list
@@ -42,25 +51,45 @@ lazyList[list_List] := Module[{
     lazyList[Hold[listVar]]
 ];
 
-lazyList[Hold[list_Symbol]] := With[{
+Attributes[lazyFiniteList] = {HoldFirst};
+lazyList[Hold[list_Symbol]] := lazyFiniteList[list, 1];
+
+With[{
     msgs = {Part::partw}
 },
-    Function[
-        Quiet[
-            Check[
-                lazyList[
-                    list[[#1]],
-                    #0[#1 + 1]
-                ],
-                lazyList[],
-                msgs
-            ],
+    (* Don't test patterns for performance. It's up to the user to make sure nothing illegal ends up in lazyFiniteList if they decide to use it *)
+    lazyFiniteList[list_, i_] := Quiet[
+        Check[
+            lazyList[list[[i]], lazyFiniteList[list, i + 1]], 
+            lazyList[],
             msgs
-        ]
-    ][1]
+        ],
+        msgs
+    ]
 ];
 
-lazyList /: Rest[lazyList[_, tail_]] := tail;
+lazyList::notFinite = "lazyList `1` cannot be recognised as a finite list";
+
+lazyFinitePart[lazyList[_, lazyFiniteList[list_, _]], spec__] := Part[list, spec];
+lazyFinitePart[l_lazyList, _] := (Message[lazyList::notFinite, Short[l]]; $Failed);
+
+lazyFiniteTake[lazyList[_, lazyFiniteList[list_, _]], spec_] := Take[list, spec];
+lazyFiniteTake[l_lazyList, _] := (Message[lazyList::notFinite, Short[l]]; $Failed);
+
+lazyFiniteSetIndex[lazyList[_, l : lazyFiniteList[list_, _]], index_Integer] /; 0 < index <= Length[list] := lazyList[
+    lazyFinitePart[l, index],
+    lazyFiniteList[list, index + 1]
+];
+
+lazyFiniteSetIndex[l : lazyList[_, lazyFiniteList[list_, _]], index_Integer] /; -Length[list] <= index < 0 := 
+    lazyFiniteSetIndex[l, index + Length[list] + 1];
+
+lazyFiniteSetIndex[l : lazyList[_, lazyFiniteList[list_, _]], index_Integer] := (
+    Message[Part::partw, index, Short[l]];
+    l
+);
+
+lazyFiniteSetIndex[l_lazyList, _] := (Message[lazyList::notFinite, Short[l]]; $Failed)
 
 (* For efficiency reasons, these lazy list generatorss are defined by self-referential anynomous functions. Note that #0 refers to the function itself *)
 lazyRange[start : _ : 1, step : _ : 1] /; !TrueQ[step == 0] := Function[
