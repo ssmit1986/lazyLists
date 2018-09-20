@@ -20,6 +20,8 @@ lazyStream::usage = "lazyStream[streamObject] creates a lazyList that streams fr
 
 lazyConstantArray::usage = "lazyConstantArray[elem] produces an infinite list of copies of elem";
 
+lazyTuples::usage = "";
+
 lazyMapThread::usage = "lazyMapThread[f, {lz1, lz2, ...}] is similar to MapThread, except all elements from the lazyLists are fed to the first slot of f as a regular List";
 
 lazyTranspose::usage = "lazyTranspose[{lz1, lz2, ...}] creates a lazyList with tuples of elements from lz1, lz2, etc. 
@@ -420,7 +422,49 @@ lazyList /: Pick[l_lazyList, select_lazyList, patt_] := Module[{
 lazyList /: Select[lazyList[first_, tail_], f_] /; f[first] := lazyList[first, Select[tail, f]];
 lazyList /: Select[lazyList[first_, tail_], f_] := Select[tail, f];
 
+(* Source of decompose and basis: https://mathematica.stackexchange.com/a/153609/43522 *)
+decompose = Compile[{
+    {n, _Integer},
+    {d, _Integer, 1}
+}, 
+    Module[{
+        c = n,
+        q
+    },
+        Table[
+            q = Quotient[c, i];
+            c = Mod[c, i];
+            q,
+            {i, d}
+        ]
+    ],
+    RuntimeAttributes -> {Listable}
+];
 
+basis[lengths : {__Integer}] := Reverse[
+    FoldList[Times, 1, Reverse @ Rest @ lengths]
+];
+
+indexLazyList[lists : {{__}..}] := With[{
+    lengths = Length /@ lists
+},
+    With[{
+        b = basis[lengths]
+    },
+        Map[
+            1 + decompose[#, b] &,
+            lazyGenerator[Identity, 0, 0, Times @@ lengths - 1, 1]
+        ]
+    ]
+];
+
+lazyTuples[lists : {{__}..}] := Map[
+    MapThread[
+        Part,
+        {lists, #}
+    ]&,
+    indexLazyList[lists]
+]
 
 End[]
 
