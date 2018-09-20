@@ -76,10 +76,10 @@ With[{
 
 lazyList::notFinite = "lazyList `1` cannot be recognised as a finite list";
 
-lazyFinitePart[lazyList[_, lazyFiniteList[list_, _]], spec__] := Part[list, spec];
+lazyFinitePart[lazyList[_, (lazyFiniteList | lazyPeriodicListInternal)[list_, __]], spec__] := Part[list, spec];
 lazyFinitePart[l_lazyList, _] := (Message[lazyList::notFinite, Short[l]]; $Failed);
 
-lazyFiniteTake[lazyList[_, lazyFiniteList[list_, _]], spec_] := Take[list, spec];
+lazyFiniteTake[lazyList[_, (lazyFiniteList | lazyPeriodicListInternal)[list_, __]], spec_] := Take[list, spec];
 lazyFiniteTake[l_lazyList, _] := (Message[lazyList::notFinite, Short[l]]; $Failed);
 
 lazySetState[lazyList[_, l : lazyFiniteList[list_, _]], index_Integer] /; 0 < index <= Length[list] :=
