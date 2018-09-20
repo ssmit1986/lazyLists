@@ -27,10 +27,10 @@ Equivalent to lazyMapThread[Identity, {lz1, lz2, ...}]";
 
 lazyPartMap::usage = "lazyPartMap[l, {i, j, k, ...}] is equivalent to Map[Part[l, {#}]&, {i, j, k, ...}] but faster";
 
-lazyFinitePart::usage = "lazyFinitePart[lz, i, j, k,...] directly extracts Part from finite lazyLists constructed with lazyList[list] or lazyList[Hold[sym]] without having to traverse the lazyList element-by-element. 
+lazyFinitePart::usage = "lazyFinitePart[lz, i, j, k,...] directly extracts Part from finite and periodic lazyLists without having to traverse the lazyList element-by-element. 
 It is equivalent to Part[list, i, j, k, ...]";
 
-lazyFiniteTake::usage = "lazyFiniteTake[lz, spec] directly applies Take to finite lazyLists constructed with lazyList[list] or lazyList[Hold[sym]] without having to traverse the lazyList element-by-element. 
+lazyFiniteTake::usage = "lazyFiniteTake[lz, spec] directly applies Take to finite lazyLists and periodic lazyLists without having to traverse the lazyList element-by-element. 
 It is equivalent to Take[list, spec]";
 
 lazySetState::usage = "lazySetState[lz, index] with lz a supported lazyList returns a lazyList at the specified index. 
@@ -73,14 +73,6 @@ With[{
         msgs
     ]
 ];
-
-lazyList::notFinite = "lazyList `1` cannot be recognised as a finite list";
-
-lazyFinitePart[lazyList[_, (lazyFiniteList | lazyPeriodicListInternal)[list_, __]], spec__] := Part[list, spec];
-lazyFinitePart[l_lazyList, _] := (Message[lazyList::notFinite, Short[l]]; $Failed);
-
-lazyFiniteTake[lazyList[_, (lazyFiniteList | lazyPeriodicListInternal)[list_, __]], spec_] := Take[list, spec];
-lazyFiniteTake[l_lazyList, _] := (Message[lazyList::notFinite, Short[l]]; $Failed);
 
 lazySetState[lazyList[_, l : lazyFiniteList[list_, _]], index_Integer] /; 0 < index <= Length[list] :=
     lazyFiniteList[list, index];
@@ -212,7 +204,15 @@ lazyPeriodicList[Hold[list_Symbol]] := lazyPeriodicListInternal[list, 1, Length[
 lazySetState[lazyList[_, lazyPeriodicListInternal[list_, _, max_]], index_Integer] := 
     lazyPeriodicListInternal[list, Mod[index - UnitStep[index], max] + 1, max];
 
+
+lazyList::notFinite = "lazyList `1` cannot be recognised as a finite list";
 lazySetState[l_lazyList, _] := (Message[lazyList::notFinite, Short[l]]; l)
+
+lazyFinitePart[lazyList[_, (lazyFiniteList | lazyPeriodicListInternal)[list_, __]], spec__] := Part[list, spec];
+lazyFinitePart[l_lazyList, _] := (Message[lazyList::notFinite, Short[l]]; $Failed);
+
+lazyFiniteTake[lazyList[_, (lazyFiniteList | lazyPeriodicListInternal)[list_, __]], spec_] := Take[list, spec];
+lazyFiniteTake[l_lazyList, _] := (Message[lazyList::notFinite, Short[l]]; $Failed);
 
 (* Set threading behaviour for lazyLists to make it possible to add and multiply them and use powers on them *)
 lazyList /: (op : (Plus | Times | Power | Divide | Subtract))[first___, l__lazyList, rest___] :=
