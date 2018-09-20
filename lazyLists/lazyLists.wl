@@ -166,6 +166,12 @@ lazyNestList[f_, elem_] := Function[
     ]
 ][elem, 1];
 
+(*lazySetState definition for lazyRange and lazyPowerRange and lazyNestList *)
+lazySetState[
+    lazyList[_, (f : Function[lazyList[#1, #0[_, _]]])[_, step_]],
+    ind_
+] := f[ind, step];
+
 lazyStream[stream_InputStream] := Function[
     With[{
         read = Read[#1]
