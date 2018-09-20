@@ -1,4 +1,4 @@
-#lazyLists package for Wolfram Language
+# lazyLists package for Wolfram Language
 
 Implements Haskell-style lazy lists in Mathematica and adds syntactic sugar to various build-in functions to work with them. Current implementation uses ReplaceRepeated because that was found to be the most computationally efficient.
 
