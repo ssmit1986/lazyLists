@@ -33,10 +33,13 @@ It is equivalent to Part[list, i, j, k, ...]";
 lazyFiniteTake::usage = "lazyFiniteTake[lz, spec] directly applies Take to finite lazyLists constructed with lazyList[list] or lazyList[Hold[sym]] without having to traverse the lazyList element-by-element. 
 It is equivalent to Take[list, spec]";
 
-lazySetState::usage = "lazySetState[lz, index] with lz a supported lazyList returns a lazyList at the specified index. Finite lists and lists generated with lazyGenerator are supported";
+lazySetState::usage = "lazySetState[lz, index] with lz a supported lazyList returns a lazyList at the specified index. 
+Finite lists, lazyPeriodicList and lists generated with lazyGenerator, lazy(Power)Range, and lazyNestList are supported";
 
 lazyGenerator::usage = "lazyGenerator[f, start, min, max, step] generates a lazyList that applies f to values {start, start + step, start + 2 step, ...} for values between min and max (which are allowed to be infinite).
 When min and max are both infinite, symbolic values for start and step are allowed";
+
+lazyPeriodicList::usage = "lazyPeriodicList[list] is an infinite lazyList that cycles through the values in list periodically";
 
 $lazyIterationLimit::usage = "Iteration limit used for finding successive elements in a lazy list";
 
@@ -89,8 +92,6 @@ lazySetState[l : lazyList[_, lazyFiniteList[list_, _]], index_Integer] := (
     Message[Part::partw, index, Short[l]];
     l
 );
-
-lazySetState[l_lazyList, _] := (Message[lazyList::notFinite, Short[l]]; $Failed)
 
 lazyGenerator[
     f_,
@@ -193,6 +194,25 @@ lazyConstantArray[const_] := Function[
         #0[#1 + 1]
     ]
 ][1];
+
+
+Attributes[lazyPeriodicListInternal] = {HoldFirst};
+lazyPeriodicListInternal[list_, i_, max_] := lazyList[
+    list[[i]],
+    lazyPeriodicListInternal[list, Mod[i, max] + 1, max]
+];
+
+lazyPeriodicList[list_List] := Module[{
+    listVar = list
+},
+    lazyPeriodicList[Hold[listVar]]
+];
+lazyPeriodicList[Hold[list_Symbol]] := lazyPeriodicListInternal[list, 1, Length[list]];
+
+lazySetState[lazyList[_, lazyPeriodicListInternal[list_, _, max_]], index_Integer] := 
+    lazyPeriodicListInternal[list, Mod[index - UnitStep[index], max] + 1, max];
+
+lazySetState[l_lazyList, _] := (Message[lazyList::notFinite, Short[l]]; l)
 
 (* Set threading behaviour for lazyLists to make it possible to add and multiply them and use powers on them *)
 lazyList /: (op : (Plus | Times | Power | Divide | Subtract))[first___, l__lazyList, rest___] :=
@@ -399,6 +419,8 @@ lazyList /: Pick[l_lazyList, select_lazyList, patt_] := Module[{
 
 lazyList /: Select[lazyList[first_, tail_], f_] /; f[first] := lazyList[first, Select[tail, f]];
 lazyList /: Select[lazyList[first_, tail_], f_] := Select[tail, f];
+
+
 
 End[]
 
