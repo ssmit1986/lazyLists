@@ -33,7 +33,10 @@ It is equivalent to Part[list, i, j, k, ...]";
 lazyFiniteTake::usage = "lazyFiniteTake[lz, spec] directly applies Take to finite lazyLists constructed with lazyList[list] or lazyList[Hold[sym]] without having to traverse the lazyList element-by-element. 
 It is equivalent to Take[list, spec]";
 
-lazyFiniteSetIndex::usage = "lazyFiniteSetIndex[lz, index] with lz a finite lazyList returns a lazyList at the specified index";
+lazySetIndex::usage = "lazySetIndex[lz, index] with lz a supported lazyList returns a lazyList at the specified index. Finite lists and lists generated with lazyGenerator are supported";
+
+lazyGenerator::usage = "lazyGenerator[f, start, min, max, step] generates a lazyList that applies f to values {start, start + step, start + 2 step, ...} for values between min and max (which are allowed to be infinite).
+When min and max are both infinite, symbolic values for start and step are allowed";
 
 $lazyIterationLimit::usage = "Iteration limit used for finding successive elements in a lazy list";
 
@@ -76,20 +79,72 @@ lazyFinitePart[l_lazyList, _] := (Message[lazyList::notFinite, Short[l]]; $Faile
 lazyFiniteTake[lazyList[_, lazyFiniteList[list_, _]], spec_] := Take[list, spec];
 lazyFiniteTake[l_lazyList, _] := (Message[lazyList::notFinite, Short[l]]; $Failed);
 
-lazyFiniteSetIndex[lazyList[_, l : lazyFiniteList[list_, _]], index_Integer] /; 0 < index <= Length[list] := lazyList[
-    lazyFinitePart[l, index],
-    lazyFiniteList[list, index + 1]
-];
+lazySetIndex[lazyList[_, l : lazyFiniteList[list_, _]], index_Integer] /; 0 < index <= Length[list] :=
+    lazyFiniteList[list, index];
 
-lazyFiniteSetIndex[l : lazyList[_, lazyFiniteList[list_, _]], index_Integer] /; -Length[list] <= index < 0 := 
-    lazyFiniteSetIndex[l, index + Length[list] + 1];
+lazySetIndex[l : lazyList[_, lazyFiniteList[list_, _]], index_Integer] /; -Length[list] <= index < 0 := 
+    lazySetIndex[l, index + Length[list] + 1];
 
-lazyFiniteSetIndex[l : lazyList[_, lazyFiniteList[list_, _]], index_Integer] := (
+lazySetIndex[l : lazyList[_, lazyFiniteList[list_, _]], index_Integer] := (
     Message[Part::partw, index, Short[l]];
     l
 );
 
-lazyFiniteSetIndex[l_lazyList, _] := (Message[lazyList::notFinite, Short[l]]; $Failed)
+lazySetIndex[l_lazyList, _] := (Message[lazyList::notFinite, Short[l]]; $Failed)
+
+lazyGenerator[
+    f_,
+    start_,
+    min : _ : DirectedInfinity[-1], max : _ : DirectedInfinity[1], step : _ : 1
+] := Switch[ {min, max, start, step},
+    {DirectedInfinity[-1], DirectedInfinity[1], __},
+        twoSidedGenerator[f, start, step],
+    {DirectedInfinity[-1], _?NumericQ, _?NumericQ, _?NumericQ},
+        leftSidedGenerator[f, start, max, step],
+    {_?NumericQ, DirectedInfinity[1], _?NumericQ, _?NumericQ},
+        rightSidedGenerator[f, start, min, step],
+    {_?NumericQ, _?NumericQ,_?NumericQ, _?(NumericQ[#] && Negative[#]&)},
+        finiteGenerator[f, start, min, max, step],
+    _,
+        lazyList[]
+];
+
+twoSidedGenerator[f_, pos_, step_] := lazyList[
+    f[pos],
+    twoSidedGenerator[f, pos + step, step]
+];
+
+leftSidedGenerator[f_, pos_, max_, step_] /; pos <= max := lazyList[
+    f[pos],
+    leftSidedGenerator[f, pos + step, max, step]
+];
+leftSidedGenerator[___] := lazyList[];
+
+rightSidedGenerator[f_, pos_, min_, step_] /; min <= pos := lazyList[
+    f[pos],
+    rightSidedGenerator[f, pos + step, min, step]
+];
+rightSidedGenerator[___] := lazyList[];
+
+finiteGenerator[f_, pos_, min_, max_, step_] /; Between[pos, {min, max}] := lazyList[
+    f[pos],
+    finiteGenerator[f, pos + step, min, max, step]
+];
+finiteGenerator[___] := lazyList[];
+
+lazySetIndex[
+    l : lazyList[
+        _,
+        (gen : (twoSidedGenerator | leftSidedGenerator | rightSidedGenerator | finiteGenerator))[f_, pos_, rest___]
+    ],
+    index_
+] := Replace[
+    gen[f, index, rest],
+    {
+        lazyList[] :> (Message[Part::partw, index, Short[l]]; l)
+    }
+];
+
 
 (* For efficiency reasons, these lazy list generatorss are defined by self-referential anynomous functions. Note that #0 refers to the function itself *)
 lazyRange[start : _ : 1, step : _ : 1] /; !TrueQ[step == 0] := Function[
@@ -134,7 +189,7 @@ lazyConstantArray[const_] := Function[
 ][1];
 
 (* Set threading behaviour for lazyLists to make it possible to add and multiply them and use powers on them *)
-lazyList /: (op : Plus | Times | Power | Divide | Subtract)[first___, l__lazyList, rest___] :=
+lazyList /: (op : (Plus | Times | Power | Divide | Subtract))[first___, l__lazyList, rest___] :=
     Thread[
         Unevaluated[op[first, l, rest]],
         lazyList
