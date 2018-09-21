@@ -19,3 +19,9 @@ Implements Haskell-style lazy lists in Mathematica and adds syntactic sugar to v
 ## Using the code
 
 See lazyLists.nb for details and examples.
+
+
+## Change log
+
+* 21 September 2018: 
+    * Add lazyTuples, which is the lazy version of Tuples. Includes helper functions for generating tuples efficiently.
