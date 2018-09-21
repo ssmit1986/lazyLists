@@ -20,9 +20,9 @@ lazyStream::usage = "lazyStream[streamObject] creates a lazyList that streams fr
 
 lazyConstantArray::usage = "lazyConstantArray[elem] produces an infinite list of copies of elem";
 
-lazyTuples::usage = "";
-bulkExtractElementsUsingIndexList::usage = "";
-rangeTuplesAtPositions::usage = "";
+lazyTuples::usage = "lazyTuples is a lazy version of Tuples";
+bulkExtractElementsUsingIndexList::usage = "bulkExtractElementsUsingIndexList[lists, indices] converts elements from Tuples[Range /@ Length /@ lists] into elements from Tuples[lists]";
+rangeTuplesAtPositions::usage = "rangeTuplesAtPositions[Length /@ lists] is a CompiledFunction that directly generates elements of Tuples[Range /@ Length /@ lists]";
 
 lazyMapThread::usage = "lazyMapThread[f, {lz1, lz2, ...}] is similar to MapThread, except all elements from the lazyLists are fed to the first slot of f as a regular List";
 
