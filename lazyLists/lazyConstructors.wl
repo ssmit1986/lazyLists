@@ -312,6 +312,7 @@ indexLazyList[lengths : {__Integer}, opts : OptionsPattern[]] := With[{
     ]
 ];
 
+(* Helper function for lazyTuples[elements] *)
 extractSpecFromIndexList = Compile[{
     {ind, _Integer, 1}
 },
@@ -333,9 +334,41 @@ lazyTuples[
     indexLazyList[Length /@ elementLists, opts]
 ];
 
+(* Helper function for lazyTuples[elements, tupLength] *)
+extractSpecFromIndexTuples = Compile[{
+    {indices, _Integer, 1}
+},
+    Transpose[{indices}],
+    RuntimeAttributes -> {Listable}
+];
+
+lazyTuples[
+    elementList_List,
+    tupLength_Integer?Positive,
+    opts : OptionsPattern[]
+] /; MatchQ[elementList, Range @ Length @ elementList] := indexLazyList[ConstantArray[Length[elementList], tupLength], opts];
+
+lazyTuples[
+    elementList_List | Hold[elementList_Symbol],
+    tupLength_Integer?Positive,
+    opts : OptionsPattern[]
+] /; MatchQ[elementList, {__}] := Map[
+    Extract[
+        elementList,
+        extractSpecFromIndexTuples[#]
+    ]&,
+    indexLazyList[ConstantArray[Length[elementList], tupLength], opts]
+];
+
 (* Effectively equal to lazyTuples[Range /@ lengths] *)
 lazyTuples[lengths : {__Integer}, opts : OptionsPattern[]] := indexLazyList[lengths, opts];
 
+(* 
+    Converts elements from 
+    Tuples[Range /@ elements /@ elementLists]
+    to elements from 
+    Tuples[elementLists]
+*)
 bulkExtractElementsUsingIndexList[
     elementLists_List | Hold[elementLists_Symbol],
     indices_List | Hold[indices_Symbol]
@@ -345,6 +378,25 @@ bulkExtractElementsUsingIndexList[
 ] := Partition[
     Extract[elementLists, Catenate[extractSpecFromIndexList[indices]]],
     Length[elementLists]
+];
+
+
+(* 
+    Converts elements from 
+    Tuples[Range @ Length @ elementLists], tupLength]
+    to elements from 
+    Tuples[elementLists, tupLength]
+*)
+bulkExtractElementsUsingIndexList[
+    elementList_List | Hold[elementList_Symbol],
+    indices_List | Hold[indices_Symbol],
+    tupLength_Integer
+] /; And[
+    MatrixQ[indices, IntegerQ],
+    tupLength === Dimensions[indices][[2]]
+] := Partition[
+    Extract[elementList, Catenate[extractSpecFromIndexTuples[indices]]],
+    tupLength
 ];
 
 End[]
