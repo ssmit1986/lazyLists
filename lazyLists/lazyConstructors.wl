@@ -317,17 +317,22 @@ rangeTuplesAtPositions[lengths : {__Integer}] := With[{
 (* lazyList that generates the elements of Tuples[Range /@ lengths] *)
 Options[indexLazyList] = {
     "StepSize" -> 1,
-    "Start" -> 1
+    "Start" -> 1,
+    "FiniteIndexCutoff" -> 10^10
 };
 
 indexLazyList[lengths : {__Integer}, opts : OptionsPattern[]] := With[{
     start = Replace[OptionValue["Start"], Except[_Integer] :> 1],
-    step = Replace[OptionValue["StepSize"], Except[_Integer] :> 1]
+    step = Replace[OptionValue["StepSize"], Except[_Integer] :> 1],
+    cutOff = Replace[OptionValue["FiniteIndexCutoff"], Except[_?NumericQ | DirectedInfinity[1]] :> 10^10]
 },
     lazyGenerator[
         rangeTuplesAtPositions[lengths],
-        start, 1, 
-        Replace[Times @@ lengths, {i_ /; i > 10^10 :> DirectedInfinity[1]}],
+        start, 1,
+        Replace[
+            Times @@ lengths,
+            {i_ /; i > cutOff :> DirectedInfinity[1]}
+        ],
         step
     ]
 ];
