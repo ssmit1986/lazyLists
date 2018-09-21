@@ -1,3 +1,4 @@
 (* Wolfram Language Init File *)
 
-Get[ "lazyLists`lazyLists`"]
+Get["lazyLists`lazyConstructors`"];
+Get["lazyLists`lazySyntacticSugar`"];
