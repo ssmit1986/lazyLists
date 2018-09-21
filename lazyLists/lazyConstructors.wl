@@ -376,7 +376,9 @@ bulkExtractElementsUsingIndexList[
     MatrixQ[indices, IntegerQ],
     Length[elementLists] === Dimensions[indices][[2]]
 ] := Partition[
-    Extract[elementLists, Catenate[extractSpecFromIndexList[indices]]],
+    Developer`ToPackedArray[
+        Extract[elementLists, Catenate[extractSpecFromIndexList[indices]]]
+    ],
     Length[elementLists]
 ];
 
@@ -395,7 +397,9 @@ bulkExtractElementsUsingIndexList[
     MatrixQ[indices, IntegerQ],
     tupLength === Dimensions[indices][[2]]
 ] := Partition[
-    Extract[elementList, Catenate[extractSpecFromIndexTuples[indices]]],
+    Developer`ToPackedArray[
+        Extract[elementList, Catenate[extractSpecFromIndexTuples[indices]]]
+    ],
     tupLength
 ];
 
