@@ -145,6 +145,23 @@ lazyList /: Part[l_lazyList, {n_Integer}] := Replace[
     }
 ];
 
+With[{
+    patt = Prepend[generatorPattern, Map]
+},
+    (* Mapping over a generator or Map is the same as composition of the generator functions: *)
+    lazyList /: Map[f_, lazyList[first_, (gen : patt)[fgen_, args___]]] := With[{
+        composition = f @* fgen (* Evaluate the composition to flatten it out if necessary *)
+    },
+        lazyList[
+            f[first],
+            gen[
+                composition,
+                args
+            ]
+        ]
+    ]
+];
+
 lazyList /: Map[f_, lazyList[first_, tail_]] := lazyList[
     f[first],
     Map[f, tail]

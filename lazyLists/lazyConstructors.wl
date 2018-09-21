@@ -125,17 +125,23 @@ finiteGenerator[f_, pos_, min_, max_, step_] /; Between[pos, {min, max}] := lazy
 ];
 finiteGenerator[___] := lazyList[];
 
-lazySetState[
-    l : lazyList[
-        _,
-        (gen : (twoSidedGenerator | leftSidedGenerator | rightSidedGenerator | finiteGenerator))[f_, pos_, rest___]
-    ],
-    index_
-] := Replace[
-    gen[f, index, rest],
-    {
-        lazyList[] :> (Message[Part::partw, index, Short[l]]; l)
-    }
+generatorPattern = (twoSidedGenerator | leftSidedGenerator | rightSidedGenerator | finiteGenerator);
+
+With[{ (* pattern needs to be With'ed in because of the HoldRest attribute of lazyList *)
+    patt = generatorPattern
+},
+    lazySetState[
+        l : lazyList[
+            _,
+            (gen : patt)[f_, pos_, rest___]
+        ],
+        index_
+    ] := Replace[
+        gen[f, index, rest],
+        {
+            lazyList[] :> (Message[Part::partw, index, Short[l]]; l)
+        }
+    ]
 ];
 
 
