@@ -288,12 +288,29 @@ decompose = Compile[{
 rangeTuplesAtPositions[lengths : {__Integer}] := With[{
     b = basis[lengths]
 },
-    rangeTuplesAtPositions[lengths] = Compile[{
-        {n, _Integer}
-    },
-        decompose[n, b],
-        RuntimeAttributes -> {Listable},
-        CompilationOptions -> {"InlineExternalDefinitions" -> True}
+    If[ Max[b] < 2^63, (* Compile only works with machine integers *)
+        rangeTuplesAtPositions[lengths] = Compile[{
+            {n, _Integer}
+        },
+            decompose[n, b],
+            RuntimeAttributes -> {Listable},
+            CompilationOptions -> {"InlineExternalDefinitions" -> True}
+        ],
+        
+        (* use module to store the basis since the base is very quite and we don't want to copy it around all the time or take up much space in the FrontEnd *)
+        rangeTuplesAtPositions[lengths] = Module[{
+            base = b
+        },
+            Composition[
+                Function[1 + #], (* Vectorise the additions and subtractions *)
+                Function[
+                    Null, (* Makes it possible to use Slot (#) and still define attributes for the function *)
+                    NumberDecompose[#, base],
+                    {Listable}
+                ],
+                Function[Subtract[#, 1]]
+            ]
+        ]
     ]
 ];
 
@@ -302,24 +319,17 @@ Options[indexLazyList] = {
     "StepSize" -> 1,
     "Start" -> 1
 };
+
 indexLazyList[lengths : {__Integer}, opts : OptionsPattern[]] := With[{
     start = Replace[OptionValue["Start"], Except[_Integer] :> 1],
     step = Replace[OptionValue["StepSize"], Except[_Integer] :> 1]
 },
     lazyGenerator[
         rangeTuplesAtPositions[lengths],
-        start, 1, Times @@ lengths, step
+        start, 1, 
+        Replace[Times @@ lengths, {i_ /; i > 10^10 :> DirectedInfinity[1]}],
+        step
     ]
-];
-
-(* Helper function for lazyTuples[elements] *)
-extractSpecFromIndexList = Compile[{
-    {ind, _Integer, 1}
-},
-    Module[{i = 1},
-        Table[{i++, n}, {n, ind}]
-    ],
-    RuntimeAttributes -> {Listable}
 ];
 
 Options[lazyTuples] = Options[indexLazyList];
@@ -327,35 +337,33 @@ lazyTuples[
     elementLists_List | Hold[elementLists_Symbol],
     opts : OptionsPattern[]
 ] /; MatchQ[elementLists, {{__}..}] := Map[
-    Extract[
-        elementLists,
-        extractSpecFromIndexList[#]
+    MapThread[
+        Part,
+        {
+            elementLists,
+            #
+        }
     ]&,
     indexLazyList[Length /@ elementLists, opts]
 ];
-
-(* Helper function for lazyTuples[elements, tupLength] *)
-extractSpecFromIndexTuples = Compile[{
-    {indices, _Integer, 1}
-},
-    Transpose[{indices}],
-    RuntimeAttributes -> {Listable}
-];
-
-lazyTuples[
-    elementList_List,
-    tupLength_Integer?Positive,
-    opts : OptionsPattern[]
-] /; MatchQ[elementList, Range @ Length @ elementList] := indexLazyList[ConstantArray[Length[elementList], tupLength], opts];
 
 lazyTuples[
     elementList_List | Hold[elementList_Symbol],
     tupLength_Integer?Positive,
     opts : OptionsPattern[]
-] /; MatchQ[elementList, {__}] := Map[
-    Extract[
+] /; SameQ[elementList, Range @ Length @ elementList] := indexLazyList[ConstantArray[Length[elementList], tupLength], opts];
+
+lazyTuples[
+    elementList_List | Hold[elementList_Symbol],
+    tupLength_Integer?Positive,
+    opts : OptionsPattern[]
+] /; And[
+    MatchQ[elementList, {__}],
+    UnsameQ[elementList, Range @ Length @ elementList]
+] := Map[
+    Part[
         elementList,
-        extractSpecFromIndexTuples[#]
+        #
     ]&,
     indexLazyList[ConstantArray[Length[elementList], tupLength], opts]
 ];
@@ -375,13 +383,15 @@ bulkExtractElementsUsingIndexList[
 ] /; And[
     MatrixQ[indices, IntegerQ],
     Length[elementLists] === Dimensions[indices][[2]]
-] := Partition[
-    Developer`ToPackedArray[
-        Extract[elementLists, Catenate[extractSpecFromIndexList[indices]]]
-    ],
-    Length[elementLists]
+] := Transpose[
+    Developer`ToPackedArray @ MapThread[
+        Part,
+        {
+            elementLists,
+            Transpose[Developer`ToPackedArray[indices]]
+        }
+    ]
 ];
-
 
 (* 
     Converts elements from 
@@ -396,11 +406,9 @@ bulkExtractElementsUsingIndexList[
 ] /; And[
     MatrixQ[indices, IntegerQ],
     tupLength === Dimensions[indices][[2]]
-] := Partition[
-    Developer`ToPackedArray[
-        Extract[elementList, Catenate[extractSpecFromIndexTuples[indices]]]
-    ],
-    tupLength
+] := Map[
+    elementList[[#]]&,
+    Developer`ToPackedArray[indices]
 ];
 
 End[]
