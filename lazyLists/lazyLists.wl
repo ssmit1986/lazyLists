@@ -451,9 +451,12 @@ indexLazyList[lists : {{__}..}] := With[{
     With[{
         b = basis[lengths]
     },
-        Map[
+        lazyGenerator[
             1 + decompose[#, b] &,
-            lazyGenerator[Identity, 0, 0, Times @@ lengths - 1, 1]
+            0,
+            0,
+            Times @@ lengths - 1,
+            1
         ]
     ]
 ];
