@@ -1,7 +1,6 @@
 (* Wolfram Language Package *)
 
 (* Created by the Wolfram Workbench 18-Sep-2018 *)
-ClearAll["lazyLists`*", "lazyLists`Private`*"];
 
 BeginPackage["lazyLists`"]
 (* Exported symbols added here with SymbolName::usage *) 
@@ -10,7 +9,8 @@ lazyList::usage = "lazyList is linked list data structure that should contain 2 
 You can extract these elements explicitely with First and Last/Rest. Part and Take will not work because they have been overloaded with special functionalities when used on lazyList.
 lazyList[list] or lazyList[Hold[var]] is a special constructor that generates a lazyList from an ordinary list";
 
-lazyRange::usage = "lazyRange[] is a lazy representation of the Integers from 1 to \[Infinity]. lazyRange[min, delta] represents values values from min onwards in steps of delta. lazyRange has no upper limit";
+lazyRange::usage = "lazyRange[] is a lazy representation of the Integers from 1 to \[Infinity]. lazyRange[min, delta] represents values values from min onwards in steps of delta.
+lazyRange has no upper limit and is generally slightly faster than lazyGenerator";
 
 lazyPowerRange::usage = "lazyPowerRange[min, r] is the infinite list {min, r \[Times] min, r^2 \[Times] min, ...}";
 
@@ -19,6 +19,10 @@ lazyNestList::usage = "lazyNestList[f, elem] is the infinite list {elem, f[elem]
 lazyStream::usage = "lazyStream[streamObject] creates a lazyList that streams from streamObject. These streams will stop automatically when EndOfFile is reached";
 
 lazyConstantArray::usage = "lazyConstantArray[elem] produces an infinite list of copies of elem";
+
+lazyTuples::usage = "lazyTuples is a lazy version of Tuples";
+bulkExtractElementsUsingIndexList::usage = "bulkExtractElementsUsingIndexList[lists, indices] converts elements from Tuples[Range /@ Length /@ lists] into elements from Tuples[lists]";
+rangeTuplesAtPositions::usage = "rangeTuplesAtPositions[Length /@ lists] is a CompiledFunction that directly generates elements of Tuples[Range /@ Length /@ lists]";
 
 lazyMapThread::usage = "lazyMapThread[f, {lz1, lz2, ...}] is similar to MapThread, except all elements from the lazyLists are fed to the first slot of f as a regular List";
 
@@ -33,8 +37,9 @@ It is equivalent to Part[list, i, j, k, ...]";
 lazyFiniteTake::usage = "lazyFiniteTake[lz, spec] directly applies Take to finite lazyLists and periodic lazyLists without having to traverse the lazyList element-by-element. 
 It is equivalent to Take[list, spec]";
 
-lazySetState::usage = "lazySetState[lz, index] with lz a supported lazyList returns a lazyList at the specified index. 
-Finite lists, lazyPeriodicList and lists generated with lazyGenerator, lazy(Power)Range, and lazyNestList are supported";
+lazySetState::usage = "lazySetState[lz, state] with lz a supported lazyList returns a lazyList at the specified state. 
+Finite lists, lazyPeriodicList, lists generated with lazyGenerator, lazy(Power)Range, and lazyNestList are supported.
+Maps over supported lists are also supported";
 
 lazyGenerator::usage = "lazyGenerator[f, start, min, max, step] generates a lazyList that applies f to values {start, start + step, start + 2 step, ...} for values between min and max (which are allowed to be infinite).
 When min and max are both infinite, symbolic values for start and step are allowed";
@@ -49,7 +54,6 @@ Begin["`Private`"]
 $lazyIterationLimit = Infinity;
 
 Attributes[lazyList] = {HoldRest};
-lazyList /: Rest[lazyList[_, tail_]] := tail;
 
 lazyList[list_List] := Module[{
     listVar = list
@@ -85,21 +89,33 @@ lazySetState[l : lazyList[_, lazyFiniteList[list_, _]], index_Integer] := (
     l
 );
 
+lazyGenerator::badSpec = "Cannot create lazyGenerator with specifications `1`. Empty lazyList was returned";
 lazyGenerator[
     f_,
     start : _ : 1,
     min : _ : DirectedInfinity[-1], max : _ : DirectedInfinity[1], step : _ : 1
-] := Switch[ {min, max, start, step},
-    {DirectedInfinity[-1], DirectedInfinity[1], __},
-        twoSidedGenerator[f, start, step],
-    {DirectedInfinity[-1], _?NumericQ, _?NumericQ, _?NumericQ},
-        leftSidedGenerator[f, start, max, step],
-    {_?NumericQ, DirectedInfinity[1], _?NumericQ, _?NumericQ},
-        rightSidedGenerator[f, start, min, step],
-    {_?NumericQ, _?NumericQ,_?NumericQ, _?NumericQ},
-        finiteGenerator[f, start, min, max, step],
-    _,
-        lazyList[]
+] := Replace[
+    Switch[ {min, max, start, step},
+        {DirectedInfinity[-1], DirectedInfinity[1], __},
+            twoSidedGenerator[f, start, step],
+        {DirectedInfinity[-1], _?NumericQ, _?NumericQ, _?NumericQ},
+            leftSidedGenerator[f, start, max, step],
+        {_?NumericQ, DirectedInfinity[1], _?NumericQ, _?NumericQ},
+            rightSidedGenerator[f, start, min, step],
+        {_?NumericQ, _?NumericQ,_?NumericQ, _?NumericQ},
+            finiteGenerator[f, start, min, max, step],
+        _,
+            lazyList[]
+    ],
+    {
+        lazyList[] :> (
+            Message[
+                lazyGenerator::badSpec,
+                AssociationThread[{"min", "max", "start", "step"}, {min, max, start, step}]
+            ];
+            lazyList[]
+        )
+    }
 ];
 
 twoSidedGenerator[f_, pos_, step_] := lazyList[
@@ -125,17 +141,23 @@ finiteGenerator[f_, pos_, min_, max_, step_] /; Between[pos, {min, max}] := lazy
 ];
 finiteGenerator[___] := lazyList[];
 
-lazySetState[
-    l : lazyList[
-        _,
-        (gen : (twoSidedGenerator | leftSidedGenerator | rightSidedGenerator | finiteGenerator))[f_, pos_, rest___]
-    ],
-    index_
-] := Replace[
-    gen[f, index, rest],
-    {
-        lazyList[] :> (Message[Part::partw, index, Short[l]]; l)
-    }
+generatorPattern = Alternatives[twoSidedGenerator, leftSidedGenerator, rightSidedGenerator, finiteGenerator];
+
+With[{ (* pattern needs to be With'ed in because of the HoldRest attribute of lazyList *)
+    patt = generatorPattern
+},
+    lazySetState[
+        l : lazyList[
+            _,
+            (gen : patt)[f_, pos_, rest___]
+        ],
+        state_
+    ] := Replace[
+        Check[gen[f, state, rest], $Failed],
+        {
+            Except[lazyList[_, _]] :> (Message[Part::partw, state, Short[l]]; l)
+        }
+    ]
 ];
 
 
@@ -162,8 +184,8 @@ lazyNestList[f_, elem_] := Function[
 (*lazySetState definition for lazyRange and lazyPowerRange and lazyNestList *)
 lazySetState[
     lazyList[_, (f : Function[lazyList[#1, #0[_, _]]])[_, step_]],
-    ind_
-] := f[ind, step];
+    state_
+] := f[state, step];
 
 lazyStream[stream_InputStream] := Function[
     With[{
@@ -204,135 +226,17 @@ lazyPeriodicList[Hold[list_Symbol]] := lazyPeriodicListInternal[list, 1, Length[
 lazySetState[lazyList[_, lazyPeriodicListInternal[list_, _, max_]], index_Integer] := 
     lazyPeriodicListInternal[list, Mod[index - UnitStep[index], max] + 1, max];
 
+lazySetState::notSupported = "lazySetState is not supported for lazyList `1`";
+lazySetState[l_lazyList, _] := (Message[lazySetState::notSupported, Short[l]]; l)
+
 
 lazyList::notFinite = "lazyList `1` cannot be recognised as a finite list";
-lazySetState[l_lazyList, _] := (Message[lazyList::notFinite, Short[l]]; l)
 
 lazyFinitePart[lazyList[_, (lazyFiniteList | lazyPeriodicListInternal)[list_, __]], spec__] := Part[list, spec];
 lazyFinitePart[l_lazyList, _] := (Message[lazyList::notFinite, Short[l]]; $Failed);
 
 lazyFiniteTake[lazyList[_, (lazyFiniteList | lazyPeriodicListInternal)[list_, __]], spec_] := Take[list, spec];
 lazyFiniteTake[l_lazyList, _] := (Message[lazyList::notFinite, Short[l]]; $Failed);
-
-(* Set threading behaviour for lazyLists to make it possible to add and multiply them and use powers on them *)
-lazyList /: (op : (Plus | Times | Power | Divide | Subtract))[first___, l__lazyList, rest___] :=
-    Thread[
-        Unevaluated[op[first, l, rest]],
-        lazyList
-    ];
-
-(* Elements from lazyLists are extracted by repeatedly evaluating the next element and sowing the results *)
-lazyList /: Take[l_lazyList, n_Integer?Positive] := lazyList @@ MapAt[
-    First[#, {}]&,
-    Reverse @ Reap[
-        Replace[
-            Quiet[
-                Block[{$IterationLimit = $lazyIterationLimit},
-                    ReplaceRepeated[
-                        l,
-                        {
-                            lazyList[first_, tail_] :> (Sow[first, "take"]; tail)
-                        },
-                        MaxIterations -> n - 1
-                    ]
-                ],
-                {ReplaceRepeated::rrlim}
-            ],
-            (* The last element should only be Sown without evaluating the tail *)
-            lazyList[first_, tail_] :> (Sow[first, "take"]; lazyList[first, tail]) 
-        ],
-        "take"
-    ],
-    1
-];
-
-lazyList /: Take[l_lazyList, {m_Integer?Positive, n_Integer?Positive}] /; n < m := Replace[
-    Take[l, {n, m}],
-    {
-        lazyList[list_List, rest_] :> lazyList[Reverse[list], rest]
-    }
-];
-
-lazyList /: Take[l_lazyList, {m_Integer?Positive, n_Integer?Positive}] /; n > m := Replace[
-    Quiet[l[[{m}]], {Part::partw}],
-    {
-        lz : lazyList[_, _] :> Take[lz, n - m + 1],
-        _ -> lazyList[]
-    }
-];
-
-lazyList /: TakeWhile[l_lazyList, function_, OptionsPattern[MaxIterations -> Infinity]] := lazyList @@ MapAt[
-    First[#, {}]&,
-    Reverse @ Reap[
-        Quiet[
-            Catch[
-                Block[{$IterationLimit = $lazyIterationLimit},
-                    ReplaceRepeated[
-                        l,
-                        {
-                            lazyList[first_, tail_] :> If[function[first]
-                                ,
-                                Sow[first, "take"];
-                                tail
-                                ,
-                                Throw[lazyList[first, tail], "break"],
-                                Throw[lazyList[first, tail], "break"]
-                            ]
-                        },
-                        MaxIterations -> OptionValue[MaxIterations]
-                    ]
-                ],
-                "break"
-            ],
-            {ReplaceRepeated::rrlim}
-        ],
-        "take"
-    ],
-    1
-];
-
-lazyList /: Part[lazyList[___], 0 | {0}] := lazyList;
-lazyList /: Part[lazyList[first_, _], 1] := first;
-lazyList /: Part[l : lazyList[_, _], {1}] := l;
-lazyList /: Part[l_lazyList, n_Integer] := First[Part[l, {n}], $Failed];
-
-lazyList /: Part[l_lazyList, Span[m_Integer, n_Integer]] := Replace[
-    Take[l, {m, n}],
-    {
-        lazyList[] | lazyList[_, lazyList[]] :> (Message[Part::partw, Max[m, n], Short[l]]; $Failed)
-    }
-];
-
-lazyList /: Part[l_lazyList, Span[m_Integer, n_Integer, incr_Integer]] := Part[
-    l,
-    Range[m, n, incr]
-];
-
-lazyList /: Part[l_lazyList, indices : {__Integer}] := Catch[
-    Module[{
-        sortedIndices = Sort[indices],
-        eval
-    },
-        lazyList[
-            Part[
-                FoldPairList[
-                    Function[
-                        eval = Check[Part[#1, {#2}], Throw[$Failed, "part"], {Part::partw}];
-                        {
-                            First[eval], (* emit the value at this position *)
-                            eval (* and return the lazyList to the next iteration *)
-                        }
-                    ],
-                    l,
-                    Prepend[Differences[sortedIndices] + 1, First[sortedIndices]]
-                ],
-                Ordering[indices]
-            ],
-            Evaluate[eval]
-        ]
-    ],
-    "part"
-];
 
 lazyPartMap[l_lazyList, indices : {__Integer}] := Module[{
     sortedIndices = Sort[indices]
@@ -349,34 +253,6 @@ lazyPartMap[l_lazyList, indices : {__Integer}] := Module[{
     ]
 ];
 
-lazyList /: Part[l_lazyList, {n_Integer}] := Replace[
-    Quiet[
-        Block[{$IterationLimit = $lazyIterationLimit},
-            ReplaceRepeated[
-                l,
-                {
-                    lazyList[first_, tail_] :> tail
-                },
-                MaxIterations -> n - 1
-            ]
-        ],
-        {ReplaceRepeated::rrlim}
-    ],
-    {
-        lazyList[] :> (Message[Part::partw, n, Short[l]]; $Failed)
-    }
-];
-
-lazyList /: Map[f_, lazyList[first_, tail_]] := lazyList[
-    f[first],
-    Map[f, tail]
-];
-
-lazyList /: MapIndexed[f_, lazyList[first_, tail_], index : (_Integer?Positive) : 1] := lazyList[
-    f[first, index],
-    MapIndexed[f, tail, index + 1]
-];
-
 lazyMapThread[f_, list : {lazyList[_, _]..}] := lazyList[
     f[list[[All, 1]]],
     lazyMapThread[f, list[[All, 2]]]
@@ -386,41 +262,142 @@ lazyMapThread[_, _] := lazyList[];
 
 lazyTranspose[list : {__lazyList}] := lazyMapThread[Identity, list];
 
-lazyList /: FoldList[f_, lazyList[first_, tail_]] := FoldList[f, first, tail];
-
-lazyList /: FoldList[f_, current_, lazyList[first_, tail_]] := lazyList[
-    current,
-    FoldList[f, f[current, first], tail]
+(* Source of decompose and basis: https://mathematica.stackexchange.com/a/153609/43522 *)
+basis[lengths : {__Integer}] := Reverse[
+    FoldList[Times, 1, Reverse @ Rest @ lengths]
 ];
 
-lazyList /: FoldList[f_, current_, empty : lazyList[]] := lazyList[current, empty];
-
-lazyList /: Cases[l_lazyList, patt_] := Module[{
-    case
- },
-    (* Define helper function to match patterns faster *)
-    case[lazyList[first : patt, tail_]] := lazyList[first, case[tail]];
-    case[lazyList[first_, tail_]] := case[tail];
-    
-    case[l]
+decompose = Compile[{
+    {n, _Integer},
+    {d, _Integer, 1}
+}, 
+    Module[{
+        c = n - 1, (* I pick an offset here to make sure that n enumerates from 1 instead of 0 *)
+        q
+    },
+        1 + Table[ (* And added 1 so it's not necessary to do so later on *)
+            q = Quotient[c, i];
+            c = Mod[c, i];
+            q,
+            {i, d}
+        ]
+    ],
+    RuntimeAttributes -> {Listable}
 ];
 
-lazyList /: Pick[l_lazyList, select_lazyList, patt_] := Module[{
-    pick
+rangeTuplesAtPositions[lengths : {__Integer}] := With[{
+    b = basis[lengths]
 },
-    (* Define helper function, just like with Cases *)
-    pick[lazyList[first_, tail1_], lazyList[match : patt, tail2_]] :=
-        lazyList[first, pick[tail1, tail2]];
-    pick[lazyList[first_, tail1_], lazyList[first2_, tail2_]] :=
-        pick[tail1, tail2];
-        
-    pick[l, select] 
+    rangeTuplesAtPositions[lengths] = Compile[{
+        {n, _Integer}
+    },
+        decompose[n, b],
+        RuntimeAttributes -> {Listable},
+        CompilationOptions -> {"InlineExternalDefinitions" -> True}
+    ]
 ];
 
-lazyList /: Select[lazyList[first_, tail_], f_] /; f[first] := lazyList[first, Select[tail, f]];
-lazyList /: Select[lazyList[first_, tail_], f_] := Select[tail, f];
+(* lazyList that generates the elements of Tuples[Range /@ lengths] *)
+Options[indexLazyList] = {
+    "StepSize" -> 1,
+    "Start" -> 1
+};
+indexLazyList[lengths : {__Integer}, opts : OptionsPattern[]] := With[{
+    start = Replace[OptionValue["Start"], Except[_Integer] :> 1],
+    step = Replace[OptionValue["StepSize"], Except[_Integer] :> 1]
+},
+    lazyGenerator[
+        rangeTuplesAtPositions[lengths],
+        start, 1, Times @@ lengths, step
+    ]
+];
+
+(* Helper function for lazyTuples[elements] *)
+extractSpecFromIndexList = Compile[{
+    {ind, _Integer, 1}
+},
+    Module[{i = 1},
+        Table[{i++, n}, {n, ind}]
+    ],
+    RuntimeAttributes -> {Listable}
+];
+
+Options[lazyTuples] = Options[indexLazyList];
+lazyTuples[
+    elementLists_List | Hold[elementLists_Symbol],
+    opts : OptionsPattern[]
+] /; MatchQ[elementLists, {{__}..}] := Map[
+    Extract[
+        elementLists,
+        extractSpecFromIndexList[#]
+    ]&,
+    indexLazyList[Length /@ elementLists, opts]
+];
+
+(* Helper function for lazyTuples[elements, tupLength] *)
+extractSpecFromIndexTuples = Compile[{
+    {indices, _Integer, 1}
+},
+    Transpose[{indices}],
+    RuntimeAttributes -> {Listable}
+];
+
+lazyTuples[
+    elementList_List,
+    tupLength_Integer?Positive,
+    opts : OptionsPattern[]
+] /; MatchQ[elementList, Range @ Length @ elementList] := indexLazyList[ConstantArray[Length[elementList], tupLength], opts];
+
+lazyTuples[
+    elementList_List | Hold[elementList_Symbol],
+    tupLength_Integer?Positive,
+    opts : OptionsPattern[]
+] /; MatchQ[elementList, {__}] := Map[
+    Extract[
+        elementList,
+        extractSpecFromIndexTuples[#]
+    ]&,
+    indexLazyList[ConstantArray[Length[elementList], tupLength], opts]
+];
+
+(* Effectively equal to lazyTuples[Range /@ lengths] *)
+lazyTuples[lengths : {__Integer}, opts : OptionsPattern[]] := indexLazyList[lengths, opts];
+
+(* 
+    Converts elements from 
+    Tuples[Range /@ elements /@ elementLists]
+    to elements from 
+    Tuples[elementLists]
+*)
+bulkExtractElementsUsingIndexList[
+    elementLists_List | Hold[elementLists_Symbol],
+    indices_List | Hold[indices_Symbol]
+] /; And[
+    MatrixQ[indices, IntegerQ],
+    Length[elementLists] === Dimensions[indices][[2]]
+] := Partition[
+    Extract[elementLists, Catenate[extractSpecFromIndexList[indices]]],
+    Length[elementLists]
+];
 
 
+(* 
+    Converts elements from 
+    Tuples[Range @ Length @ elementLists], tupLength]
+    to elements from 
+    Tuples[elementLists, tupLength]
+*)
+bulkExtractElementsUsingIndexList[
+    elementList_List | Hold[elementList_Symbol],
+    indices_List | Hold[indices_Symbol],
+    tupLength_Integer
+] /; And[
+    MatrixQ[indices, IntegerQ],
+    tupLength === Dimensions[indices][[2]]
+] := Partition[
+    Extract[elementList, Catenate[extractSpecFromIndexTuples[indices]]],
+    tupLength
+];
 
 End[]
 
