@@ -301,28 +301,26 @@ basis[lengths : {__Integer}] := Reverse[
     FoldList[Times, 1, Reverse @ Rest @ lengths]
 ];
 
-indexLazyList[lists : {{__}..}] := With[{
-    lengths = Length /@ lists
+indexLazyList[lengths : {__Integer}] := With[{
+    b = basis[lengths]
 },
-    With[{
-        b = basis[lengths]
-    },
-        lazyGenerator[
-            1 + decompose[#, b] &,
-            0,
-            0,
-            Times @@ lengths - 1,
-            1
-        ]
+    lazyGenerator[
+        1 + decompose[#, b] &,
+        0,
+        0,
+        Times @@ lengths - 1,
+        1
     ]
 ];
+
+lazyTuples[lengths : {__Integer}] := indexLazyList[lengths];
 
 lazyTuples[lists : {{__}..}] := Map[
     MapThread[
         Part,
         {lists, #}
     ]&,
-    indexLazyList[lists]
+    indexLazyList[Length /@ lists]
 ];
 
 End[]
