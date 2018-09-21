@@ -22,6 +22,7 @@ lazyConstantArray::usage = "lazyConstantArray[elem] produces an infinite list of
 
 lazyTuples::usage = "";
 bulkExtractElementsUsingIndexList::usage = "";
+rangeTuplesAtPositions::usage = "";
 
 lazyMapThread::usage = "lazyMapThread[f, {lz1, lz2, ...}] is similar to MapThread, except all elements from the lazyLists are fed to the first slot of f as a regular List";
 
@@ -88,21 +89,33 @@ lazySetState[l : lazyList[_, lazyFiniteList[list_, _]], index_Integer] := (
     l
 );
 
+lazyGenerator::badSpec = "Cannot create lazyGenerator with specifications `1`. Empty lazyList was returned";
 lazyGenerator[
     f_,
     start : _ : 1,
     min : _ : DirectedInfinity[-1], max : _ : DirectedInfinity[1], step : _ : 1
-] := Switch[ {min, max, start, step},
-    {DirectedInfinity[-1], DirectedInfinity[1], __},
-        twoSidedGenerator[f, start, step],
-    {DirectedInfinity[-1], _?NumericQ, _?NumericQ, _?NumericQ},
-        leftSidedGenerator[f, start, max, step],
-    {_?NumericQ, DirectedInfinity[1], _?NumericQ, _?NumericQ},
-        rightSidedGenerator[f, start, min, step],
-    {_?NumericQ, _?NumericQ,_?NumericQ, _?NumericQ},
-        finiteGenerator[f, start, min, max, step],
-    _,
-        lazyList[]
+] := Replace[
+    Switch[ {min, max, start, step},
+        {DirectedInfinity[-1], DirectedInfinity[1], __},
+            twoSidedGenerator[f, start, step],
+        {DirectedInfinity[-1], _?NumericQ, _?NumericQ, _?NumericQ},
+            leftSidedGenerator[f, start, max, step],
+        {_?NumericQ, DirectedInfinity[1], _?NumericQ, _?NumericQ},
+            rightSidedGenerator[f, start, min, step],
+        {_?NumericQ, _?NumericQ,_?NumericQ, _?NumericQ},
+            finiteGenerator[f, start, min, max, step],
+        _,
+            lazyList[]
+    ],
+    {
+        lazyList[] :> (
+            Message[
+                lazyGenerator::badSpec,
+                AssociationThread[{"min", "max", "start", "step"}, {min, max, start, step}]
+            ];
+            lazyList[]
+        )
+    }
 ];
 
 twoSidedGenerator[f_, pos_, step_] := lazyList[
@@ -249,41 +262,11 @@ lazyMapThread[_, _] := lazyList[];
 
 lazyTranspose[list : {__lazyList}] := lazyMapThread[Identity, list];
 
-lazyList /: FoldList[f_, lazyList[first_, tail_]] := FoldList[f, first, tail];
-
-lazyList /: FoldList[f_, current_, lazyList[first_, tail_]] := lazyList[
-    current,
-    FoldList[f, f[current, first], tail]
-];
-
-lazyList /: FoldList[f_, current_, empty : lazyList[]] := lazyList[current, empty];
-
-lazyList /: Cases[l_lazyList, patt_] := Module[{
-    case
- },
-    (* Define helper function to match patterns faster *)
-    case[lazyList[first : patt, tail_]] := lazyList[first, case[tail]];
-    case[lazyList[first_, tail_]] := case[tail];
-    
-    case[l]
-];
-
-lazyList /: Pick[l_lazyList, select_lazyList, patt_] := Module[{
-    pick
-},
-    (* Define helper function, just like with Cases *)
-    pick[lazyList[first_, tail1_], lazyList[match : patt, tail2_]] :=
-        lazyList[first, pick[tail1, tail2]];
-    pick[lazyList[first_, tail1_], lazyList[first2_, tail2_]] :=
-        pick[tail1, tail2];
-        
-    pick[l, select] 
-];
-
-lazyList /: Select[lazyList[first_, tail_], f_] /; f[first] := lazyList[first, Select[tail, f]];
-lazyList /: Select[lazyList[first_, tail_], f_] := Select[tail, f];
-
 (* Source of decompose and basis: https://mathematica.stackexchange.com/a/153609/43522 *)
+basis[lengths : {__Integer}] := Reverse[
+    FoldList[Times, 1, Reverse @ Rest @ lengths]
+];
+
 decompose = Compile[{
     {n, _Integer},
     {d, _Integer, 1}
@@ -292,7 +275,7 @@ decompose = Compile[{
         c = n - 1, (* I pick an offset here to make sure that n enumerates from 1 instead of 0 *)
         q
     },
-        Table[
+        1 + Table[ (* And added 1 so it's not necessary to do so later on *)
             q = Quotient[c, i];
             c = Mod[c, i];
             q,
@@ -302,17 +285,30 @@ decompose = Compile[{
     RuntimeAttributes -> {Listable}
 ];
 
-basis[lengths : {__Integer}] := Reverse[
-    FoldList[Times, 1, Reverse @ Rest @ lengths]
+rangeTuplesAtPositions[lengths : {__Integer}] := With[{
+    b = basis[lengths]
+},
+    rangeTuplesAtPositions[lengths] = Compile[{
+        {n, _Integer}
+    },
+        decompose[n, b],
+        RuntimeAttributes -> {Listable},
+        CompilationOptions -> {"InlineExternalDefinitions" -> True}
+    ]
 ];
 
 (* lazyList that generates the elements of Tuples[Range /@ lengths] *)
-indexLazyList[lengths : {__Integer}] := With[{
-    b = basis[lengths]
+Options[indexLazyList] = {
+    "StepSize" -> 1,
+    "Start" -> 1
+};
+indexLazyList[lengths : {__Integer}, opts : OptionsPattern[]] := With[{
+    start = Replace[OptionValue["Start"], Except[_Integer] :> 1],
+    step = Replace[OptionValue["StepSize"], Except[_Integer] :> 1]
 },
     lazyGenerator[
-        1 + decompose[#, b] &,
-        1, 1, Times @@ lengths, 1
+        rangeTuplesAtPositions[lengths],
+        start, 1, Times @@ lengths, step
     ]
 ];
 
@@ -325,6 +321,21 @@ extractSpecFromIndexList = Compile[{
     RuntimeAttributes -> {Listable}
 ];
 
+Options[lazyTuples] = Options[indexLazyList];
+lazyTuples[
+    elementLists_List | Hold[elementLists_Symbol],
+    opts : OptionsPattern[]
+] /; MatchQ[elementLists, {{__}..}] := Map[
+    Extract[
+        elementLists,
+        extractSpecFromIndexList[#]
+    ]&,
+    indexLazyList[Length /@ elementLists, opts]
+];
+
+(* Effectively equal to lazyTuples[Range /@ lengths] *)
+lazyTuples[lengths : {__Integer}, opts : OptionsPattern[]] := indexLazyList[lengths, opts];
+
 bulkExtractElementsUsingIndexList[
     elementLists_List | Hold[elementLists_Symbol],
     indices_List | Hold[indices_Symbol]
@@ -335,17 +346,6 @@ bulkExtractElementsUsingIndexList[
     Extract[elementLists, Catenate[extractSpecFromIndexList[indices]]],
     Length[elementLists]
 ];
-
-lazyTuples[elementLists_List | Hold[elementLists_Symbol]] /; MatchQ[elementLists, {{__}..}] := Map[
-    Extract[
-        elementLists,
-        extractSpecFromIndexList[#]
-    ]&,
-    indexLazyList[Length /@ elementLists]
-];
-
-(* Effectively equal to lazyTuples[Range /@ lengths] *)
-lazyTuples[lengths : {__Integer}] := indexLazyList[lengths];
 
 End[]
 
