@@ -211,9 +211,11 @@ lazyPeriodicList[Hold[list_Symbol]] := lazyPeriodicListInternal[list, 1, Length[
 lazySetState[lazyList[_, lazyPeriodicListInternal[list_, _, max_]], index_Integer] := 
     lazyPeriodicListInternal[list, Mod[index - UnitStep[index], max] + 1, max];
 
+lazySetState::notSupported = "lazySetState is not supported for lazyList `1`";
+lazySetState[l_lazyList, _] := (Message[lazySetState::notSupported, Short[l]]; l)
+
 
 lazyList::notFinite = "lazyList `1` cannot be recognised as a finite list";
-lazySetState[l_lazyList, _] := (Message[lazyList::notFinite, Short[l]]; l)
 
 lazyFinitePart[lazyList[_, (lazyFiniteList | lazyPeriodicListInternal)[list_, __]], spec__] := Part[list, spec];
 lazyFinitePart[l_lazyList, _] := (Message[lazyList::notFinite, Short[l]]; $Failed);
