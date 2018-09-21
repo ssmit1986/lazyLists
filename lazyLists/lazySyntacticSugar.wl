@@ -146,7 +146,7 @@ lazyList /: Part[l_lazyList, {n_Integer}] := Replace[
 ];
 
 With[{
-    patt = Prepend[generatorPattern, Map]
+    patt = Append[generatorPattern, Map]
 },
     (* Mapping over a generator or Mapped list is the same as composition of the generator functions: *)
     lazyList /: Map[f_, lazyList[first_, (gen : patt)[fgen_, args___]]] := With[{
@@ -165,6 +165,12 @@ With[{
 lazyList /: Map[f_, lazyList[first_, tail_]] := lazyList[
     f[first],
     Map[f, tail]
+];
+
+lazySetState[l : lazyList[_, Map[f_, tail_]], state_] := With[{
+    try = Check[lazySetState[tail, state], $Failed]
+},
+    Map[f, try] /; MatchQ[try, lazyList[_, _]]
 ];
 
 lazyList /: MapIndexed[f_, lazyList[first_, tail_], index : (_Integer?Positive) : 1] := lazyList[

@@ -9,7 +9,8 @@ lazyList::usage = "lazyList is linked list data structure that should contain 2 
 You can extract these elements explicitely with First and Last/Rest. Part and Take will not work because they have been overloaded with special functionalities when used on lazyList.
 lazyList[list] or lazyList[Hold[var]] is a special constructor that generates a lazyList from an ordinary list";
 
-lazyRange::usage = "lazyRange[] is a lazy representation of the Integers from 1 to \[Infinity]. lazyRange[min, delta] represents values values from min onwards in steps of delta. lazyRange has no upper limit";
+lazyRange::usage = "lazyRange[] is a lazy representation of the Integers from 1 to \[Infinity]. lazyRange[min, delta] represents values values from min onwards in steps of delta.
+lazyRange has no upper limit and is generally slightly faster than lazyGenerator";
 
 lazyPowerRange::usage = "lazyPowerRange[min, r] is the infinite list {min, r \[Times] min, r^2 \[Times] min, ...}";
 
@@ -35,8 +36,9 @@ It is equivalent to Part[list, i, j, k, ...]";
 lazyFiniteTake::usage = "lazyFiniteTake[lz, spec] directly applies Take to finite lazyLists and periodic lazyLists without having to traverse the lazyList element-by-element. 
 It is equivalent to Take[list, spec]";
 
-lazySetState::usage = "lazySetState[lz, index] with lz a supported lazyList returns a lazyList at the specified index. 
-Finite lists, lazyPeriodicList and lists generated with lazyGenerator, lazy(Power)Range, and lazyNestList are supported";
+lazySetState::usage = "lazySetState[lz, state] with lz a supported lazyList returns a lazyList at the specified state. 
+Finite lists, lazyPeriodicList, lists generated with lazyGenerator, lazy(Power)Range, and lazyNestList are supported.
+Maps over supported lists are also supported";
 
 lazyGenerator::usage = "lazyGenerator[f, start, min, max, step] generates a lazyList that applies f to values {start, start + step, start + 2 step, ...} for values between min and max (which are allowed to be infinite).
 When min and max are both infinite, symbolic values for start and step are allowed";
@@ -126,7 +128,7 @@ finiteGenerator[f_, pos_, min_, max_, step_] /; Between[pos, {min, max}] := lazy
 ];
 finiteGenerator[___] := lazyList[];
 
-generatorPattern = (twoSidedGenerator | leftSidedGenerator | rightSidedGenerator | finiteGenerator);
+generatorPattern = Alternatives[twoSidedGenerator, leftSidedGenerator, rightSidedGenerator, finiteGenerator];
 
 With[{ (* pattern needs to be With'ed in because of the HoldRest attribute of lazyList *)
     patt = generatorPattern
@@ -136,11 +138,11 @@ With[{ (* pattern needs to be With'ed in because of the HoldRest attribute of la
             _,
             (gen : patt)[f_, pos_, rest___]
         ],
-        index_
+        state_
     ] := Replace[
-        gen[f, index, rest],
+        Check[gen[f, state, rest], $Failed],
         {
-            lazyList[] :> (Message[Part::partw, index, Short[l]]; l)
+            Except[lazyList[_, _]] :> (Message[Part::partw, state, Short[l]]; l)
         }
     ]
 ];
@@ -169,8 +171,8 @@ lazyNestList[f_, elem_] := Function[
 (*lazySetState definition for lazyRange and lazyPowerRange and lazyNestList *)
 lazySetState[
     lazyList[_, (f : Function[lazyList[#1, #0[_, _]]])[_, step_]],
-    ind_
-] := f[ind, step];
+    state_
+] := f[state, step];
 
 lazyStream[stream_InputStream] := Function[
     With[{
