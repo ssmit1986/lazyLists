@@ -20,6 +20,7 @@ lazyStream::usage = "lazyStream[streamObject] creates a lazyList that streams fr
 lazyConstantArray::usage = "lazyConstantArray[elem] produces an infinite list of copies of elem";
 
 lazyTuples::usage = "";
+bulkExtractElementsUsingIndexList::usage = "";
 
 lazyMapThread::usage = "lazyMapThread[f, {lz1, lz2, ...}] is similar to MapThread, except all elements from the lazyLists are fed to the first slot of f as a regular List";
 
@@ -284,7 +285,7 @@ decompose = Compile[{
     {d, _Integer, 1}
 }, 
     Module[{
-        c = n,
+        c = n - 1, (* I pick an offset here to make sure that n enumerates from 1 instead of 0 *)
         q
     },
         Table[
@@ -301,27 +302,46 @@ basis[lengths : {__Integer}] := Reverse[
     FoldList[Times, 1, Reverse @ Rest @ lengths]
 ];
 
+(* lazyList that generates the elements of Tuples[Range /@ lengths] *)
 indexLazyList[lengths : {__Integer}] := With[{
     b = basis[lengths]
 },
     lazyGenerator[
         1 + decompose[#, b] &,
-        0,
-        0,
-        Times @@ lengths - 1,
-        1
+        1, 1, Times @@ lengths, 1
     ]
 ];
 
-lazyTuples[lengths : {__Integer}] := indexLazyList[lengths];
-
-lazyTuples[lists : {{__}..}] := Map[
-    MapThread[
-        Part,
-        {lists, #}
-    ]&,
-    indexLazyList[Length /@ lists]
+extractSpecFromIndexList = Compile[{
+    {ind, _Integer, 1}
+},
+    Module[{i = 1},
+        Table[{i++, n}, {n, ind}]
+    ],
+    RuntimeAttributes -> {Listable}
 ];
+
+bulkExtractElementsUsingIndexList[
+    elementLists_List | Hold[elementLists_Symbol],
+    indices_List | Hold[indices_Symbol]
+] /; And[
+    MatrixQ[indices, IntegerQ],
+    Length[elementLists] === Dimensions[indices][[2]]
+] := Partition[
+    Extract[elementLists, Catenate[extractSpecFromIndexList[indices]]],
+    Length[elementLists]
+];
+
+lazyTuples[elementLists_List | Hold[elementLists_Symbol]] /; MatchQ[elementLists, {{__}..}] := Map[
+    Extract[
+        elementLists,
+        extractSpecFromIndexList[#]
+    ]&,
+    indexLazyList[Length /@ elementLists]
+];
+
+(* Effectively equal to lazyTuples[Range /@ lengths] *)
+lazyTuples[lengths : {__Integer}] := indexLazyList[lengths];
 
 End[]
 
