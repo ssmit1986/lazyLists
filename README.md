@@ -25,3 +25,4 @@ See lazyLists.nb for details and examples.
 
 * 21 September 2018: 
     * Add lazyTuples, which is the lazy version of Tuples. Includes helper functions for generating tuples efficiently.
+		* Hotfix: lazyTuples will now switch between compiled evaluation and regular evaluation depending on the size of the integers involves (since Compile can only use machine numbers).
