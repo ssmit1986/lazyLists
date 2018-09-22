@@ -127,6 +127,7 @@ lazyList /: Part[l : lazyList[], i_] := (Message[Part::partw, Short[i], Short[l]
 lazyList /: Part[lazyList[___], 0 | {0}] := lazyList;
 lazyList /: Part[lazyList[first_, _], 1] := first;
 lazyList /: Part[l : lazyList[_, _], {1}] := l;
+lazyList /: Part[lazyList[_, tail_], {2}] := tail;
 lazyList /: Part[l : lazyList[_, _], {-1}] := partWhile[l, Function[True]];
 lazyList /: Part[l_lazyList, n_Integer] := First[Part[l, {n}], $Failed];
 
@@ -252,6 +253,12 @@ lazyList /: Pick[l_lazyList, select_lazyList, patt_] := Module[{
 
 lazyList /: Select[lazyList[first_, tail_], f_] /; f[first] := lazyList[first, Select[tail, f]];
 lazyList /: Select[lazyList[first_, tail_], f_] := Select[tail, f];
+
+(* Default failure messages for Take and Part *)
+lazyList::take = "Cannot take `1` in `2`";
+lazyList /: Take[l_lazyList, spec_, ___] := (Message[lazyList::take, spec, Short[l]]; lazyList[]);
+lazyList::part = "Cannot take part `1` in `2`";
+lazyList /: Part[l_lazyList, spec_, ___] := (Message[lazyList::part, spec, Short[l]]; $Failed);
 
 End[]
 
