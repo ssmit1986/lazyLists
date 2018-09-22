@@ -56,13 +56,15 @@ lazyList /: Take[l_lazyList, {m_Integer?Positive, n_Integer?Positive}] /; n < m 
     }
 ];
 
-lazyList /: Take[l_lazyList, {m_Integer?Positive, n_Integer?Positive}] /; n > m := Replace[
+lazyList /: Take[l_lazyList, {m_Integer?Positive, n : (_Integer?Positive | All)}] /; (n === All || n > m) := Replace[
     Quiet[l[[{m}]], {Part::partw}],
     {
-        lz : lazyList[_, _] :> Take[lz, n - m + 1],
+        lz : lazyList[_, _] :> Take[lz, Replace[n, i_Integer :> i - m + 1]],
         _ -> lazyList[]
     }
 ];
+
+lazyList /: Take[l_lazyList, All] := TakeWhile[l];
 
 lazyList /: TakeWhile[l_lazyList, function : _ : Function[True], opts : OptionsPattern[MaxIterations -> Infinity]] := lazyList @@ MapAt[
     First[#, {}]&,
