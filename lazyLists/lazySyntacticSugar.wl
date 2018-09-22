@@ -222,13 +222,32 @@ lazyList /: MapIndexed[f_, lazyList[first_, tail_], index : (_Integer?Positive) 
 ];
 
 lazyList /: FoldList[f_, lazyList[first_, tail_]] := FoldList[f, first, tail];
-
 lazyList /: FoldList[f_, current_, lazyList[first_, tail_]] := lazyList[
     current,
     FoldList[f, f[current, first], tail]
 ];
-
 lazyList /: FoldList[f_, current_, empty : lazyList[]] := lazyList[current, empty];
+
+(* 
+    The True value that passes with FoldPairList is used to see if this is the first call to FoldPairList or if the process in already iterating.
+    This is because the starting value in FoldPairList should not end up in the actual list.
+*)
+lazyList /: FoldPairList[fun_, {emit_, feed_}, True, lazyList[first_, tail_]] := lazyList[
+    emit,
+    FoldPairList[fun, fun[feed, first], True, tail]
+];
+lazyList /: FoldPairList[fun_, {emit_, feed_}, True, empty : lazyList[]] := lazyList[emit, empty];
+
+lazyList /: FoldPairList[fun_, {emit_, feed_}, True, lazyList[first_, tail_], red_] := lazyList[
+    red[{emit, feed}],
+    FoldPairList[fun, fun[feed, first], True, tail, red]
+];
+lazyList /: FoldPairList[fun_, {emit_, feed_}, True, empty : lazyList[], red_] := lazyList[red[{emit, feed}], empty];
+
+(* Patterns that start FoldPairList *)
+lazyList /: FoldPairList[fun_, val_, lazyList[first_, tail_]] := FoldPairList[fun, fun[val, first], True, tail];
+lazyList /: FoldPairList[fun_, val_, lazyList[first_, tail_], red_] := FoldPairList[fun, fun[val, first], True, tail, red];
+lazyList /: FoldPairList[fun_, val_, lazyList[], ___] := lazyList[];
 
 lazyList /: Cases[lz_lazyList, patt_] := Module[{
     case
