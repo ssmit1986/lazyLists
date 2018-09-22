@@ -140,7 +140,7 @@ lazyList /: Part[l_lazyList, Span[m_Integer, n_Integer, incr_Integer]] := Part[
     Range[m, n, incr]
 ];
 
-lazyList /: Part[l_lazyList, indices : {_Integer, __Integer}] := Catch[
+lazyList /: Part[l_lazyList, indices : {_Integer, __Integer}] /; VectorQ[indices, Positive]:= Catch[
     Module[{
         sortedIndices = Sort[indices],
         eval
@@ -166,7 +166,7 @@ lazyList /: Part[l_lazyList, indices : {_Integer, __Integer}] := Catch[
     "part"
 ];
 
-lazyList /: Part[l_lazyList, {n_Integer}] := Replace[
+lazyList /: Part[l_lazyList, {n_Integer?Positive}] := Replace[
     Quiet[
         Block[{$IterationLimit = $lazyIterationLimit},
             ReplaceRepeated[
@@ -184,6 +184,11 @@ lazyList /: Part[l_lazyList, {n_Integer}] := Replace[
     }
 ];
 
+lazyList /: Map[f_, lazyList[first_, tail_]] := lazyList[
+    f[first],
+    Map[f, tail]
+];
+
 With[{
     patt = Append[generatorPattern, Map]
 },
@@ -199,11 +204,6 @@ With[{
             ]
         ]
     ]
-];
-
-lazyList /: Map[f_, lazyList[first_, tail_]] := lazyList[
-    f[first],
-    Map[f, tail]
 ];
 
 lazySetState[l : lazyList[_, Map[f_, tail_]], state_] := With[{
