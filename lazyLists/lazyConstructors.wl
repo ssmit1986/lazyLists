@@ -263,9 +263,18 @@ lazyPartMap[l_lazyList, indices : {__Integer}] := Module[{
     ]
 ];
 
-lazyMapThread[f_, list : {lazyList[_, _]..}] := lazyList[
-    f[list[[All, 1]]],
-    lazyMapThread[f, list[[All, 2]]]
+lazyMapThread[f_, lists : {___, _List, ___}] := lazyMapThread[
+    f,
+    Replace[
+        lists,
+        l_List :> lazyList[l],
+        {1}
+    ]
+]
+
+lazyMapThread[f_, lists : {lazyList[_, _]..}] := lazyList[
+    f[lists[[All, 1]]],
+    lazyMapThread[f, lists[[All, 2]]]
 ];
 
 lazyMapThread[_, _] := lazyList[];

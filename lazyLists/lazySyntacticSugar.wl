@@ -230,17 +230,17 @@ lazyList /: FoldList[f_, current_, lazyList[first_, tail_]] := lazyList[
 
 lazyList /: FoldList[f_, current_, empty : lazyList[]] := lazyList[current, empty];
 
-lazyList /: Cases[l_lazyList, patt_] := Module[{
+lazyList /: Cases[lz_lazyList, patt_] := Module[{
     case
  },
     (* Define helper function to match patterns faster *)
     case[lazyList[first : patt, tail_]] := lazyList[first, case[tail]];
     case[lazyList[first_, tail_]] := case[tail];
     
-    case[l]
+    case[lz]
 ];
 
-lazyList /: Pick[l_lazyList, select_lazyList, patt_] := Module[{
+lazyList /: Pick[lz_lazyList, select_lazyList, patt_] := Module[{
     pick
 },
     (* Define helper function, just like with Cases *)
@@ -249,7 +249,7 @@ lazyList /: Pick[l_lazyList, select_lazyList, patt_] := Module[{
     pick[lazyList[first_, tail1_], lazyList[first2_, tail2_]] :=
         pick[tail1, tail2];
         
-    pick[l, select] 
+    pick[lz, select] 
 ];
 
 lazyList /: Select[lazyList[first_, tail_], f_] /; f[first] := lazyList[first, Select[tail, f]];
@@ -262,9 +262,15 @@ lazyCatenate[lazyList[listOrLazyListPattern[], tail_]] := lazyCatenate[tail];
 lazyCatenate[(head : listOrLazyListPattern)[list : {__}]] := lazyList[list];
 lazyCatenate[(head : listOrLazyListPattern)[lz : lazyList[_, _]]] := lz;
 
-lazyCatenate[{lazyList[first_, tail_], rest___}] := lazyList[first, lazyCatenate[{tail, rest}]];
+lazyCatenate[lists : {___, _List, ___}] := lazyCatenate[
+    Replace[
+        lists,
+        l_List :> lazyList[l],
+        {1}
+    ]
+];
 
-lazyCatenate[{list_List, rest___}] := lazyCatenate[{lazyList[list], rest}];
+lazyCatenate[{lazyList[first_, tail_], rest___}] := lazyList[first, lazyCatenate[{tail, rest}]];
 
 lazyCatenate[lazyList[list_List, tail_]] := lazyCatenate[lazyList[lazyList[list], tail]];
 
