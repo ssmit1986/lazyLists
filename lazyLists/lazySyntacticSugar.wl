@@ -4,6 +4,7 @@ BeginPackage["lazyLists`"]
 (* Exported symbols added here with SymbolName::usage *) 
 
 partWhile::usage = "partWhile[lz, test] gives lazyList[elem, tail], with elem the last element in lz that passes test";
+lazyCatenate::usage = "lazyCatenate catenates lists of lazyLists, lazyLists of lists and lazyLists of lazyLists into one lazyList";
 
 Begin["`Private`"]
 
@@ -253,6 +254,26 @@ lazyList /: Pick[l_lazyList, select_lazyList, patt_] := Module[{
 
 lazyList /: Select[lazyList[first_, tail_], f_] /; f[first] := lazyList[first, Select[tail, f]];
 lazyList /: Select[lazyList[first_, tail_], f_] := Select[tail, f];
+
+
+With[{
+    listOrLazyListPattern = lazyList | List
+},
+    lazyCatenate[lazyList[] | {}] := lazyList[];
+    lazyCatenate[{listOrLazyListPattern[].., rest__}] := lazyCatenate[{rest}];
+    lazyCatenate[lazyList[listOrLazyListPattern[], tail_]] := lazyCatenate[tail];
+    lazyCatenate[(head : listOrLazyListPattern)[list : {__}]] := lazyList[list];
+    lazyCatenate[(head : listOrLazyListPattern)[lz : lazyList[_, _]]] := lz
+];
+
+lazyCatenate[{lazyList[first_, tail_], rest___}] := lazyList[first, lazyCatenate[{tail, rest}]];
+
+lazyCatenate[{list_List, rest___}] := lazyCatenate[{lazyList[list], rest}];
+
+lazyCatenate[lazyList[list_List, tail_]] := lazyCatenate[lazyList[lazyList[list], tail]];
+
+lazyCatenate[lazyList[lazyList[first_, tail1_], tail2_]] := lazyList[first, lazyCatenate[lazyList[tail1, tail2]]];
+
 
 (* Default failure messages for Take and Part *)
 lazyList::take = "Cannot take `1` in `2`";
