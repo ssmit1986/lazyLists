@@ -3,6 +3,8 @@
 BeginPackage["lazyLists`"]
 (* Exported symbols added here with SymbolName::usage *) 
 
+partWhile::usage = "";
+
 Begin["`Private`"]
 
 lazyList /: Rest[lazyList[_, tail_]] := tail;
@@ -54,23 +56,25 @@ lazyList /: Take[l_lazyList, {m_Integer?Positive, n_Integer?Positive}] /; n > m 
     }
 ];
 
-lazyList /: TakeWhile[l_lazyList, function_, OptionsPattern[MaxIterations -> Infinity]] := lazyList @@ MapAt[
+lazyList /: TakeWhile[l_lazyList, function : _ : Function[True], opts : OptionsPattern[MaxIterations -> Infinity]] := lazyList @@ MapAt[
     First[#, {}]&,
     Reverse @ Reap[
         Quiet[
             Catch[
-                Block[{$IterationLimit = $lazyIterationLimit},
+                Block[{
+                    $IterationLimit = $lazyIterationLimit,
+                    first,
+                    pattern
+                },
+                    pattern = If[ function === Function[True],
+                        first_,
+                        first_?function
+                    ];
                     ReplaceRepeated[
                         l,
                         {
-                            lazyList[first_, tail_] :> If[function[first]
-                                ,
-                                Sow[first, "take"];
-                                tail
-                                ,
-                                Throw[lazyList[first, tail], "break"],
-                                Throw[lazyList[first, tail], "break"]
-                            ]
+                            lazyList[pattern, tail_] :> (Sow[first, "take"]; tail),
+                            other_ :> Throw[other, "break"]
                         },
                         MaxIterations -> OptionValue[MaxIterations]
                     ]
