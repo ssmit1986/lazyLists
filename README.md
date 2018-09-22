@@ -24,5 +24,7 @@ See lazyLists.nb for details and examples.
 ## Change log
 
 * 21 September 2018: 
-    * Add lazyTuples, which is the lazy version of Tuples. Includes helper functions for generating tuples efficiently.
-		* Hotfix: lazyTuples will now switch between compiled evaluation and regular evaluation depending on the size of the integers involves (since Compile can only use machine numbers).
+    * Add `lazyTuples`, which is the lazy version of `Tuples`. Includes helper functions for generating tuples efficiently.
+		* Hotfix: `lazyTuples` will now switch between compiled evaluation and regular evaluation depending on the size of the integers involves (since `Compile` can only use machine numbers).
+* 22 September 2018
+	* Add `partWhile`, which finds the last element in a lazyList that matches a selector function. Also add support for `Part[lz, {-1}]`, which is equivalent to `partWhile[lz, True&]`
