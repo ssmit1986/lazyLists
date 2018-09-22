@@ -57,6 +57,7 @@ $lazyIterationLimit = Infinity;
 
 Attributes[lazyList] = {HoldRest};
 
+lazyList[{}] := lazyList[];
 lazyList[list_List] := Module[{
     listVar = list
 },
