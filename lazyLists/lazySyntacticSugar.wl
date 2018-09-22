@@ -255,16 +255,12 @@ lazyList /: Pick[l_lazyList, select_lazyList, patt_] := Module[{
 lazyList /: Select[lazyList[first_, tail_], f_] /; f[first] := lazyList[first, Select[tail, f]];
 lazyList /: Select[lazyList[first_, tail_], f_] := Select[tail, f];
 
-
-With[{
-    listOrLazyListPattern = lazyList | List
-},
-    lazyCatenate[lazyList[] | {}] := lazyList[];
-    lazyCatenate[{listOrLazyListPattern[].., rest__}] := lazyCatenate[{rest}];
-    lazyCatenate[lazyList[listOrLazyListPattern[], tail_]] := lazyCatenate[tail];
-    lazyCatenate[(head : listOrLazyListPattern)[list : {__}]] := lazyList[list];
-    lazyCatenate[(head : listOrLazyListPattern)[lz : lazyList[_, _]]] := lz
-];
+listOrLazyListPattern = lazyList | List;
+lazyCatenate[lazyList[] | {}] := lazyList[];
+lazyCatenate[{listOrLazyListPattern[].., rest__}] := lazyCatenate[{rest}];
+lazyCatenate[lazyList[listOrLazyListPattern[], tail_]] := lazyCatenate[tail];
+lazyCatenate[(head : listOrLazyListPattern)[list : {__}]] := lazyList[list];
+lazyCatenate[(head : listOrLazyListPattern)[lz : lazyList[_, _]]] := lz;
 
 lazyCatenate[{lazyList[first_, tail_], rest___}] := lazyList[first, lazyCatenate[{tail, rest}]];
 
