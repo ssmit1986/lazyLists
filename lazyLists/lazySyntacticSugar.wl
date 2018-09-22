@@ -3,7 +3,7 @@
 BeginPackage["lazyLists`"]
 (* Exported symbols added here with SymbolName::usage *) 
 
-partWhile::usage = "";
+partWhile::usage = "partWhile[lz, test] gives lazyList[elem, tail], with elem the last element in lz that passes test";
 
 Begin["`Private`"]
 
