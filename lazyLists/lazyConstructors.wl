@@ -6,7 +6,7 @@ BeginPackage["lazyLists`"]
 (* Exported symbols added here with SymbolName::usage *) 
 
 lazyList::usage = "lazyList is a linked-list data structure that should contain 2 elements: the first is the first element, the second a held expression that will generate the next linked list when evaluated.
-You can extract these elements explicitely with First and Last/Rest. Part and Take will not work because they have been overloaded with special functionalities when used on lazyList.
+You can extract these elements explicitely with First and Last/Rest. Part and Take have been overloaded with special functionalities when used on lazyList and will iteratively evaluate the tail to collect elements from the lazyList.
 lazyList[list] or lazyList[Hold[var]] is a special constructor that generates a lazyList from an ordinary list";
 
 lazyRange::usage = "lazyRange[] is a lazy representation of the Integers from 1 to \[Infinity]. lazyRange[min, delta] represents values values from min onwards in steps of delta.
@@ -271,7 +271,7 @@ lazyMapThread[f_, lists : {lazyList[_, _]..}] := lazyList[
 
 lazyMapThread[_, _] := lazyList[];
 
-lazyTranspose[list : {__lazyList}] := lazyMapThread[Identity, list];
+lazyTranspose[list : {(_lazyList | _List)..}] := lazyMapThread[Identity, list];
 
 
 End[]
