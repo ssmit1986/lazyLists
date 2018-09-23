@@ -55,11 +55,7 @@ Attributes[lazyList] = {HoldRest};
 
 lazyList[{}] := lazyList[];
 lazyList[Nothing, tail_] := tail;
-lazyList[list_List] := Module[{
-    listVar = list
-},
-    lazyList[Hold[listVar]]
-];
+lazyList[list_List] := lazyFiniteList[list, 1];
 
 Attributes[lazyFiniteList] = {HoldFirst};
 lazyList[Hold[list_Symbol]] := lazyFiniteList[list, 1];
@@ -77,6 +73,14 @@ With[{
         msgs
     ]
 ];
+
+lazyList::notFinite = "lazyList `1` cannot be recognised as a finite list";
+
+lazyFinitePart[lazyList[_, (lazyFiniteList | lazyPeriodicListInternal)[list_, __]], spec__] := Part[list, spec];
+lazyFinitePart[l_lazyList, _] := (Message[lazyList::notFinite, Short[l]]; $Failed);
+
+lazyFiniteTake[lazyList[_, (lazyFiniteList | lazyPeriodicListInternal)[list_, __]], spec_] := Take[list, spec];
+lazyFiniteTake[l_lazyList, _] := (Message[lazyList::notFinite, Short[l]]; $Failed);
 
 lazySetState[lazyList[_, l : lazyFiniteList[list_, _]], index_Integer] /; 0 < index <= Length[list] :=
     lazyFiniteList[list, index];
@@ -235,15 +239,6 @@ lazySetState[lazyList[_, lazyPeriodicListInternal[list_, _, max_]], index_Intege
 
 lazySetState::notSupported = "lazySetState is not supported for lazyList `1`";
 lazySetState[l_lazyList, _] := (Message[lazySetState::notSupported, Short[l]]; l)
-
-
-lazyList::notFinite = "lazyList `1` cannot be recognised as a finite list";
-
-lazyFinitePart[lazyList[_, (lazyFiniteList | lazyPeriodicListInternal)[list_, __]], spec__] := Part[list, spec];
-lazyFinitePart[l_lazyList, _] := (Message[lazyList::notFinite, Short[l]]; $Failed);
-
-lazyFiniteTake[lazyList[_, (lazyFiniteList | lazyPeriodicListInternal)[list_, __]], spec_] := Take[list, spec];
-lazyFiniteTake[l_lazyList, _] := (Message[lazyList::notFinite, Short[l]]; $Failed);
 
 lazyPartMap[l_lazyList, indices : {__Integer}] := Module[{
     sortedIndices = Sort[indices]
