@@ -15,56 +15,54 @@ Begin["`Private`"]
 (* Implementation of the package *)
 
 (* Source of decompose and basis: https://mathematica.stackexchange.com/a/153609/43522 *)
-basis[lengths : {__Integer}] := Reverse[
-    FoldList[Times, 1, Reverse @ Rest @ lengths]
-];
+basis[lengths : {__Integer}] := basis[lengths] = (
+    Reverse[
+        FoldList[Times, 1, Reverse @ Rest @ lengths]
+    ]
+);
 
-decompose = Compile[{
-    {n, _Integer},
-    {d, _Integer, 1}
-}, 
-    Module[{
-        c = n - 1, (* I pick an offset here to make sure that n enumerates from 1 instead of 0 *)
-        q
-    },
-        1 + Table[ (* And added 1 so it's not necessary to do so later on *)
-            q = Quotient[c, i];
-            c = Mod[c, i];
-            q,
-            {i, d}
-        ]
-    ],
-    RuntimeAttributes -> {Listable}
-];
-
-rangeTuplesAtPositions[lengths : {__Integer}] := With[{
-    b = basis[lengths]
-},
-    If[ Max[b] < 2^63, (* Compile only works with machine integers *)
-        rangeTuplesAtPositions[lengths] = Compile[{
-            {n, _Integer}
+(* Compilation only works for Machine integers *)
+decompose[base : {__Integer}] /; Max[base] < 2^63 := (
+    decompose[base] = Compile[{
+        {n, _Integer}
+    }, 
+        Module[{
+            c = n - 1, (* I pick an offset here to make sure that n enumerates from 1 instead of 0 *)
+            q
         },
-            decompose[n, b],
-            RuntimeAttributes -> {Listable},
-            CompilationOptions -> {"InlineExternalDefinitions" -> True}
-        ],
-        
-        (* use module to store the basis since the base is very quite and we don't want to copy it around all the time or take up much space in the FrontEnd *)
-        rangeTuplesAtPositions[lengths] = Module[{
-            base = b
-        },
-            Composition[
-                Function[1 + #], (* Vectorise the additions and subtractions *)
-                Function[
-                    Null, (* Makes it possible to use Slot (#) and still define attributes for the function *)
-                    NumberDecompose[#, base],
-                    {Listable}
-                ],
-                Function[Subtract[#, 1]]
+            1 + Table[ (* And added 1 so it's not necessary to do so later on *)
+                q = Quotient[c, i];
+                c = Mod[c, i];
+                q,
+                {i, base}
             ]
+        ],
+        RuntimeAttributes -> {Listable}
+    ]
+);
+
+decompose[base : {__Integer}] := (
+    decompose[base] = Module[{
+        baseVar = base
+    },
+        Function[
+            Null, (* This makes it possbile to use Slot (#) inside of the function (which is faster than named arguments) and have a Listable attribute *)
+            Block[{ (* Block is faster than Module *)
+                c = Subtract[#, 1],
+                q
+            },
+                1 + Table[
+                    {q, c} = QuotientRemainder[c, i];
+                    q,
+                    {i, baseVar}
+                ]
+            ],
+            {Listable}
         ]
     ]
-];
+);
+
+rangeTuplesAtPositions[lengths : {__Integer}] := decompose[basis[lengths]];
 
 (* lazyList that generates the elements of Tuples[Range /@ lengths] *)
 Options[indexLazyList] = {
