@@ -295,6 +295,9 @@ lazyCatenate[lazyList[list_List, tail_]] := lazyCatenate[lazyList[lazyList[list]
 
 lazyCatenate[lazyList[lazyList[first_, tail1_], tail2_]] := lazyList[first, lazyCatenate[lazyList[tail1, tail2]]];
 
+lazyCatenate::invrp = "Argument `1` is not a valid list or lazyList";
+lazyCatenate[{___, arg : Except[_List | _lazyList], ___}]  /; (Message[lazyCatenate::invrp, Short[arg]]; False) := "This should never be reached";
+lazyCatenate[lazyList[arg : Except[_List | _lazyList], _]] /; (Message[lazyCatenate::invrp, Short[arg]]; False) := "This should never be reached";
 
 (* Default failure messages for Take and Part *)
 lazyList::take = "Cannot take `1` in `2`";
