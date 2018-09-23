@@ -27,4 +27,9 @@ See lazyLists.nb for details and examples.
     * Add `lazyTuples`, which is the lazy version of `Tuples`. Includes helper functions for generating tuples efficiently.
 		* Hotfix: `lazyTuples` will now switch between compiled evaluation and regular evaluation depending on the size of the integers involves (since `Compile` can only use machine numbers).
 * 22 September 2018
-	* Add `partWhile`, which finds the last element in a lazyList that matches a selector function. Also add support for `Part[lz, {-1}]`, which is equivalent to `partWhile[lz, True&]`
+	* Add `partWhile`, which finds the last element in a lazyList that matches a selector function. Also add support for `Part[lz, {-1}]`, which is equivalent to `partWhile[lz, True&]`. 
+	* Add `Take[lz, All]` as usable syntax for finite lazyLists.
+* 23 September 2018
+	* Add `lazyCatenate`, which works like regular `Catenate` but returns a lazyList. Works on lists and lazyLists or any mixture of the two.
+	* Add `FoldPairList` as supported system symbol.
+	* Add `Prepend` and `Append` as usable system symbols. Also add `lazyPrependTo` and `lazyAppendTo` to modify lazyLists created by `lazyList[Hold[var]]`.
