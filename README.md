@@ -33,3 +33,4 @@ See lazyLists.nb for details and examples.
 	* Add `lazyCatenate`, which works like regular `Catenate` but returns a lazyList. Works on lists and lazyLists or any mixture of the two.
 	* Add `FoldPairList` as supported system symbol.
 	* Add `Prepend` and `Append` as usable system symbols. Also add `lazyPrependTo` and `lazyAppendTo` to modify lazyLists created by `lazyList[Hold[var]]`.
+	* Add use case `lazyTuples[n]`, which gives an infinite lazyList that generates all n-tuples of positive integers iteratively.
