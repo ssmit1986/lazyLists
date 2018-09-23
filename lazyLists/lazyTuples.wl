@@ -1,11 +1,12 @@
 (* Wolfram Language Package *)
 
 (* Created by the Wolfram Workbench 18-Sep-2018 *)
-
-BeginPackage["lazyLists`"]
+Quiet[Needs["Combinatorica`"]];
+BeginPackage["lazyLists`", {"Combinatorica`"}]
 (* Exported symbols added here with SymbolName::usage *) 
 
-lazyTuples::usage = "lazyTuples is a lazy version of Tuples";
+lazyTuples::usage = "lazyTuples is a lazy version of Tuples with mostly the same syntax.
+lazyTuples[n] is a special case that generates an infinite list of all n-tuples of integers \[GreaterEqual] 1";
 
 bulkExtractElementsUsingIndexList::usage = "bulkExtractElementsUsingIndexList[lists, indices] converts elements from Tuples[Range /@ Length /@ lists] into elements from Tuples[lists]";
 
@@ -126,13 +127,35 @@ lazyTuples[
 (* Effectively equal to lazyTuples[Range /@ lengths] *)
 lazyTuples[lengths : {__Integer}, opts : OptionsPattern[]] := indexLazyList[lengths, opts];
 
-lazyTuples[n_Integer] := lazyCatenate[
-    lazyCatenate[
-        Map[
-            Permutations /@ IntegerPartitions[#, {n}]&,
-            lazyRange[n]
+(*
+    Modify the function Combinatorica`Private`NC from Combinatorica. Instead of returning tuples with integers >= 0,
+    nextIntegerTuple returns tuples of integers >= 1.
+    Furthermore, Combinatorica`NextComposition (which calls Combinatorica`Private`NC) loops back from {n, 0, ..., 0} to {0, ..., 0, n},
+    while nextIntegerTuple jumps from {n, 1, ..., 1} to {1, ..., 1, n + 1}.
+*)
+nextIntegerTuple = Compile[{
+    {tuple, _Integer, 1}
+},
+    Module[{
+        list = tuple - 1,
+        first
+    },
+        first = First[list];
+        If[ first == Total[list],
+            Append[Table[1, {Length[list] - 1}], first + 2],
+            1 + Combinatorica`Private`NC[list]
         ]
-    ]
+    ],
+    CompilationOptions -> {
+        "InlineExternalDefinitions" -> True, 
+        "InlineCompiledFunctions" -> True
+    }
+];
+
+(* Generates all tuples of natural numbers of length tupLength *)
+lazyTuples[tupLength_Integer] := lazyNestList[
+    nextIntegerTuple,
+    ConstantArray[1, tupLength]
 ];
 
 (* 
