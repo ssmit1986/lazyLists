@@ -306,24 +306,27 @@ lazyList /: Select[lazyList[first_, tail_], f_] /; f[first] := lazyList[first, S
 lazyList /: Select[lazyList[first_, tail_], f_] := Select[tail, f];
 
 listOrLazyListPattern = lazyList | List;
-lazyCatenate[lazyList[] | {}] := lazyList[];
-lazyCatenate[{listOrLazyListPattern[].., rest__}] := lazyCatenate[{rest}];
-lazyCatenate[lazyList[listOrLazyListPattern[], tail_]] := lazyCatenate[tail];
-lazyCatenate[(head : listOrLazyListPattern)[list : {__}]] := lazyList[list];
-lazyCatenate[(head : listOrLazyListPattern)[lz : lazyList[_, _]]] := lz;
-
+lazyCatenate[listOrLazyListPattern[]] := lazyList[];
+(*Cases where the outer list is List *)
+lazyCatenate[list : {___, listOrLazyListPattern[], ___}] := lazyCatenate[
+    DeleteCases[list, listOrLazyListPattern[]]
+];
 lazyCatenate[lists : {___, _List, ___}] := lazyCatenate[
     Replace[
-        lists,
+        SequenceReplace[
+            lists,
+            {l1_List, l2__List} :> Join[l1, l2]
+        ],
         l_List :> lazyList[l],
         {1}
     ]
 ];
-
+lazyCatenate[{lz : lazyList[_, _]}] := lz;
 lazyCatenate[{lazyList[first_, tail_], rest___}] := lazyList[first, lazyCatenate[{tail, rest}]];
 
+(*Cases where the outer list is lazyList *)
+lazyCatenate[lazyList[listOrLazyListPattern[], tail_]] := lazyCatenate[tail];
 lazyCatenate[lazyList[list_List, tail_]] := lazyCatenate[lazyList[lazyList[list], tail]];
-
 lazyCatenate[lazyList[lazyList[first_, tail1_], tail2_]] := lazyList[first, lazyCatenate[lazyList[tail1, tail2]]];
 
 lazyCatenate::invrp = "Argument `1` is not a valid list or lazyList";
