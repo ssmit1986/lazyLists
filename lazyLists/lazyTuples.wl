@@ -126,6 +126,15 @@ lazyTuples[
 (* Effectively equal to lazyTuples[Range /@ lengths] *)
 lazyTuples[lengths : {__Integer}, opts : OptionsPattern[]] := indexLazyList[lengths, opts];
 
+lazyTuples[n_Integer] := lazyCatenate[
+    lazyCatenate[
+        Map[
+            Permutations /@ IntegerPartitions[#, {n}]&,
+            lazyRange[n]
+        ]
+    ]
+];
+
 (* 
     Converts elements from 
     Tuples[Range /@ elements /@ elementLists]
