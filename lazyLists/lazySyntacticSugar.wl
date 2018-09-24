@@ -230,11 +230,6 @@ lazyList /: Part[l_lazyList, {n_Integer?Positive}] := Replace[
     }
 ];
 
-lazyList /: Map[f_, lazyList[first_, tail_]] := lazyList[
-    f[first],
-    Map[f, tail]
-];
-
 With[{
     patt = Append[generatorPattern, Map]
 },
@@ -250,6 +245,11 @@ With[{
             ]
         ]
     ]
+];
+
+lazyList /: Map[f_, lazyList[first_, tail_]] := lazyList[
+    f[first],
+    Map[f, tail]
 ];
 
 lazySetState[l : lazyList[_, Map[f_, tail_]], state_] := With[{
@@ -346,9 +346,9 @@ lazyCatenate[lazyList[arg : Except[_List | _lazyList], _]] := (Message[lazyCaten
 
 (* Default failure messages for Take and Part *)
 lazyList::take = "Cannot take `1` in `2`";
-lazyList /: Take[l_lazyList, spec_, ___] := (Message[lazyList::take, spec, Short[l]]; lazyList[]);
+lazyList /: Take[lz_lazyList, spec_, ___] := (Message[lazyList::take, spec, Short[lz]]; lazyList[]);
 lazyList::part = "Cannot take part `1` in `2`";
-lazyList /: Part[l_lazyList, spec_, ___] := (Message[lazyList::part, spec, Short[l]]; $Failed);
+lazyList /: Part[lz_lazyList, spec_, ___] := (Message[lazyList::part, spec, Short[lz]]; $Failed);
 
 End[]
 
