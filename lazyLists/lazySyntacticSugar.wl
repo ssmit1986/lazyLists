@@ -291,16 +291,20 @@ lazyList /: FoldPairList[fun_, val_, lazyList[first_, tail_]] := FoldPairList[fu
 lazyList /: FoldPairList[fun_, val_, lazyList[first_, tail_], red_] := FoldPairList[fun, fun[val, first], True, tail, red];
 lazyList /: FoldPairList[fun_, val_, lazyList[], ___] := lazyList[];
 
+lazyList /: Cases[lazyList[], _] := lazyList[]
 lazyList /: Cases[lz_lazyList, patt_] := Module[{
     case
  },
     (* Define helper function to match patterns faster *)
     case[lazyList[first : patt, tail_]] := lazyList[first, case[tail]];
     case[lazyList[first_, tail_]] := case[tail];
+    case[lazyList[]] := lazyList[];
     
     case[lz]
 ];
 
+lazyList /: Pick[lazyList[], _, _] := lazyList[];
+lazyList /: Pick[_, lazyList[], _] := lazyList[];
 lazyList /: Pick[lz_lazyList, select_lazyList, patt_] := Module[{
     pick
 },
@@ -309,7 +313,9 @@ lazyList /: Pick[lz_lazyList, select_lazyList, patt_] := Module[{
         lazyList[first, pick[tail1, tail2]];
     pick[lazyList[first_, tail1_], lazyList[first2_, tail2_]] :=
         pick[tail1, tail2];
-        
+    pick[lazyList[], _] := lazyList[];
+    pick[_, lazyList[]] := lazyList[];
+    
     pick[lz, select] 
 ];
 

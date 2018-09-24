@@ -193,30 +193,39 @@ partitionedLazyList /: FoldList[f_, current_, partitionedLazyList[first_List, ta
     ]
 ];
 
-lazyList /: Cases[lz_lazyList, patt_] := Module[{
-    case
- },
-    (* Define helper function to match patterns faster *)
-    case[lazyList[first : patt, tail_]] := lazyList[first, case[tail]];
-    case[lazyList[first_, tail_]] := case[tail];
-    
-    case[lz]
+partitionedLazyList /: Cases[partitionedLazyList[list_List, tail_], patt_] := partitionedLazyList[
+    Cases[list, patt],
+    Cases[tail, patt]
 ];
 
-lazyList /: Pick[lz_lazyList, select_lazyList, patt_] := Module[{
-    pick
+partitionedLazyList /: Pick[partitionedLazyList[{}, tail1_], lz2_partitionedLazyList, patt_] := Pick[tail1, lz2, patt];
+partitionedLazyList /: Pick[lz1_partitionedLazyList, partitionedLazyList[{}, tail2_], patt_] := Pick[lz1, tail2, patt];
+partitionedLazyList /: Pick[
+    partitionedLazyList[first_List, tail1_],
+    partitionedLazyList[select_List, tail2_],
+    patt_
+] := With[{
+    minLength = Min[Length /@ {first, select}]
 },
-    (* Define helper function, just like with Cases *)
-    pick[lazyList[first_, tail1_], lazyList[match : patt, tail2_]] :=
-        lazyList[first, pick[tail1, tail2]];
-    pick[lazyList[first_, tail1_], lazyList[first2_, tail2_]] :=
-        pick[tail1, tail2];
-        
-    pick[lz, select] 
+    With[{
+        rest1 = Drop[first, minLength],
+        rest2 = Drop[select, minLength]
+    },
+        partitionedLazyList[
+            Pick[Take[first, minLength], Take[select, minLength], patt],
+            Pick[
+                partitionedLazyList[rest1, tail1],
+                partitionedLazyList[rest2, tail2],
+                patt
+            ]
+        ]
+    ]
 ];
 
-lazyList /: Select[lazyList[first_, tail_], f_] /; f[first] := lazyList[first, Select[tail, f]];
-lazyList /: Select[lazyList[first_, tail_], f_] := Select[tail, f];
+partitionedLazyList /: Select[partitionedLazyList[first_List, tail_], fun_] := partitionedLazyList[
+    Select[first, fun],
+    Select[tail, fun]
+];
 
 
 (* Default failure messages for Take and Part *)
