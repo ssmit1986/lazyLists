@@ -137,19 +137,43 @@ partitionedLazyList /: Part[partLz_partitionedLazyList, 1] := First[partLz];
 partitionedLazyList /: Part[partLz : partitionedLazyList[{_, ___}, _], {1}] := partLz;
 partitionedLazyList /: Part[partLz_partitionedLazyList, n_Integer?Positive] := First[Part[partLz, {n}], $Failed];
 
-partitionedLazyList /: Part[partLz : partitionedLazyList[_List, _], {n : _Integer?Positive}] := Block[{
-    Sow, Reap,
-    result
-},
-    result = Take[partLz, n - 1];
-    Replace[
-        result,
-        {
-            lazyList[] :> (Message[Part::partw, n, Short[partLz]]; $Failed),
-            partitionedLazyList[{el_, rest___}, tail_] :> partitionedLazyList[{el}, partitionedLazyList[{rest}, tail]]
-        }
-    ]
-]
+partitionedLazyList /: Part[partLz : partitionedLazyList[_List, _], {n : _Integer?Positive}] := Catch[
+    Block[{
+        $IterationLimit = $lazyIterationLimit,
+        count = n,
+        length
+    },
+        ReplaceRepeated[
+            partLz,
+            {
+                lazyList[] :> Throw[
+                    lazyList[],
+                    "takePartitioned"
+                ],
+                partitionedLazyList[l : Except[_List], _] :> (
+                    Message[partitionedLazyList::cannotPartition, Short[l]];
+                    lazyList[]
+                ),
+                partitionedLazyList[
+                    list_List?(Function[(length = Length[#]) < count]), tail_] :> (
+                        count -= length;
+                        tail
+                    ),
+                partitionedLazyList[l_List, tail_] :> (
+                    Throw[
+                        partitionedLazyList[
+                            l[[{count}]],
+                            Evaluate @ partitionedLazyList[Drop[l, count], tail]
+                        ],
+                        "takePartitioned"
+                    ]
+                )
+            },
+            MaxIterations -> DirectedInfinity[1]
+        ]
+    ],
+    "takePartitioned"
+];
 
 (* Mapping over a generator or Mapped list is the same as composition of the generator functions:*)
 partitionedLazyList /: Map[
