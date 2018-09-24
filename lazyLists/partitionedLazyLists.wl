@@ -5,7 +5,14 @@ BeginPackage["lazyLists`"]
 (* Exported symbols added here with SymbolName::usage *) 
 
 partitionedLazyList::usage = "Is a special wrapper for lazyLists that generate ordinary Lists.
-The elements of the inner Lists are treated as if they're seperate elements of the outer lazyList, making it possible to generate elements in chunks";
+The elements of the inner Lists are treated as if they're seperate elements of the outer lazyList, making it possible to generate elements in chunks.
+List operations on partitionedLazyList such as Map and FoldList will be automatically applied to the generated lists for efficiency";
+
+partitionedLazyRange::usage = "partitionedLazyRange[start, step, partitionLength] works like lazyRange, but yields a partitionedLazyList.
+partitionedLazyRange[partitionLength] generates the natural numbers in chuncks of length partitionLength";
+
+partitionedLazyNestList::usage = "partitionedLazyNestList[fun, elem, partitionLength] is a partitioned version of lazyNestList.
+Each new partition is generated with NestList";
 
 Begin["`Private`"]
 (* Implementation of the package *)
@@ -34,6 +41,28 @@ partitionedLazyList /: First[partitionedLazyList[{elem_, ___}, _], ___] := elem;
 partitionedLazyList /: Most[partitionedLazyList[list_List, _]] := list;
 partitionedLazyList /: Rest[partitionedLazyList[{_}, tail_]] := tail;
 partitionedLazyList /: Rest[partitionedLazyList[{_, rest__}, tail_]] := partitionedLazyList[{rest}, tail];
+
+partitionedLazyRange[start : _ : 1, step: _ : 1, partition_Integer?Positive] := partitionedLazyList[
+    lazyRange[
+        start + step * Range[0, partition - 1],
+        partition * step
+    ]
+];
+
+partitionedLazyNestList[fun_, elem_, partition_Integer?Positive] := Function[
+    With[{
+        nestList = NestList[fun, #1, partition - 1]
+    },
+        With[{
+            last = Last[nestList]
+        },
+            partitionedLazyList[
+                nestList,
+                #0[fun[last], #2 + 1]
+            ]
+        ]
+    ]
+][elem, 1];
 
 partitionedLazyList /: Take[lz_partitionedLazyList, {m_Integer?Positive, n_Integer?Positive}] /; n < m := Replace[
     Take[lz, {n, m}],
