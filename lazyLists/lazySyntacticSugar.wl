@@ -53,8 +53,6 @@ lazyList /: expr : ((Plus | Times | Power | Divide | Subtract)[___, _lazyList, _
 
 Attributes[setLazyListable] = {HoldFirst};
 setLazyListable[sym_] := (
-    lazyList /: sym[lazyList[]] := lazyList[];
-    lazyList /: sym[lazyList[fst_, tail_]] := lazyList[sym[fst], sym[tail]];
     lazyList /: (expr : sym[___, _lazyList, ___]) := Thread[
         Unevaluated[expr],
         lazyList
