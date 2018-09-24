@@ -27,16 +27,11 @@ partitionedLazyList[lz : lazyList[Except[_List], _]] := (
     Message[partitionedLazyList::cannotPartition, Short[lz]];
     lazyList[]
 );
+partitionedLazyList[{}, tail_] := tail;
 partitionedLazyList[lazyList[list_List, tail_]] := partitionedLazyList[list, partitionedLazyList[tail]];
 
 partitionedLazyList /: Prepend[partitionedLazyList[list_List, tail_], newElem_] := partitionedLazyList[Prepend[list, newElem], tail];
 
-Scan[
-    Function[
-        partitionedLazyList /: #[partitionedLazyList[{}, tail_]] := #[tail]
-    ],
-    {First, Most, Rest}
-];
 partitionedLazyList /: First[partitionedLazyList[{elem_, ___}, _], ___] := elem;
 partitionedLazyList /: Most[partitionedLazyList[list_List, _]] := list;
 partitionedLazyList /: Rest[partitionedLazyList[{_}, tail_]] := tail;
@@ -110,7 +105,6 @@ partitionedLazyList /: Take[partLz : partitionedLazyList[_List, _], n : (_Intege
                             Message[partitionedLazyList::cannotPartition, Short[l]];
                             lazyList[]
                         ),
-                        partitionedLazyList[{}, tail_] :> tail,
                         partitionedLazyList[pattern, tail_] :>
                             (
                                 Scan[Sow[#, "results"]&, list];
@@ -140,7 +134,6 @@ partitionedLazyList /: Take[partLz : partitionedLazyList[_List, _], n : (_Intege
 ];
 
 partitionedLazyList /: Part[partLz_partitionedLazyList, 1] := First[partLz];
-partitionedLazyList /: Part[partitionedLazyList[{}, tail_], {1}] := Part[tail, {1}];
 partitionedLazyList /: Part[partLz : partitionedLazyList[{_, ___}, _], {1}] := partLz;
 partitionedLazyList /: Part[partLz_partitionedLazyList, n_Integer?Positive] := First[Part[partLz, {n}], $Failed];
 
@@ -152,8 +145,7 @@ partitionedLazyList /: Part[partLz : partitionedLazyList[_List, _], {n : _Intege
     Replace[
         result,
         {
-            lazyList[] :> (Message[Part::partw, n, Short[partLz]]; $Failed),
-            partitionedLazyList[{}, tail_] :> Part[tail, {1}]
+            lazyList[] :> (Message[Part::partw, n, Short[partLz]]; $Failed)
         }
     ]
 ]
@@ -217,7 +209,6 @@ partitionedLazyList /: FoldList[f_, partitionedLazyList[{elem_, rest___}, tail_]
     ];(*,
     elem
 ]*)
-partitionedLazyList /: FoldList[f_, current_, partitionedLazyList[{}, tail_]] := FoldList[f, current, tail];
 partitionedLazyList /: FoldList[f_, current_, partitionedLazyList[first_List, tail_]] := With[{
     fold = FoldList[f, current, first]
 },
@@ -246,8 +237,6 @@ partitionedLazyList /: Cases[partitionedLazyList[list_List, tail_], patt_] := pa
     Cases[tail, patt]
 ];
 
-partitionedLazyList /: Pick[partitionedLazyList[{}, tail1_], lz2_partitionedLazyList, patt_] := Pick[tail1, lz2, patt];
-partitionedLazyList /: Pick[lz1_partitionedLazyList, partitionedLazyList[{}, tail2_], patt_] := Pick[lz1, tail2, patt];
 partitionedLazyList /: Pick[
     partitionedLazyList[first_List, tail1_],
     partitionedLazyList[select_List, tail2_],

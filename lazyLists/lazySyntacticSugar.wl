@@ -44,13 +44,6 @@ lazyAppendTo[lazyList[first_, lazyFiniteList[list_Symbol, i_]], element_] := (
     lazyList[first, lazyFiniteList[list, i]]
 );
 
-(* Set threading behaviour for lazyLists to make it possible to add and multiply them and use powers on them *)
-lazyList /: expr : ((Plus | Times | Power | Divide | Subtract)[___, _lazyList, ___]) :=
-    Thread[
-        Unevaluated[expr],
-        lazyList
-    ];
-
 Attributes[setLazyListable] = {HoldFirst};
 setLazyListable[sym_] := (
     lazyList /: (expr : sym[___, _lazyList, ___]) := Thread[
@@ -58,6 +51,8 @@ setLazyListable[sym_] := (
         lazyList
     ]
 );
+(* Set threading behaviour for lazyLists to make it possible to add and multiply them and use powers on them *)
+Scan[setListable, {Plus, Times, Power, Divide, Subtract}];
 
 lazyList::illDefined = "lazyList `1` is not well-defined";
 Scan[
