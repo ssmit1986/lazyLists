@@ -30,7 +30,7 @@ Scan[
     ],
     {First, Most, Rest}
 ];
-partitionedLazyList /: First[partitionedLazyList[{elem_, ___}, _]] := elem;
+partitionedLazyList /: First[partitionedLazyList[{elem_, ___}, _], ___] := elem;
 partitionedLazyList /: Most[partitionedLazyList[list_List, _]] := list;
 partitionedLazyList /: Rest[partitionedLazyList[{_}, tail_]] := tail;
 partitionedLazyList /: Rest[partitionedLazyList[{_, rest__}, tail_]] := partitionedLazyList[{rest}, tail];
@@ -109,6 +109,25 @@ partitionedLazyList /: Take[partLz : partitionedLazyList[_List, _], n : (_Intege
     ],
     1
 ];
+
+partitionedLazyList /: Part[partLz_partitionedLazyList, 1] := First[partLz];
+partitionedLazyList /: Part[partitionedLazyList[{}, tail_], {1}] := Part[tail, {1}];
+partitionedLazyList /: Part[partLz : partitionedLazyList[{_, ___}, _], {1}] := partLz;
+partitionedLazyList /: Part[partLz_partitionedLazyList, n_Integer?Positive] := First[Part[partLz, {n}], $Failed];
+
+partitionedLazyList /: Part[partLz : partitionedLazyList[_List, _], {n : _Integer?Positive}] := Block[{
+    Sow, Reap,
+    result
+},
+    result = Last @ Take[partLz, n - 1];
+    Replace[
+        result,
+        {
+            lazyList[] :> (Message[Part::partw, n, Short[partLz]]; $Failed),
+            partitionedLazyList[{}, tail_] :> Part[tail, {1}]
+        }
+    ]
+]
 
 (* Mapping over a generator or Mapped list is the same as composition of the generator functions:*)
 partitionedLazyList /: Map[
