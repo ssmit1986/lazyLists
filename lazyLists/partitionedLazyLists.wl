@@ -22,6 +22,19 @@ partitionedLazyList[lz : lazyList[Except[_List], _]] := (
 );
 partitionedLazyList[lazyList[list_List, tail_]] := partitionedLazyList[list, partitionedLazyList[tail]];
 
+partitionedLazyList /: Prepend[partitionedLazyList[list_List, tail_], newElem_] := partitionedLazyList[Prepend[list, newElem], tail];
+
+Scan[
+    Function[
+        partitionedLazyList /: #[partitionedLazyList[{}, tail_]] := #[tail]
+    ],
+    {First, Most, Rest}
+];
+partitionedLazyList /: First[partitionedLazyList[{elem_, ___}, _]] := elem;
+partitionedLazyList /: Most[partitionedLazyList[list_List, _]] := list;
+partitionedLazyList /: Rest[partitionedLazyList[{_}, tail_]] := tail;
+partitionedLazyList /: Rest[partitionedLazyList[{_, rest__}, tail_]] := partitionedLazyList[{rest}, tail];
+
 partitionedLazyList /: Take[lz_partitionedLazyList, {m_Integer?Positive, n_Integer?Positive}] /; n < m := Replace[
     Take[lz, {n, m}],
     {
@@ -96,6 +109,7 @@ partitionedLazyList /: Take[partLz : partitionedLazyList[_List, _], n : (_Intege
     ],
     1
 ];
+
 (* Mapping over a generator or Mapped list is the same as composition of the generator functions:*)
 partitionedLazyList /: Map[
     f : Except[{_, Listable}],
@@ -125,7 +139,10 @@ partitionedLazyList /: Map[
         ]
     ]
 ];
-
+ (* 
+    The function specification {fun, Listable} signals that fun is listable and should be applied directly to the list. 
+    Note that it's up to the user to ensure that fun is actually listable
+*)
 partitionedLazyList /: Map[{f_, Listable}, partitionedLazyList[first_, tail_]] := partitionedLazyList[
     f[first],
     Map[{f, Listable}, tail]
@@ -135,38 +152,46 @@ partitionedLazyList /: Map[f_, partitionedLazyList[first_, tail_]] := partitione
     Map[f, tail]
 ];
 
-lazyList /: MapIndexed[f_, lazyList[first_, tail_], index : (_Integer?Positive) : 1] := lazyList[
-    f[first, index],
-    MapIndexed[f, tail, index + 1]
+partitionedLazyList /: MapIndexed[f_, partitionedLazyList[first_, tail_], index : (_Integer?Positive) : 1] := With[{
+    length = Length[first]
+},
+    partitionedLazyList[
+        f /@ Transpose[{first, Range[length] + index - 1}],
+        MapIndexed[f, tail, index + length]
+    ]
 ];
 
-lazyList /: FoldList[f_, lazyList[first_, tail_]] := FoldList[f, first, tail];
-lazyList /: FoldList[f_, current_, lazyList[first_, tail_]] := lazyList[
-    current,
-    FoldList[f, f[current, first], tail]
+partitionedLazyList /: FoldList[f_, partitionedLazyList[{elem_, rest___}, tail_]] := (*Prepend[*)
+    FoldList[
+        f,
+        elem,
+        partitionedLazyList[{rest}, tail]
+    ];(*,
+    elem
+]*)
+partitionedLazyList /: FoldList[f_, current_, partitionedLazyList[{}, tail_]] := FoldList[f, current, tail];
+partitionedLazyList /: FoldList[f_, current_, partitionedLazyList[first_List, tail_]] := With[{
+    fold = FoldList[f, current, first]
+},
+    With[{
+        newTail = tail
+    },
+        If[ newTail === lazyList[],
+            partitionedLazyList[
+                fold,
+                lazyList[]
+            ],
+            With[{
+                last = Last[fold]
+            },
+                partitionedLazyList[
+                    Most @ fold, (* The last element of fold will be added in the next iteration *)
+                    FoldList[f, last, newTail]
+                ]
+            ]
+        ]
+    ]
 ];
-lazyList /: FoldList[f_, current_, empty : lazyList[]] := lazyList[current, empty];
-
-(* 
-    The True value that passes with FoldPairList is used to see if this is the first call to FoldPairList or if the process in already iterating.
-    This is because the starting value in FoldPairList should not end up in the actual list.
-*)
-lazyList /: FoldPairList[fun_, {emit_, feed_}, True, lazyList[first_, tail_]] := lazyList[
-    emit,
-    FoldPairList[fun, fun[feed, first], True, tail]
-];
-lazyList /: FoldPairList[fun_, {emit_, feed_}, True, empty : lazyList[]] := lazyList[emit, empty];
-
-lazyList /: FoldPairList[fun_, {emit_, feed_}, True, lazyList[first_, tail_], red_] := lazyList[
-    red[{emit, feed}],
-    FoldPairList[fun, fun[feed, first], True, tail, red]
-];
-lazyList /: FoldPairList[fun_, {emit_, feed_}, True, empty : lazyList[], red_] := lazyList[red[{emit, feed}], empty];
-
-(* Patterns that start FoldPairList *)
-lazyList /: FoldPairList[fun_, val_, lazyList[first_, tail_]] := FoldPairList[fun, fun[val, first], True, tail];
-lazyList /: FoldPairList[fun_, val_, lazyList[first_, tail_], red_] := FoldPairList[fun, fun[val, first], True, tail, red];
-lazyList /: FoldPairList[fun_, val_, lazyList[], ___] := lazyList[];
 
 lazyList /: Cases[lz_lazyList, patt_] := Module[{
     case
