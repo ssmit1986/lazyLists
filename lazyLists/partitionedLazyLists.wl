@@ -75,7 +75,7 @@ partitionedLazyList /: Take[lz_partitionedLazyList, {m_Integer?Positive, n : (_I
     }
 ];
 
-partitionedLazyList /: Take[partLz : partitionedLazyList[_List, _], n : (_Integer?Positive | All)] := lazyList @@ MapAt[
+partitionedLazyList /: Take[partLz : partitionedLazyList[_List, _], n : (_Integer?Positive | All)] := partitionedLazyList @@ MapAt[
     First[#, {}]&,
     Reverse @ Reap[
         Catch[
@@ -141,11 +141,12 @@ partitionedLazyList /: Part[partLz : partitionedLazyList[_List, _], {n : _Intege
     Sow, Reap,
     result
 },
-    result = Last @ Take[partLz, n - 1];
+    result = Take[partLz, n - 1];
     Replace[
         result,
         {
-            lazyList[] :> (Message[Part::partw, n, Short[partLz]]; $Failed)
+            lazyList[] :> (Message[Part::partw, n, Short[partLz]]; $Failed),
+            partitionedLazyList[{el_, rest___}, tail_] :> partitionedLazyList[{el}, partitionedLazyList[{rest}, tail]]
         }
     ]
 ]
