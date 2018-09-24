@@ -46,8 +46,14 @@ lazyPeriodicList::usage = "lazyPeriodicList[list] is an infinite lazyList that c
 
 $lazyIterationLimit::usage = "Iteration limit used for finding successive elements in a lazy list";
 
+emptyLazyListQ::usage = "emptyLazyListQ tests if an expression is equal to lazyList[]";
+
 Begin["`Private`"]
 (* Implementation of the package *)
+
+lzPattern = _lazyList | _partitionedLazyList;
+lzHead = lazyList | partitionedLazyList;
+emptyLazyListQ = Function[# === lazyList[]];
 
 $lazyIterationLimit = Infinity;
 

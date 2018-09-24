@@ -7,6 +7,7 @@ BeginPackage["lazyLists`", {"Combinatorica`"}]
 
 lazyTuples::usage = "lazyTuples is a lazy version of Tuples with mostly the same syntax.
 lazyTuples[n] is a special case that generates an infinite list of all n-tuples of integers \[GreaterEqual] 1";
+nextIntegerTuple::usage = "nextIntegerTuple[{int1, int2, ...}] generates the next integer tuple in a canonical order";
 
 bulkExtractElementsUsingIndexList::usage = "bulkExtractElementsUsingIndexList[lists, indices] converts elements from Tuples[Range /@ Length /@ lists] into elements from Tuples[lists]";
 
@@ -128,9 +129,9 @@ lazyTuples[
 lazyTuples[lengths : {__Integer}, opts : OptionsPattern[]] := indexLazyList[lengths, opts];
 
 (*
-    Modify the function Combinatorica`Private`NC from Combinatorica. Instead of returning tuples with integers >= 0,
-    nextIntegerTuple returns tuples of integers >= 1.
-    Furthermore, Combinatorica`NextComposition (which calls Combinatorica`Private`NC) loops back from {n, 0, ..., 0} to {0, ..., 0, n},
+    Modify the function Combinatorica`Private`NC from Combinatorica, which is a compiled function that underlies NextComposition from that package.
+    Instead of returning tuples with integers >= 0, nextIntegerTuple returns tuples of integers >= 1.
+    Furthermore, Combinatorica`NextComposition loops back from {n, 0, ..., 0} to {0, ..., 0, n},
     while nextIntegerTuple jumps from {n, 1, ..., 1} to {1, ..., 1, n + 1}.
 *)
 nextIntegerTuple = Compile[{

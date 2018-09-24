@@ -34,3 +34,6 @@ See lazyLists.nb for details and examples.
 	* Add `FoldPairList` as supported system symbol.
 	* Add `Prepend` and `Append` as usable system symbols. Also add `lazyPrependTo` and `lazyAppendTo` to modify lazyLists created by `lazyList[Hold[var]]`.
 	* Add use case `lazyTuples[n]`, which gives an infinite lazyList that generates all n-tuples of positive integers iteratively.
+* 24 September 2018
+    * Add `setLazyListable`, which is used to set a pseudo-Listable attribute to symbols that makes them automatically thread over lazyLists.
+    * Add partitioned lazyLists. Any lazyList that generates ordinary lists can be converted to a `partitionedLazyList`. Doing so effectively flattens the generated lists into one continuous list. `partitionedLazyList` supports list operations like `Map` and `Fold`, which will be applied directly to the generated lists for efficiency. 
