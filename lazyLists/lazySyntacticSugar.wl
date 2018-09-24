@@ -63,28 +63,30 @@ Scan[
 ];
 
 (* Elements from lazyLists are extracted by repeatedly evaluating the next element and sowing the results *)
-lazyList /: Take[l_lazyList, n_Integer?Positive] := lazyList @@ MapAt[
-    First[#, {}]&,
-    Reverse @ Reap[
-        Replace[
-            Quiet[
-                Block[{$IterationLimit = $lazyIterationLimit},
-                    ReplaceRepeated[
-                        l,
-                        {
-                            lazyList[first_, tail_] :> (Sow[first, "take"]; tail)
-                        },
-                        MaxIterations -> n - 1
-                    ]
+lazyList /: Take[l_lazyList, n_Integer?Positive] := ReleaseHold[
+    lazyList @@ MapAt[
+        First[#, {}]&,
+        Reverse @ Reap[
+            Replace[
+                Quiet[
+                    Block[{$IterationLimit = $lazyIterationLimit},
+                        ReplaceRepeated[
+                            l,
+                            {
+                                lazyList[first_, tail_] :> (Sow[first, "take"]; tail)
+                            },
+                            MaxIterations -> n - 1
+                        ]
+                    ],
+                    {ReplaceRepeated::rrlim}
                 ],
-                {ReplaceRepeated::rrlim}
+                (* The last element should only be Sown without evaluating the tail *)
+                lazyList[first_, tail_] :> (Sow[first, "take"]; Hold[tail]) 
             ],
-            (* The last element should only be Sown without evaluating the tail *)
-            lazyList[first_, tail_] :> (Sow[first, "take"]; lazyList[first, tail]) 
+            "take"
         ],
-        "take"
-    ],
-    1
+        1
+    ]
 ];
 
 lazyList /: Take[l_lazyList, {m_Integer?Positive, n_Integer?Positive}] /; n < m := Replace[
