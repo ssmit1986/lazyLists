@@ -127,12 +127,12 @@ lazyList /: TakeWhile[l_lazyList, function : _ : Function[True], opts : OptionsP
                         l,
                         {
                             lazyList[pattern, tail_] :> (Sow[first, "take"]; tail),
-                            other_ :> Throw[other, "break"]
+                            other_ :> Throw[other, "takeWhile"]
                         },
                         MaxIterations -> OptionValue[MaxIterations]
                     ]
                 ],
-                "break"
+                "takeWhile"
             ],
             {ReplaceRepeated::rrlim}
         ],
@@ -156,12 +156,12 @@ lazyList /: partWhile[l_lazyList, function : _ : Function[True], opts : OptionsP
                 {l, First[l]},
                 {
                     {lazyList[pattern, tail_], prev_} :> {tail, first},
-                    {other_, prev_} :> Throw[lazyList[prev, other], "break"]
+                    {other_, prev_} :> Throw[lazyList[prev, other], "partWhile"]
                 },
                 MaxIterations -> OptionValue[MaxIterations]
             ]
         ],
-        "break"
+        "partWhile"
     ],
     {ReplaceRepeated::rrlim}
 ];

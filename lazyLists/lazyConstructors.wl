@@ -49,6 +49,9 @@ $lazyIterationLimit::usage = "Iteration limit used for finding successive elemen
 Begin["`Private`"]
 (* Implementation of the package *)
 
+lzPattern = _lazyList | _partitionedLazyList;
+lzHead = lazyList | partitionedLazyList;
+
 $lazyIterationLimit = Infinity;
 
 Attributes[lazyList] = {HoldRest};
