@@ -14,6 +14,8 @@ partitionedLazyRange[partitionLength] generates the natural numbers in chuncks o
 partitionedLazyNestList::usage = "partitionedLazyNestList[fun, elem, partitionLength] is a partitioned version of lazyNestList.
 Each new partition is generated with NestList";
 
+lazyPartition::usage = "lazyPartition[lz, n] turns an ordinary lazyList into a partitioned lazyList with chunks of length n";
+
 Begin["`Private`"]
 (* Implementation of the package *)
 
@@ -59,6 +61,11 @@ partitionedLazyNestList[fun_, elem_, partition_Integer?Positive] := Function[
         ]
     ]
 ][elem, 1];
+
+lazyPartition[lz_lazyList, n_Integer?Positive] := Replace[
+    Take[lz, n],
+    lazyList[list_List, tail_] :> partitionedLazyList[list, lazyPartition[tail, n]]
+];
 
 parseTakeSpec[n : (_Integer?Positive | All)] := {1, n, 1};
 parseTakeSpec[{m_Integer?Positive, n_Integer?Positive}] := Append[Sort[{m, n}], 1];
@@ -243,13 +250,13 @@ partitionedLazyList /: Part[partLz : partitionedLazyList[_List, _], {n : _Intege
 
 (* Mapping over a generator or Mapped list is the same as composition of the generator functions:*)
 partitionedLazyList /: Map[
-    f : Except[{_, Listable}],
+    fun : Except[{_, Listable}],
     partitionedLazyList[first_, Map[fgen : Except[{_, Listable}], tail : partitionedLazyList[___]]]
 ] := With[{
-    composition = Function[f[fgen[#]]]
+    composition = Function[fun[fgen[#]]]
 },
     partitionedLazyList[
-        f /@ first,
+        fun /@ first,
         Map[
             composition,
             tail
@@ -257,13 +264,13 @@ partitionedLazyList /: Map[
     ]
 ];
 partitionedLazyList /: Map[
-    {f_, Listable},
+    {fun_, Listable},
     partitionedLazyList[first_, Map[{fgen_, Listable}, tail : partitionedLazyList[___]]]
 ] := With[{
-    composition = {Function[f[fgen[#]]], Listable}
+    composition = {Function[fun[fgen[#]]], Listable}
 },
     partitionedLazyList[
-        f @ first,
+        fun @ first,
         Map[
             composition,
             tail
@@ -274,34 +281,32 @@ partitionedLazyList /: Map[
     The function specification {fun, Listable} signals that fun is listable and should be applied directly to the list. 
     Note that it's up to the user to ensure that fun is actually listable
 *)
-partitionedLazyList /: Map[{f_, Listable}, partitionedLazyList[first_, tail_]] := partitionedLazyList[
-    f[first],
-    Map[{f, Listable}, tail]
+partitionedLazyList /: Map[{fun_, Listable}, partitionedLazyList[first_, tail_]] := partitionedLazyList[
+    fun[first],
+    Map[{fun, Listable}, tail]
 ];
-partitionedLazyList /: Map[f_, partitionedLazyList[first_, tail_]] := partitionedLazyList[
-    f /@ first,
-    Map[f, tail]
+partitionedLazyList /: Map[fun_, partitionedLazyList[first_, tail_]] := partitionedLazyList[
+    fun /@ first,
+    Map[fun, tail]
 ];
 
-partitionedLazyList /: MapIndexed[f_, partitionedLazyList[first_, tail_], index : (_Integer?Positive) : 1] := With[{
+partitionedLazyList /: MapIndexed[fun_, partitionedLazyList[first_, tail_], index : (_Integer?Positive) : 1] := With[{
     length = Length[first]
 },
     partitionedLazyList[
-        f /@ Transpose[{first, Range[length] + index - 1}],
-        MapIndexed[f, tail, index + length]
+        MapThread[fun, {first, Range[length] + index - 1}],
+        MapIndexed[fun, tail, index + length]
     ]
 ];
 
-partitionedLazyList /: FoldList[f_, partitionedLazyList[{elem_, rest___}, tail_]] := (*Prepend[*)
-    FoldList[
-        f,
-        elem,
-        partitionedLazyList[{rest}, tail]
-    ];(*,
-    elem
-]*)
-partitionedLazyList /: FoldList[f_, current_, partitionedLazyList[first_List, tail_]] := With[{
-    fold = FoldList[f, current, first]
+partitionedLazyList /: FoldList[fun_, partitionedLazyList[{elem_, rest___}, tail_]] := FoldList[
+    fun,
+    elem,
+    partitionedLazyList[{rest}, tail]
+];
+
+partitionedLazyList /: FoldList[fun_, current_, partitionedLazyList[first_List, tail_]] := With[{
+    fold = FoldList[fun, current, first]
 },
     With[{
         newTail = tail
@@ -316,7 +321,7 @@ partitionedLazyList /: FoldList[f_, current_, partitionedLazyList[first_List, ta
             },
                 partitionedLazyList[
                     Most @ fold, (* The last element of fold will be added in the next iteration *)
-                    FoldList[f, last, newTail]
+                    FoldList[fun, last, newTail]
                 ]
             ]
         ]
@@ -355,7 +360,7 @@ partitionedLazyList /: Select[partitionedLazyList[first_List, tail_], fun_] := p
     Select[tail, fun]
 ];
 
-lazyMapThread[f_, lists : {partitionedLazyList[_, _]..}] := With[{
+lazyMapThread[fun_, lists : {partitionedLazyList[_, _]..}] := With[{
     minLen = Min[Length /@ lists[[All, 1]]]
 },
     With[{
@@ -363,9 +368,9 @@ lazyMapThread[f_, lists : {partitionedLazyList[_, _]..}] := With[{
         tails = lists[[All, 2]]
     },
         partitionedLazyList[
-            MapThread[f, Take[lists[[All, 1]], All, minLen]],
+            MapThread[fun, Take[lists[[All, 1]], All, minLen]],
             lazyMapThread[
-                f,
+                fun,
                 MapThread[
                     partitionedLazyList,
                     {
