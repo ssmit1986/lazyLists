@@ -28,6 +28,7 @@ partitionedLazyList[lz : lazyList[Except[_List], _]] := (
     lazyList[]
 );
 partitionedLazyList[{}, tail_] := tail;
+partitionedLazyList[list_List] := partitionedLazyList[list, lazyList[]];
 partitionedLazyList[lazyList[list_List, tail_]] := partitionedLazyList[list, partitionedLazyList[tail]];
 
 partitionedLazyList /: Prepend[partitionedLazyList[list_List, tail_], newElem_] := partitionedLazyList[Prepend[list, newElem], tail];
@@ -354,6 +355,30 @@ partitionedLazyList /: Select[partitionedLazyList[first_List, tail_], fun_] := p
     Select[tail, fun]
 ];
 
+lazyMapThread[f_, lists : {partitionedLazyList[_, _]..}] := With[{
+    minLen = Min[Length /@ lists[[All, 1]]]
+},
+    With[{
+        rest = Drop[lists[[All, 1]], None, minLen],
+        tails = lists[[All, 2]]
+    },
+        partitionedLazyList[
+            MapThread[f, Take[lists[[All, 1]], All, minLen]],
+            lazyMapThread[
+                f,
+                MapThread[
+                    partitionedLazyList,
+                    {
+                        rest,
+                        tails
+                    }
+                ]
+            ]
+        ]
+    ]
+];
+
+lazyTranspose[lists : {partitionedLazyList[_, _]..}] := lazyMapThread[List, lists];
 
 (* Default failure messages for Take and Part *)
 partitionedLazyList::take = "Cannot take `1` in `2`";
