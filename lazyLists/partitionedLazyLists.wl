@@ -289,7 +289,7 @@ partitionedLazyList /: Map[
             {{f_, Listable}, {g_, Listable}} :> {Function[f[g[#]]], Listable},
             {f : Except[{_, Listable}], {g_, Listable}} :> {Function[f /@ g[#]], Listable},
             {{f_, Listable}, g : Except[{_, Listable}]} :> {Function[f[g /@ #]], Listable},
-            {f_, g_} :> Function[f[g[#]]]
+            {f_, g_} :> Function[f[g[#]]] (* Don't use Composition here, because it doesn't auto-compile *)
         }
     ]
 },
