@@ -49,7 +49,18 @@ setLazyListable[sym_Symbol] := (
     lazyList /: (expr : sym[___, _lazyList, ___]) := Thread[
         Unevaluated[expr],
         lazyList
-    ]
+    ];
+    partitionedLazyList /: sym[
+        first : Except[_partitionedLazyList]...,
+        lz_partitionedLazyList,
+        rest : Except[_partitionedLazyList]...
+    ] := Map[sym[first, #, rest]&, lz];
+    partitionedLazyList /: sym[first___, lz_partitionedLazyList, rest___] := Thread[
+        Unevaluated[
+            Thread[Unevaluated[sym[##]]]&[first, lz, rest]
+        ],
+        partitionedLazyList
+    ];
 );
 setLazyListable[{sym_Symbol, Listable}] := (
     lazyList /: (expr : sym[___, _lazyList, ___]) := Thread[
