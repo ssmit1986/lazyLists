@@ -44,20 +44,42 @@ lazyAppendTo[lazyList[first_, lazyFiniteList[list_Symbol, i_]], element_] := (
     lazyList[first, lazyFiniteList[list, i]]
 );
 
-(* Set threading behaviour for lazyLists to make it possible to add and multiply them and use powers on them *)
-lazyList /: expr : ((Plus | Times | Power | Divide | Subtract)[___, _lazyList, ___]) :=
-    Thread[
-        Unevaluated[expr],
-        lazyList
-    ];
-
 Attributes[setLazyListable] = {HoldFirst};
-setLazyListable[sym_] := (
+setLazyListable[sym_Symbol] := (
     lazyList /: (expr : sym[___, _lazyList, ___]) := Thread[
         Unevaluated[expr],
         lazyList
-    ]
+    ];
+    partitionedLazyList /: sym[
+        first : Except[_partitionedLazyList]...,
+        lz_partitionedLazyList,
+        rest : Except[_partitionedLazyList]...
+    ] := Map[sym[first, #, rest]&, lz];
+    partitionedLazyList /: sym[first___, lz_partitionedLazyList, rest___] := Thread[
+        Unevaluated[
+            Thread[Unevaluated[sym[##]]]&[first, lz, rest]
+        ],
+        partitionedLazyList
+    ];
+    sym
 );
+setLazyListable[{sym_Symbol, Listable}] := (
+    lazyList /: (expr : sym[___, _lazyList, ___]) := Thread[
+        Unevaluated[expr],
+        lazyList
+    ];
+    partitionedLazyList /: (expr : sym[___, _partitionedLazyList, ___]) := Thread[
+        Unevaluated[expr],
+        partitionedLazyList
+    ];
+    sym
+);
+
+(* Set threading behaviour for lazyLists to make it possible to add and multiply them and use powers on them *)
+Scan[
+    Function[Null, setLazyListable[{#, Listable}], {HoldAll}],
+    {Plus, Times, Power, Divide, Subtract}
+];
 
 lazyList::illDefined = "lazyList `1` is not well-defined";
 Scan[
@@ -68,28 +90,30 @@ Scan[
 ];
 
 (* Elements from lazyLists are extracted by repeatedly evaluating the next element and sowing the results *)
-lazyList /: Take[l_lazyList, n_Integer?Positive] := lazyList @@ MapAt[
-    First[#, {}]&,
-    Reverse @ Reap[
-        Replace[
-            Quiet[
-                Block[{$IterationLimit = $lazyIterationLimit},
-                    ReplaceRepeated[
-                        l,
-                        {
-                            lazyList[first_, tail_] :> (Sow[first, "take"]; tail)
-                        },
-                        MaxIterations -> n - 1
-                    ]
+lazyList /: Take[l_lazyList, n_Integer?Positive] := ReleaseHold[
+    lazyList @@ MapAt[
+        First[#, {}]&,
+        Reverse @ Reap[
+            Replace[
+                Quiet[
+                    Block[{$IterationLimit = $lazyIterationLimit},
+                        ReplaceRepeated[
+                            l,
+                            {
+                                lazyList[first_, tail_] :> (Sow[first, "take"]; tail)
+                            },
+                            MaxIterations -> n - 1
+                        ]
+                    ],
+                    {ReplaceRepeated::rrlim}
                 ],
-                {ReplaceRepeated::rrlim}
+                (* The last element should only be Sown without evaluating the tail *)
+                lazyList[first_, tail_] :> (Sow[first, "take"]; Hold[tail]) 
             ],
-            (* The last element should only be Sown without evaluating the tail *)
-            lazyList[first_, tail_] :> (Sow[first, "take"]; lazyList[first, tail]) 
+            "take"
         ],
-        "take"
-    ],
-    1
+        1
+    ]
 ];
 
 lazyList /: Take[l_lazyList, {m_Integer?Positive, n_Integer?Positive}] /; n < m := Replace[
@@ -102,7 +126,7 @@ lazyList /: Take[l_lazyList, {m_Integer?Positive, n_Integer?Positive}] /; n < m 
 lazyList /: Take[l_lazyList, {m_Integer?Positive, n : (_Integer?Positive | All)}] /; (n === All || n > m) := Replace[
     Quiet[l[[{m}]], {Part::partw}],
     {
-        lz : lazyList[_, _] :> Take[lz, Replace[n, i_Integer :> i - m + 1]],
+        lz : lazyList[_, _] :> Take[lz, Replace[n, int_Integer :> int - m + 1]],
         _ -> lazyList[]
     }
 ];
@@ -328,7 +352,7 @@ lazyCatenate[listOrLazyListPattern[]] := lazyList[];
 lazyCatenate[list : {___, listOrLazyListPattern[], ___}] := lazyCatenate[
     DeleteCases[list, listOrLazyListPattern[]]
 ];
-lazyCatenate[lists : {___, _List, ___}] := lazyCatenate[
+lazyCatenate[lists : {(_List | _lazyList)..., _List, (_List | _lazyList)...}] := lazyCatenate[
     Replace[
         SequenceReplace[
             lists,
@@ -338,13 +362,25 @@ lazyCatenate[lists : {___, _List, ___}] := lazyCatenate[
         {1}
     ]
 ];
-lazyCatenate[{lz : lazyList[_, _]}] := lz;
-lazyCatenate[{lazyList[first_, tail_], rest___}] := lazyList[first, lazyCatenate[{tail, rest}]];
+lazyCatenate[{lz : (lazyList | partitionedLazyList)[_, _]}] := lz;
+lazyCatenate[{lazyList[first_, tail_], rest__}] := lazyList[first, lazyCatenate[{tail, rest}]];
 
 (*Cases where the outer list is lazyList *)
 lazyCatenate[lazyList[listOrLazyListPattern[], tail_]] := lazyCatenate[tail];
 lazyCatenate[lazyList[list_List, tail_]] := lazyCatenate[lazyList[lazyList[list], tail]];
 lazyCatenate[lazyList[lazyList[first_, tail1_], tail2_]] := lazyList[first, lazyCatenate[lazyList[tail1, tail2]]];
+
+lazyCatenate[lists : {___, __List, partitionedLazyList[_, _], rest___}] := 
+    lazyCatenate[
+        SequenceReplace[
+            lists,
+            {l1__List, partitionedLazyList[l2_List, tail_]} :> partitionedLazyList[Join[l1, l2], tail]
+        ]
+    ];
+lazyCatenate[{fst__partitionedLazyList, lists__List}] := lazyCatenate[{fst, partitionedLazyList[Join[lists], lazyList[]]}];
+
+lazyCatenate[{partitionedLazyList[list_List, tail_], rest__partitionedLazyList}] := partitionedLazyList[list, lazyCatenate[{tail, rest}]];
+
 
 lazyCatenate::invrp = "Argument `1` is not a valid list or lazyList";
 lazyCatenate[{___, arg : Except[_List | _lazyList], ___}]  := (Message[lazyCatenate::invrp, Short[arg]]; $Failed);

@@ -36,4 +36,10 @@ See lazyLists.nb for details and examples.
 	* Add use case `lazyTuples[n]`, which gives an infinite lazyList that generates all n-tuples of positive integers iteratively.
 * 24 September 2018
     * Add `setLazyListable`, which is used to set a pseudo-Listable attribute to symbols that makes them automatically thread over lazyLists.
-    * Add partitioned lazyLists. Any lazyList that generates ordinary lists can be converted to a `partitionedLazyList`. Doing so effectively flattens the generated lists into one continuous list. `partitionedLazyList` supports list operations like `Map` and `Fold`, which will be applied directly to the generated lists for efficiency. 
+    * Add partitioned lazyLists. Any lazyList that generates ordinary lists can be converted to a `partitionedLazyList`. Doing so effectively flattens the generated lists into one continuous list. `partitionedLazyList` supports list operations like `Map` and `Fold`, which will be applied directly to the generated lists for efficiency.
+* 25 September 2018
+	* Add `{start, stop, step}` syntax for `Take`, which can be used in conjunction with `partitionedLazyList`.
+	* Some efficiency updates to `Take` and `Part`.
+	* Add `lazyMapThread` and `lazyCatenate` for `partitionedLazyList`.
+	* Add `lazyPartition`, which can be used to make a `partitionedLazyList` out of any normal `lazyList`.
+	* Implement pseudo-listability for `partitionedLazyList`.
