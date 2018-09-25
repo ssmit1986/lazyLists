@@ -325,7 +325,7 @@ lazyCatenate[listOrLazyListPattern[]] := lazyList[];
 lazyCatenate[list : {___, listOrLazyListPattern[], ___}] := lazyCatenate[
     DeleteCases[list, listOrLazyListPattern[]]
 ];
-lazyCatenate[lists : {___, _List, ___}] := lazyCatenate[
+lazyCatenate[lists : {(_List | _lazyList)..., _List, (_List | _lazyList)...}] := lazyCatenate[
     Replace[
         SequenceReplace[
             lists,
@@ -335,13 +335,25 @@ lazyCatenate[lists : {___, _List, ___}] := lazyCatenate[
         {1}
     ]
 ];
-lazyCatenate[{lz : lazyList[_, _]}] := lz;
-lazyCatenate[{lazyList[first_, tail_], rest___}] := lazyList[first, lazyCatenate[{tail, rest}]];
+lazyCatenate[{lz : (lazyList | partitionedLazyList)[_, _]}] := lz;
+lazyCatenate[{lazyList[first_, tail_], rest__}] := lazyList[first, lazyCatenate[{tail, rest}]];
 
 (*Cases where the outer list is lazyList *)
 lazyCatenate[lazyList[listOrLazyListPattern[], tail_]] := lazyCatenate[tail];
 lazyCatenate[lazyList[list_List, tail_]] := lazyCatenate[lazyList[lazyList[list], tail]];
 lazyCatenate[lazyList[lazyList[first_, tail1_], tail2_]] := lazyList[first, lazyCatenate[lazyList[tail1, tail2]]];
+
+lazyCatenate[lists : {___, __List, partitionedLazyList[_, _], rest___}] := 
+    lazyCatenate[
+        SequenceReplace[
+            lists,
+            {l1__List, partitionedLazyList[l2_List, tail_]} :> partitionedLazyList[Join[l1, l2], tail]
+        ]
+    ];
+lazyCatenate[{fst__partitionedLazyList, lists__List}] := lazyCatenate[{fst, partitionedLazyList[Join[lists], lazyList[]]}];
+
+lazyCatenate[{partitionedLazyList[list_List, tail_], rest__partitionedLazyList}] := partitionedLazyList[list, lazyCatenate[{tail, rest}]];
+
 
 lazyCatenate::invrp = "Argument `1` is not a valid list or lazyList";
 lazyCatenate[{___, arg : Except[_List | _lazyList], ___}]  := (Message[lazyCatenate::invrp, Short[arg]]; $Failed);
