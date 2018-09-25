@@ -10,8 +10,7 @@ Cell[BoxData[{
   RowBox[{"\"\<lazyLists`*\>\"", ",", "\"\<lazyLists`Private`*\>\""}], 
   "]"}], "\[IndentingNewLine]", 
  RowBox[{"<<", "lazyLists`"}]}], "Input",
- CellLabel->
-  "In[620]:=",ExpressionUUID->"2d6a87cf-3ef1-4832-b8b9-0995d6d1b646"],
+ CellLabel->"In[1]:=",ExpressionUUID->"2d6a87cf-3ef1-4832-b8b9-0995d6d1b646"],
 
 Cell[CellGroupData[{
 
@@ -7519,27 +7518,23 @@ Cell[BoxData[{
      RowBox[{"1", ",", 
       RowBox[{"lazyRange", "[", 
        RowBox[{"2", ",", "2"}], "]"}]}], "]"}], ",", "5"}], "]"}]}]}], "Input",
- CellLabel->
-  "In[770]:=",ExpressionUUID->"431c46dd-1989-4038-a8a6-287ac92d6e53"],
+ CellLabel->"In[15]:=",ExpressionUUID->"431c46dd-1989-4038-a8a6-287ac92d6e53"],
 
 Cell[BoxData[
  RowBox[{"{", 
   RowBox[{"3", ",", "5", ",", "7", ",", "9", ",", "11"}], "}"}]], "Output",
- CellLabel->
-  "Out[770]=",ExpressionUUID->"3d87957f-d86e-4acc-8507-d50e33571bb6"],
+ CellLabel->"Out[15]=",ExpressionUUID->"8e23dcb5-f836-4ba9-9a96-b8ef908d279f"],
 
 Cell[BoxData[
  RowBox[{"{", 
   RowBox[{"5", ",", "13", ",", "21", ",", "29", ",", "37"}], "}"}]], "Output",
- CellLabel->
-  "Out[771]=",ExpressionUUID->"93e68619-00c4-4864-9e90-981fd758accb"],
+ CellLabel->"Out[16]=",ExpressionUUID->"2e50c4a9-660f-4654-9967-d0a97e83878d"],
 
 Cell[BoxData[
  RowBox[{"{", 
   RowBox[{"1", ",", "4", ",", "27", ",", "256", ",", "3125"}], 
   "}"}]], "Output",
- CellLabel->
-  "Out[772]=",ExpressionUUID->"388248d6-f468-4509-8486-68c53686d6ac"],
+ CellLabel->"Out[17]=",ExpressionUUID->"41a83d07-f3cd-46db-be70-f4d11ccfe561"],
 
 Cell[BoxData[
  RowBox[{"{", 
@@ -7549,7 +7544,7 @@ Cell[BoxData[
    FractionBox["1", "6"], ",", 
    FractionBox["1", "8"], ",", 
    FractionBox["1", "10"]}], "}"}]], "Output",
- CellLabel->"Out[773]=",ExpressionUUID->"4f951f61-fb6a-4d50-88f3-fe608281813c"]
+ CellLabel->"Out[18]=",ExpressionUUID->"0db07663-fd66-4741-9bdb-9b1a64b359f1"]
 }, Open  ]],
 
 Cell[TextData[{
@@ -7572,8 +7567,7 @@ Cell[BoxData[{
       RowBox[{"lazyRange", "[", "]"}], ",", " ", 
       RowBox[{"lazyRange", "[", "2", "]"}], ",", "5"}], "]"}], ",", "5"}], 
    "]"}], "//", "First"}]}], "Input",
- CellLabel->
-  "In[774]:=",ExpressionUUID->"595f695a-9a82-4d14-9adc-523c9b0bcd45"],
+ CellLabel->"In[8]:=",ExpressionUUID->"595f695a-9a82-4d14-9adc-523c9b0bcd45"],
 
 Cell[BoxData[
  RowBox[{"{", 
@@ -7588,7 +7582,7 @@ Cell[BoxData[
     RowBox[{"4", ",", "5", ",", "5"}], "]"}], ",", 
    RowBox[{"listableSymbol", "[", 
     RowBox[{"5", ",", "6", ",", "5"}], "]"}]}], "}"}]], "Output",
- CellLabel->"Out[775]=",ExpressionUUID->"ac637fc4-7739-42ef-9df7-c794664e4dce"]
+ CellLabel->"Out[9]=",ExpressionUUID->"7463a3cc-d277-4df2-87de-b9bfccbaa3d0"]
 }, Open  ]],
 
 Cell[TextData[{
@@ -7621,8 +7615,7 @@ Cell[BoxData[{
      RowBox[{"Take", "[", 
       RowBox[{"#", ",", "3"}], "]"}], "]"}], "&"}], "/@", "%"}], "//", 
   "TableForm"}]}], "Input",
- CellLabel->
-  "In[776]:=",ExpressionUUID->"06c0882c-d9cf-4d6f-b73e-8f7d4cd2efc0"],
+ CellLabel->"In[10]:=",ExpressionUUID->"06c0882c-d9cf-4d6f-b73e-8f7d4cd2efc0"],
 
 Cell[BoxData[
  RowBox[{"{", 
@@ -7685,8 +7678,7 @@ Cell[BoxData[
         RowBox[{
          RowBox[{"1", "+", "2"}], ",", "1"}], "]"}], ",", "5", ",", "2"}], 
       "]"}]}], "]"}]}], "}"}]], "Output",
- CellLabel->
-  "Out[777]=",ExpressionUUID->"c752fcd6-4030-4f04-8d48-566aaf034d3e"],
+ CellLabel->"Out[11]=",ExpressionUUID->"2b970ed1-7f36-45d9-9b21-79ea10f3a180"],
 
 Cell[BoxData[
  TagBox[GridBox[{
@@ -7718,8 +7710,46 @@ Cell[BoxData[
   Function[BoxForm`e$, 
    TableForm[BoxForm`e$]]]], "Output",
  CellLabel->
-  "Out[778]//TableForm=",ExpressionUUID->"ed1fb3b4-eac1-4faf-a8b0-\
-6295afbc8f8a"]
+  "Out[12]//TableForm=",ExpressionUUID->"5f3660d9-33f9-497e-a7a0-90ca4c8a528e"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Take", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"partitionedLazyList", "@", 
+     RowBox[{"lazyGenerator", "[", 
+      RowBox[{"Range", ",", "1", ",", "1", ",", "4"}], "]"}]}], "+", 
+    RowBox[{"2", 
+     RowBox[{"partitionedLazyList", "@", 
+      RowBox[{"lazyGenerator", "[", 
+       RowBox[{"Range", ",", "1", ",", "1", ",", "4"}], "]"}]}]}]}], ",", 
+   "5"}], "]"}]], "Input",
+ CellLabel->"In[23]:=",ExpressionUUID->"ece26a1a-b0db-4040-886b-3d5d129fc7d9"],
+
+Cell[BoxData[
+ RowBox[{"partitionedLazyList", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"3", ",", "3", ",", "6", ",", "3", ",", "6"}], "}"}], ",", 
+   RowBox[{"partitionedLazyList", "[", 
+    RowBox[{
+     RowBox[{"{", "9", "}"}], ",", 
+     RowBox[{
+      RowBox[{"partitionedLazyList", "[", 
+       RowBox[{"lazyLists`Private`finiteGenerator", "[", 
+        RowBox[{"Range", ",", 
+         RowBox[{"3", "+", "1"}], ",", "1", ",", "4", ",", "1"}], "]"}], 
+       "]"}], "+", 
+      RowBox[{"2", " ", 
+       RowBox[{"partitionedLazyList", "[", 
+        RowBox[{"lazyLists`Private`finiteGenerator", "[", 
+         RowBox[{"Range", ",", 
+          RowBox[{"3", "+", "1"}], ",", "1", ",", "4", ",", "1"}], "]"}], 
+        "]"}]}]}]}], "]"}]}], "]"}]], "Output",
+ CellLabel->"Out[23]=",ExpressionUUID->"093bceea-d055-4050-9c65-6a7d95e5bb4a"]
 }, Open  ]]
 }, Open  ]]
 }, Open  ]],
