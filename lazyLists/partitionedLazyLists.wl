@@ -71,10 +71,13 @@ lazyPartition[lz_lazyList, n_Integer?Positive] := Replace[
 parseTakeSpec[n : (_Integer?Positive | All)] := {1, n, 1};
 parseTakeSpec[{m_Integer?Positive, n_Integer?Positive}] := Append[Sort[{m, n}], 1];
 parseTakeSpec[{m_Integer?Positive, All}] := {m, All, 1};
-parseTakeSpec[{m_Integer?Positive, n_Integer?Positive, step_Integer}] /; step != 0 := Append[
-    Sort[{m, n}],
-    If[TrueQ[m <=  n], step, -step]
-];
+parseTakeSpec[{m_Integer?Positive, n_Integer?Positive, step_Integer}] /; step != 0 && m > n := {
+    n + Mod[Subtract[m, n], Abs[step]], (* Make sure take starts at the right value to end up exactly at m *)
+    m,
+    -step
+}
+
+parseTakeSpec[{m_Integer?Positive, n_Integer?Positive, step_Integer}] /; step != 0 && m <= n := {m, n, step};
 parseTakeSpec[spec : {_Integer?Positive, All, _Integer?Positive}] := spec;
 parseTakeSpec[___] := $Failed
 
@@ -93,7 +96,7 @@ partitionedLazyList /: Take[
 partitionedLazyList /: Take[lz_partitionedLazyList, {m_Integer?Positive, n_Integer?Positive, step : _Integer : 1}] /; n < m := Replace[
     Take[lz, parseTakeSpec[{m, n, step}]],
     {
-        lazyList[list_List, rest_] :> lazyList[Reverse[list], rest]
+        partitionedLazyList[list_List, rest_] :> partitionedLazyList[Reverse[list], rest]
     }
 ];
 

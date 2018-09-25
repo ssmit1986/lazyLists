@@ -52,7 +52,7 @@ setLazyListable[sym_] := (
     ]
 );
 (* Set threading behaviour for lazyLists to make it possible to add and multiply them and use powers on them *)
-Scan[setListable, {Plus, Times, Power, Divide, Subtract}];
+Scan[setLazyListable, {Plus, Times, Power, Divide, Subtract}];
 
 lazyList::illDefined = "lazyList `1` is not well-defined";
 Scan[
