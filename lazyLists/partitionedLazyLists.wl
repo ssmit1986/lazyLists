@@ -63,9 +63,9 @@ partitionedLazyNestList[fun_, elem_, partition_Integer?Positive] := Function[
 ][elem, 1];
 
 lazyPartition[lazyList[], ___] := lazyList[];
-lazyPartition[lz_lazyList, n_Integer?Positive] := Replace[
+lazyPartition[lz : lzPattern, n_Integer?Positive] := Replace[
     Take[lz, n],
-    lazyList[list_List, tail_] :> partitionedLazyList[list, lazyPartition[tail, n]]
+    (lazyList | partitionedLazyList)[list_List, tail_] :> partitionedLazyList[list, lazyPartition[tail, n]]
 ];
 
 parseTakeSpec[n : (_Integer?Positive | All)] := {1, n, 1};
