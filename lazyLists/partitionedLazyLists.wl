@@ -76,8 +76,8 @@ partitionedLazyList /: Take[lz_partitionedLazyList, {m_Integer?Positive, n : (_I
 ];
 
 partitionedLazyList /: Take[partLz : partitionedLazyList[_List, _], n : (_Integer?Positive | All)] := partitionedLazyList @@ MapAt[
-    First[#, {}]&,
-    Reverse @ Reap[
+    Catenate[First[#, {}]]&,
+    Reap[
         Catch[
             Block[{
                 $IterationLimit = $lazyIterationLimit,
@@ -107,7 +107,7 @@ partitionedLazyList /: Take[partLz : partitionedLazyList[_List, _], n : (_Intege
                         ),
                         partitionedLazyList[pattern, tail_] :>
                             (
-                                Scan[Sow[#, "results"]&, list];
+                                Sow[list, "results"];
                                 count -= length;
                                 tail
                             ),
@@ -115,7 +115,7 @@ partitionedLazyList /: Take[partLz : partitionedLazyList[_List, _], n : (_Intege
                             Nothing,
                             partitionedLazyList[l_List, tail_] :> (
                                 result = TakeDrop[l, count];
-                                Scan[Sow[#, "results"]&, result[[1]]];
+                                Sow[result[[1]], "results"];
                                 Throw[
                                     partitionedLazyList[result[[2]], tail],
                                     "takePartitioned"
@@ -129,7 +129,7 @@ partitionedLazyList /: Take[partLz : partitionedLazyList[_List, _], n : (_Intege
             "takePartitioned"
         ],
         "results"
-    ],
+    ][[{2, 1}]],
     1
 ];
 
