@@ -280,27 +280,27 @@ partitionedLazyList /: Part[l : _partitionedLazyList, indices : {_Integer, __Int
 
 (* Mapping over a generator or Mapped list is the same as composition of the generator functions:*)
 partitionedLazyList /: Map[
-    fun : Except[{_, Listable}],
-    partitionedLazyList[first_, Map[fgen : Except[{_, Listable}], tail : partitionedLazyList[___]]]
+    fun_,
+    partitionedLazyList[first_, Map[fgen_, tail_]]
 ] := With[{
-    composition = Function[fun[fgen[#]]]
-},
-    partitionedLazyList[
-        fun /@ first,
-        Map[
-            composition,
-            tail
-        ]
+    composition = Replace[
+        {fun, fgen},
+        {
+            {{f_, Listable}, {g_, Listable}} :> {Function[f[g[#]]], Listable},
+            {f : Except[{_, Listable}], {g_, Listable}} :> {Function[f /@ g[#]], Listable},
+            {{f_, Listable}, g : Except[{_, Listable}]} :> {Function[f[g /@ #]], Listable},
+            {f_, g_} :> Function[f[g[#]]]
+        }
     ]
-];
-partitionedLazyList /: Map[
-    {fun_, Listable},
-    partitionedLazyList[first_, Map[{fgen_, Listable}, tail : partitionedLazyList[___]]]
-] := With[{
-    composition = {Function[fun[fgen[#]]], Listable}
 },
     partitionedLazyList[
-        fun @ first,
+        Replace[
+            fun,
+            {
+                {f_, Listable} :> f[first],
+                f_ :> f /@ first
+            }
+        ],
         Map[
             composition,
             tail
