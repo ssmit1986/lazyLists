@@ -225,7 +225,7 @@ partitionedLazyList /: Part[partLz : partitionedLazyList[_List, _], {n : _Intege
             {
                 lazyList[] :> Throw[
                     lazyList[],
-                    "takePartitioned"
+                    "partPartitioned"
                 ],
                 partitionedLazyList[l : Except[_List], _] :> (
                     Message[partitionedLazyList::cannotPartition, Short[l]];
@@ -242,14 +242,40 @@ partitionedLazyList /: Part[partLz : partitionedLazyList[_List, _], {n : _Intege
                             l[[{count}]],
                             Evaluate @ partitionedLazyList[Drop[l, count], tail]
                         ],
-                        "takePartitioned"
+                        "partPartitioned"
                     ]
                 )
             },
             MaxIterations -> DirectedInfinity[1]
         ]
     ],
-    "takePartitioned"
+    "partPartitioned"
+];
+
+partitionedLazyList /: Part[l : _partitionedLazyList, indices : {_Integer, __Integer}] /; VectorQ[indices, Positive]:= Catch[
+    Module[{
+        sortedIndices = Sort[indices],
+        eval
+    },
+        partitionedLazyList[
+            Part[
+                FoldPairList[
+                    Function[
+                        eval = Check[Part[#1, {#2}], Throw[$Failed, "part"], {Part::partw}];
+                        {
+                            First[eval], (* emit the value at this position *)
+                            eval (* and return the lazyList to the next iteration *)
+                        }
+                    ],
+                    l,
+                    Prepend[Differences[sortedIndices] + 1, First[sortedIndices]]
+                ],
+                Ordering[indices]
+            ],
+            Evaluate[eval]
+        ]
+    ],
+    "part"
 ];
 
 (* Mapping over a generator or Mapped list is the same as composition of the generator functions:*)
