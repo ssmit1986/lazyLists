@@ -61,6 +61,7 @@ setLazyListable[sym_Symbol] := (
         ],
         partitionedLazyList
     ];
+    sym
 );
 setLazyListable[{sym_Symbol, Listable}] := (
     lazyList /: (expr : sym[___, _lazyList, ___]) := Thread[
@@ -71,6 +72,7 @@ setLazyListable[{sym_Symbol, Listable}] := (
         Unevaluated[expr],
         partitionedLazyList
     ];
+    sym
 );
 
 (* Set threading behaviour for lazyLists to make it possible to add and multiply them and use powers on them *)
