@@ -17,16 +17,14 @@ Begin["`Private`"]
 (* Implementation of the package *)
 
 (* Source of decompose and basis: https://mathematica.stackexchange.com/a/153609/43522 *)
-basis[lengths : {__Integer}] := basis[lengths] = (
-    Reverse[
-        FoldList[Times, 1, Reverse @ Rest @ lengths]
-    ]
+basis[lengths : {__Integer}] := ( 
+    basis[lengths] = Reverse @ FoldList[Times, 1, Reverse @ Rest @ lengths]
 );
 
 (* Compilation only works for Machine integers *)
 decompose[base : {__Integer}] /; Max[base] < 2^63 := (
     decompose[base] = Compile[{
-        {n, _Integer}
+        {n, _Integer, 1}
     }, 
         Module[{
             c = n - 1, (* I pick an offset here to make sure that n enumerates from 1 instead of 0 *)
@@ -48,18 +46,16 @@ decompose[base : {__Integer}] := (
         baseVar = base
     },
         Function[
-            Null, (* This makes it possbile to use Slot (#) inside of the function (which is faster than named arguments) and have a Listable attribute *)
             Block[{ (* Block is faster than Module *)
                 c = Subtract[#, 1],
                 q
             },
                 1 + Table[
-                    {q, c} = QuotientRemainder[c, i];
+                    {q, c} = Transpose @ QuotientRemainder[c, i];
                     q,
                     {i, baseVar}
                 ]
-            ],
-            {Listable}
+            ]
         ]
     ]
 );
@@ -68,24 +64,17 @@ rangeTuplesAtPositions[lengths : {__Integer}] := decompose[basis[lengths]];
 
 (* lazyList that generates the elements of Tuples[Range /@ lengths] *)
 Options[indexLazyList] = {
-    "StepSize" -> 1,
-    "Start" -> 1,
-    "FiniteIndexCutoff" -> 10^10
+    "PartitionSize" -> 1,
+    "Start" -> 1
 };
 
 indexLazyList[lengths : {__Integer}, opts : OptionsPattern[]] := With[{
     start = Replace[OptionValue["Start"], Except[_Integer] :> 1],
-    step = Replace[OptionValue["StepSize"], Except[_Integer] :> 1],
-    cutOff = Replace[OptionValue["FiniteIndexCutoff"], Except[_?NumericQ | DirectedInfinity[1]] :> 10^10]
+    partition = Replace[OptionValue["PartitionSize"], Except[_Integer] :> 1]
 },
-    lazyGenerator[
-        rangeTuplesAtPositions[lengths],
-        start, 1,
-        Replace[
-            Times @@ lengths,
-            {i_ /; i > cutOff :> DirectedInfinity[1]}
-        ],
-        step
+    Map[
+        {rangeTuplesAtPositions[lengths], Listable},
+        partitionedLazyRange[start, 1, partition]
     ]
 ];
 
@@ -93,15 +82,31 @@ Options[lazyTuples] = Options[indexLazyList];
 lazyTuples[
     elementLists_List | Hold[elementLists_Symbol],
     opts : OptionsPattern[]
-] /; MatchQ[elementLists, {{__}..}] := Map[
-    MapThread[
-        Part,
+] /; MatchQ[elementLists, {{__}..}] := With[{
+    lengths = Length /@ elementLists
+},
+    Map[
         {
-            elementLists,
-            #
-        }
-    ]&,
-    indexLazyList[Length /@ elementLists, opts]
+            Function[
+                If[ Min[Subtract[lengths, Max /@ #]] < 0,
+                    Append[
+                        Quiet @ Check[
+                            Part[##],
+                            Nothing
+                        ]& @@@ Transpose[#],
+                        lazyList[]
+                    ],
+                    Transpose[
+                        Developer`ToPackedArray[
+                            MapThread[Part, {elementLists, #}]
+                        ]
+                    ]
+                ]
+            ],
+            Listable
+        },
+        indexLazyList[lengths, opts]
+    ]
 ];
 
 lazyTuples[
@@ -118,10 +123,10 @@ lazyTuples[
     MatchQ[elementList, {__}],
     UnsameQ[elementList, Range @ Length @ elementList]
 ] := Map[
-    Part[
-        elementList,
-        #
-    ]&,
+    {
+        Transpose[Part[elementList, #]& /@ #]&,
+        Listable
+    },
     indexLazyList[ConstantArray[Length[elementList], tupLength], opts]
 ];
 
