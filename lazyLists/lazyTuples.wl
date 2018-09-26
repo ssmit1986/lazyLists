@@ -78,6 +78,61 @@ indexLazyList[lengths : {__Integer}, opts : OptionsPattern[]] := With[{
     ]
 ];
 
+(* 
+    Converts elements from 
+    Tuples[Range /@ elements /@ elementLists]
+    to elements from 
+    Tuples[elementLists]
+*)
+bulkExtractElementsUsingIndexList[elementLists_List | elementLists_Symbol | Hold[elementLists_Symbol]] := With[{
+    lengths = Length /@ elementLists
+},
+    Function[
+        If[ Min[Subtract[lengths, Max /@ #]] < 0,
+            Append[lazyList[]] @ Map[
+                Quiet @ Check[
+                    MapThread[
+                        Part,
+                        {elementLists, #}
+                    ],
+                    Nothing
+                ]&,
+                Transpose[#]
+            ],
+            Transpose[
+                Developer`ToPackedArray[
+                    MapThread[Part, {elementLists, #}]
+                ]
+            ]
+        ]
+    ]
+];
+
+(* 
+    Converts elements from 
+    Tuples[Range @ Length @ elementLists], tupLength]
+    to elements from 
+    Tuples[elementLists, tupLength]
+    Note that the tupLength argument only serves to distinguish the two use cases of bulkExtractElementsUsingIndexList
+*)
+
+bulkExtractElementsUsingIndexList[elementList_List | elementList_Symbol | Hold[elementList_Symbol], tupLength_Integer] := With[{
+    maxLenght = Length[elementList]
+},
+    Function[
+        If[ Max[#] > maxLenght,
+            Append[lazyList[]] @ Map[
+                Quiet @ Check[
+                    Part[elementList, #],
+                    Nothing
+                ]&,
+                Transpose[#]
+            ],
+            Transpose[Part[elementList, #]& /@ #]
+        ]
+    ]
+];
+
 Options[lazyTuples] = Options[indexLazyList];
 lazyTuples[
     elementLists_List | Hold[elementLists_Symbol],
@@ -87,36 +142,30 @@ lazyTuples[
 },
     Map[
         {
-            Function[
-                If[ Min[Subtract[lengths, Max /@ #]] < 0,
-                    Append[lazyList[]] @ Map[
-                        Quiet @ Check[
-                            MapThread[
-                                Part,
-                                {elementLists, #}
-                            ],
-                            Nothing
-                        ]&,
-                        Transpose[#]
-                    ],
-                    Transpose[
-                        Developer`ToPackedArray[
-                            MapThread[Part, {elementLists, #}]
-                        ]
-                    ]
-                ]
-            ],
+            bulkExtractElementsUsingIndexList[Unevaluated[elementLists]],
             Listable
         },
         indexLazyList[lengths, opts]
     ]
 ];
 
-lazyTuples[
-    elementList_List | Hold[elementList_Symbol],
-    tupLength_Integer?Positive,
-    opts : OptionsPattern[]
-] /; SameQ[elementList, Range @ Length @ elementList] := indexLazyList[ConstantArray[Length[elementList], tupLength], opts];
+(* Effectively equal to lazyTuples[Range /@ lengths] *)
+lazyTuples[lengths : {__Integer}, opts : OptionsPattern[]] := Map[
+    {
+        Function[
+            If[ Min[lengths - Max /@ #] < 0,
+                 Append[lazyList[]] @ Select[
+                     Transpose[#],
+                     Min[lengths - #] >= 0 &
+                 ],
+                 Transpose[#]
+            ]
+        ],
+        Listable
+    },
+    indexLazyList[lengths, opts]
+]
+
 
 lazyTuples[
     elementList_List | Hold[elementList_Symbol],
@@ -125,31 +174,36 @@ lazyTuples[
 ] /; And[
     MatchQ[elementList, {__}],
     UnsameQ[elementList, Range @ Length @ elementList]
-] := With[{
-    maxLenght = Length[elementList]
+] := Map[
+    {
+        bulkExtractElementsUsingIndexList[Unevaluated[elementList], tupLength],
+        Listable
+    },
+    indexLazyList[ConstantArray[Length[elementList], tupLength], opts]
+];
+
+(* If elementList is just a Range of integers, there's no need to look up the elements from elementList *)
+lazyTuples[
+    elementList_List | Hold[elementList_Symbol],
+    tupLength_Integer?Positive,
+    opts : OptionsPattern[]
+] /; SameQ[elementList, Range @ Length @ elementList] := With[{
+    maxIndex = Length[elementList]
 },
     Map[
         {
-            If[ Max[#] > maxLenght,
-                Append[lazyList[]] @ Map[
-                    Quiet @ Check[
-                        Part[elementList, #],
-                        Nothing
-                    ]&,
-                    Transpose[#]
-                ],
-                Transpose[Part[elementList, #]& /@ #]
-            ]&,
+            Function[
+                If[ Max[#] > maxIndex,
+                     Append[lazyList[]] @ Select[#, Max[#] <= maxIndex &],
+                     #
+                ]
+            ],
             Listable
         },
-        indexLazyList[ConstantArray[Length[elementList], tupLength], opts]
+        lazyTranspose[
+            indexLazyList[ConstantArray[Length[elementList], tupLength], opts]
+        ]
     ]
-];
-
-(* Effectively equal to lazyTuples[Range /@ lengths] *)
-lazyTuples[lengths : {__Integer}, opts : OptionsPattern[]] := Map[
-    {Transpose, Listable},
-    indexLazyList[lengths, opts]
 ];
 
 (*
@@ -178,50 +232,12 @@ nextIntegerTuple = Compile[{
 ];
 
 (* Generates all tuples of natural numbers of length tupLength *)
-lazyTuples[tupLength_Integer] := lazyNestList[
+lazyTuples[tupLength_Integer, staringTuple : ({__} | Automatic) : Automatic, opt : OptionsPattern[]] := partitionedLazyNestList[
     nextIntegerTuple,
-    ConstantArray[1, tupLength]
+    Replace[staringTuple, Automatic :> ConstantArray[1, tupLength]],
+    OptionValue["PartitionSize"]
 ];
 
-(* 
-    Converts elements from 
-    Tuples[Range /@ elements /@ elementLists]
-    to elements from 
-    Tuples[elementLists]
-*)
-bulkExtractElementsUsingIndexList[
-    elementLists_List | Hold[elementLists_Symbol],
-    indices_List | Hold[indices_Symbol]
-] /; And[
-    MatrixQ[indices, IntegerQ],
-    Length[elementLists] === Length[indices]
-] := Transpose[
-    Developer`ToPackedArray @ MapThread[
-        Part,
-        {
-            elementLists,
-            indices
-        }
-    ]
-];
-
-(* 
-    Converts elements from 
-    Tuples[Range @ Length @ elementLists], tupLength]
-    to elements from 
-    Tuples[elementLists, tupLength]
-*)
-bulkExtractElementsUsingIndexList[
-    elementList_List | Hold[elementList_Symbol],
-    indices_List | Hold[indices_Symbol],
-    tupLength_Integer
-] /; And[
-    MatrixQ[indices, IntegerQ],
-    tupLength === Dimensions[indices][[2]]
-] := Map[
-    elementList[[#]]&,
-    Developer`ToPackedArray[indices]
-];
 
 End[]
 

@@ -460,6 +460,10 @@ lazyMapThread[fun_, lists : {partitionedLazyList[_, _]..}] := With[{
 ];
 
 lazyTranspose[lists : {partitionedLazyList[_, _]..}] := lazyMapThread[List, lists];
+lazyTranspose[
+    lz : partitionedLazyList[lists : {{___}..}, _]
+] /; SameQ @@ (Length /@ lists) := Map[{Transpose, Listable}, lz];
+
 
 (* Default failure messages for Take and Part *)
 partitionedLazyList::take = "Cannot take `1` in `2`";
