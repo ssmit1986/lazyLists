@@ -64,7 +64,13 @@ lazyList[Nothing, tail_] := tail;
 lazyList[list_List] := lazyFiniteList[list, 1];
 
 Attributes[lazyFiniteList] = {HoldFirst};
-lazyList[Hold[list_Symbol]] := lazyFiniteList[list, 1];
+lazyList::noList = "Symbol `1` is not a list";
+
+lazyList[Hold[list_Symbol]] /; ListQ[list] := lazyFiniteList[list, 1];
+lazyList[Hold[list_Symbol]] /; !ListQ[list] := (
+    Message[lazyList::noList, HoldForm[list]];
+    lazyList[]
+);
 
 With[{
     msgs = {Part::partw}
@@ -82,21 +88,21 @@ With[{
 
 lazyList::notFinite = "lazyList `1` cannot be recognised as a finite list";
 
-lazyFinitePart[lazyList[_, (lazyFiniteList | lazyPeriodicListInternal)[list_, __]], spec__] := Part[list, spec];
-lazyFinitePart[l_lazyList, _] := (Message[lazyList::notFinite, Short[l]]; $Failed);
+lazyFinitePart[lzHead[_, (lazyFiniteList | lazyPeriodicListInternal)[list_, __]], spec__] := Part[list, spec];
+lazyFinitePart[lz : lzPattern, _] := (Message[lazyList::notFinite, Short[lz]]; $Failed);
 
-lazyFiniteTake[lazyList[_, (lazyFiniteList | lazyPeriodicListInternal)[list_, __]], spec_] := Take[list, spec];
-lazyFiniteTake[l_lazyList, _] := (Message[lazyList::notFinite, Short[l]]; $Failed);
+lazyFiniteTake[lzHead[_, (lazyFiniteList | lazyPeriodicListInternal)[list_, __]], spec_] := Take[list, spec];
+lazyFiniteTake[lz : lzPattern, _] := (Message[lazyList::notFinite, Short[lz]]; $Failed);
 
-lazySetState[lazyList[_, l : lazyFiniteList[list_, _]], index_Integer] /; 0 < index <= Length[list] :=
-    lazyFiniteList[list, index];
+lazySetState[lzHead[_, lazyFiniteList[list_, _, rest___]], index_Integer] /; 0 < index <= Length[list] :=
+    lazyFiniteList[list, index, rest];
 
-lazySetState[l : lazyList[_, lazyFiniteList[list_, _]], index_Integer] /; -Length[list] <= index < 0 := 
-    lazySetState[l, index + Length[list] + 1];
+lazySetState[lzHead[_, lazyFiniteList[list_, _, rest___]], index_Integer] /; -Length[list] <= index < 0 := 
+    lazyFiniteList[list, index + Length[list] + 1, rest];
 
-lazySetState[l : lazyList[_, lazyFiniteList[list_, _]], index_Integer] := (
-    Message[Part::partw, index, Short[l]];
-    l
+lazySetState[lz : lzHead[_, lazyFiniteList[list_, _, ___]], index_Integer] := (
+    Message[Part::partw, index, Short[lz]];
+    lz
 );
 
 lazyGenerator::badSpec = "Cannot create lazyGenerator with specifications `1`. Empty lazyList was returned";
@@ -230,18 +236,14 @@ lazyConstantArray[const_] := Function[
 Attributes[lazyPeriodicListInternal] = {HoldFirst};
 lazyPeriodicListInternal[list_, i_, max_] := lazyList[
     list[[i]],
-    lazyPeriodicListInternal[list, Mod[i, max] + 1, max]
+    lazyPeriodicListInternal[list, Mod[i + 1, max, 1], max]
 ];
 
-lazyPeriodicList[list_List] := Module[{
-    listVar = list
-},
-    lazyPeriodicList[Hold[listVar]]
-];
-lazyPeriodicList[Hold[list_Symbol]] := lazyPeriodicListInternal[list, 1, Length[list]];
+lazyPeriodicList[Hold[list_Symbol] | list_List] := lazyPeriodicListInternal[list, 1, Length[list]];
+lazyPeriodicList[Hold[list_Symbol] | list_List, part_Integer?Positive] := lazyPeriodicListInternal[list, 1, Length[list], part];
 
-lazySetState[lazyList[_, lazyPeriodicListInternal[list_, _, max_]], index_Integer] := 
-    lazyPeriodicListInternal[list, Mod[index - UnitStep[index], max] + 1, max];
+lazySetState[lzHead[_, lazyPeriodicListInternal[list_, _, max_, rest___]], index_Integer] := 
+    lazyPeriodicListInternal[list, Mod[index  + 1 - UnitStep[index], max, 1], max, rest];
 
 lazySetState::notSupported = "lazySetState is not supported for lazyList `1`";
 lazySetState[l_lazyList, _] := (Message[lazySetState::notSupported, Short[l]]; l)

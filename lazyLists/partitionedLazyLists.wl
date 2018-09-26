@@ -24,6 +24,7 @@ partitionedLazyList::cannotPartition = "Cannot partition lazyList `1` because no
 Attributes[partitionedLazyList] = {HoldRest};
 partitionedLazyList[] := lazyList[];
 partitionedLazyList[lazyList[], ___] := lazyList[];
+partitionedLazyList[{Shortest[first___], lazyList[]..}, ___] := partitionedLazyList[{first}, lazyList[]];
 partitionedLazyList[$Failed] := $Failed;
 partitionedLazyList[lz : lazyList[Except[_List], _]] := (
     Message[partitionedLazyList::cannotPartition, Short[lz]];
@@ -62,10 +63,52 @@ partitionedLazyNestList[fun_, elem_, partition_Integer?Positive] := Function[
     ]
 ][elem, 1];
 
-lazyPartition[lazyList[], ___] := lazyList[];
-lazyPartition[lz : lzPattern, n_Integer?Positive] := Replace[
-    Take[lz, n],
-    (lazyList | partitionedLazyList)[list_List, tail_] :> partitionedLazyList[list, lazyPartition[tail, n]]
+lazyPartition[lazyList[] | {}, ___] := lazyList[];
+lazyPartition[lzHead[_, lazyFiniteList[list_, ind_, p0 : _Integer : 1]], newPart_Integer?Positive] :=
+    lazyFiniteList[list, ind - p0, newPart];
+lazyPartition[lzHead[_, lazyPeriodicListInternal[list_, ind_, max_, p0 : _Integer : 1]], newPart_Integer?Positive] :=
+    lazyPeriodicListInternal[list, ind - p0, max, newPart];
+
+lazyPartition[lz : lzPattern, partition_Integer?Positive] := Replace[
+    Take[lz, partition],
+    (lazyList | partitionedLazyList)[list_List, tail_] :> partitionedLazyList[list, lazyPartition[tail, partition]]
+];
+lazyPartition[list_List, partition_Integer?Positive] := With[{
+    rest = Drop[list, UpTo[partition]]
+},
+    partitionedLazyList[
+        Take[list, UpTo[partition]],
+        lazyPartition[rest, partition]
+    ]
+];
+
+With[{
+    msgs = {Take::take, Take::normal}
+},
+    lazyFiniteList[list_, ind_, partition_] := Quiet[
+        Check[
+            partitionedLazyList[
+                Take[list, {ind, UpTo[ind + partition - 1]}],
+                lazyFiniteList[list, ind + partition, partition]
+            ],
+            lazyList[],
+            msgs
+        ],
+        msgs
+    ]
+];
+
+lazyPartition[Hold[list_Symbol], n_Integer?Positive] /; ListQ[list] := partitionedLazyList[
+    Take[list, UpTo[n]],
+    lazyFiniteList[list, n + 1, n]
+];
+
+lazyPeriodicListInternal[list_, i_, max_, part_] := partitionedLazyList[
+    Part[
+        list,
+        Mod[Range[i, i + part - 1], max, 1]
+    ],
+    lazyPeriodicListInternal[list, Mod[i + part, max, 1], max, part]
 ];
 
 parseTakeSpec[n : (_Integer?Positive | All)] := {1, n, 1};
@@ -208,13 +251,16 @@ partitionedLazyList /: Take[
     1
 ];
 
+partitionedLazyList /: Part[_partitionedLazyList, {0} | 0] := partitionedLazyList;
 partitionedLazyList /: Part[partLz_partitionedLazyList, 1] := First[partLz];
-partitionedLazyList /: Part[partLz : partitionedLazyList[{_, ___}, _], {1}] := partLz;
+partitionedLazyList /: Part[partLz_partitionedLazyList, {1}] := partLz;
 partitionedLazyList /: Part[partLz_partitionedLazyList, n_Integer?Positive] := First[Part[partLz, {n}], $Failed];
+partitionedLazyList /: Part[partitionedLazyList[list : {_, ___}, tail_], {n_Integer?Positive}] /; n <= Length[list] :=
+    partitionedLazyList[Drop[list, n - 1], tail];
 
 partitionedLazyList /: Part[partLz_partitionedLazyList, span_Span] := Take[partLz, List @@ span];
 
-partitionedLazyList /: Part[partLz : partitionedLazyList[_List, _], {n : _Integer?Positive}] := Catch[
+partitionedLazyList /: Part[partLz : partitionedLazyList[_List, _], {n_Integer?Positive}] := Catch[
     Block[{
         $IterationLimit = $lazyIterationLimit,
         count = n,
@@ -414,6 +460,10 @@ lazyMapThread[fun_, lists : {partitionedLazyList[_, _]..}] := With[{
 ];
 
 lazyTranspose[lists : {partitionedLazyList[_, _]..}] := lazyMapThread[List, lists];
+lazyTranspose[
+    lz : partitionedLazyList[lists : {{___}..}, _]
+] /; SameQ @@ (Length /@ lists) := Map[{Transpose, Listable}, lz];
+
 
 (* Default failure messages for Take and Part *)
 partitionedLazyList::take = "Cannot take `1` in `2`";

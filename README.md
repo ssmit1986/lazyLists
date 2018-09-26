@@ -43,3 +43,6 @@ See lazyLists.nb for details and examples.
 	* Add `lazyMapThread` and `lazyCatenate` for `partitionedLazyList`.
 	* Add `lazyPartition`, which can be used to make a `partitionedLazyList` out of any normal `lazyList`.
 	* Implement pseudo-listability for `partitionedLazyList`.
+* 26 September 2018
+	* Various updates to `partitionedLazyList` to bring it more in line with ordinary `lazyList`.
+	* Re-implement `lazyTuples` using `partitionedLazyList` to make tuples generation significantly faster.
