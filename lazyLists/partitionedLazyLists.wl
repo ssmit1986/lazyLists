@@ -239,9 +239,12 @@ partitionedLazyList /: Take[
     1
 ];
 
+partitionedLazyList /: Part[_partitionedLazyList, {0} | 0] := partitionedLazyList;
 partitionedLazyList /: Part[partLz_partitionedLazyList, 1] := First[partLz];
-partitionedLazyList /: Part[partLz : partitionedLazyList[{_, ___}, _], {1}] := partLz;
+partitionedLazyList /: Part[partLz_partitionedLazyList, {1}] := partLz;
 partitionedLazyList /: Part[partLz_partitionedLazyList, n_Integer?Positive] := First[Part[partLz, {n}], $Failed];
+partitionedLazyList /: Part[partitionedLazyList[list : {_, ___}, tail_], {n_Integer?Positive}] /; n <= Length[list] :=
+    partitionedLazyList[Drop[list, n - 1], tail];
 
 partitionedLazyList /: Part[partLz_partitionedLazyList, span_Span] := Take[partLz, List @@ span];
 
