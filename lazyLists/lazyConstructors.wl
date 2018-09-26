@@ -64,7 +64,13 @@ lazyList[Nothing, tail_] := tail;
 lazyList[list_List] := lazyFiniteList[list, 1];
 
 Attributes[lazyFiniteList] = {HoldFirst};
-lazyList[Hold[list_Symbol]] := lazyFiniteList[list, 1];
+lazyList::noList = "Symbol `1` is not a list";
+
+lazyList[Hold[list_Symbol]] /; ListQ[list] := lazyFiniteList[list, 1];
+lazyList[Hold[list_Symbol]] /; !ListQ[list] := (
+    Message[lazyList::noList, HoldForm[list]];
+    lazyList[]
+);
 
 With[{
     msgs = {Part::partw}

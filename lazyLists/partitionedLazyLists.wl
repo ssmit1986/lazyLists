@@ -76,6 +76,27 @@ lazyPartition[list_List, n_Integer?Positive] := With[{
     ]
 ];
 
+lazyPartition[Hold[list_Symbol], n_Integer?Positive] /; ListQ[list] := partitionedLazyList[
+    Take[list, UpTo[n]],
+    lazyPartition[Hold[Drop[list, UpTo[n]]], n]
+];
+
+With[{
+    msgs = {Take::take, Take::normal}
+},
+    lazyPartition[Hold[Drop[list_Symbol, UpTo[m_]]], n_] := With[{
+        ind = m + n
+    },
+        partitionedLazyList[
+            Quiet[
+                Check[Take[list, {m + 1, UpTo[m + n]}], lazyList[], msgs],
+                msgs
+            ],
+            lazyPartition[Hold[Drop[list, UpTo[ind]]], n]
+        ]
+    ]
+]
+
 parseTakeSpec[n : (_Integer?Positive | All)] := {1, n, 1};
 parseTakeSpec[{m_Integer?Positive, n_Integer?Positive}] := Append[Sort[{m, n}], 1];
 parseTakeSpec[{m_Integer?Positive, All}] := {m, All, 1};
