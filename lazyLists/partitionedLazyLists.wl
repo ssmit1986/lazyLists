@@ -63,56 +63,41 @@ partitionedLazyNestList[fun_, elem_, partition_Integer?Positive] := Function[
 ][elem, 1];
 
 lazyPartition[lazyList[] | {}, ___] := lazyList[];
-lazyPartition[lz : lzPattern, n_Integer?Positive] := Replace[
-    Take[lz, n],
-    (lazyList | partitionedLazyList)[list_List, tail_] :> partitionedLazyList[list, lazyPartition[tail, n]]
+lazyPartition[lzHead[_, lazyFiniteList[list_, ind_, p0 : _Integer : 1]], newPart_Integer?Positive] :=
+    lazyFiniteList[list, ind - p0, newPart];
+lazyPartition[lz : lzPattern, partition_Integer?Positive] := Replace[
+    Take[lz, partition],
+    (lazyList | partitionedLazyList)[list_List, tail_] :> partitionedLazyList[list, lazyPartition[tail, partition]]
 ];
-lazyPartition[list_List, n_Integer?Positive] := With[{
-    rest = Drop[list, UpTo[n]]
+lazyPartition[list_List, partition_Integer?Positive] := With[{
+    rest = Drop[list, UpTo[partition]]
 },
     partitionedLazyList[
-        Take[list, UpTo[n]],
-        lazyPartition[rest, n]
+        Take[list, UpTo[partition]],
+        lazyPartition[rest, partition]
     ]
-];
-
-lazyPartition[Hold[list_Symbol], n_Integer?Positive] /; ListQ[list] := partitionedLazyList[
-    Take[list, UpTo[n]],
-    lazyPartition[Hold[Drop[list, UpTo[n]]], n]
 ];
 
 With[{
     msgs = {Take::take, Take::normal}
 },
-    lazyPartition[Hold[Drop[list_Symbol, UpTo[m_]]], n_] := With[{
-        ind = m + n
-    },
-        partitionedLazyList[
-            Quiet[
-                Check[Take[list, {m + 1, UpTo[m + n]}], lazyList[], msgs],
-                msgs
+    lazyFiniteList[list_, ind_, partition_] := Quiet[
+        Check[
+            partitionedLazyList[
+                Take[list, {ind, UpTo[ind + partition - 1]}],
+                lazyFiniteList[list, ind + partition, partition]
             ],
-            lazyPartition[Hold[Drop[list, UpTo[ind]]], n]
-        ]
+            lazyList[],
+            msgs
+        ],
+        msgs
     ]
 ];
-lazySetState[
-    partitionedLazyList[_List, lazyPartition[Hold[Drop[list_Symbol, _]], partition_Integer]],
-    newInd_Integer
-] /; 1 <= newInd <= Length[list] := lazyPartition[Hold[Drop[list, UpTo[newInd - 1]]], partition];
 
-lazySetState[
-    partitionedLazyList[_List, lazyPartition[Hold[Drop[list_Symbol, _]], partition_Integer]],
-    newInd_Integer
-] /; -Length[list] <= newInd < 0 := lazyPartition[Hold[Drop[list, UpTo[Length[list] + newInd]]], partition];
-
-lazySetState[
-    lz : partitionedLazyList[_List, lazyPartition[Hold[Drop[sym_Symbol, _]], _Integer]],
-    newInd_Integer
-] := (
-    Message[Part::partw, newInd, HoldForm[sym]];
-    lz
-);
+lazyPartition[Hold[list_Symbol], n_Integer?Positive] /; ListQ[list] := partitionedLazyList[
+    Take[list, UpTo[n]],
+    lazyFiniteList[list, n + 1, n]
+];
 
 parseTakeSpec[n : (_Integer?Positive | All)] := {1, n, 1};
 parseTakeSpec[{m_Integer?Positive, n_Integer?Positive}] := Append[Sort[{m, n}], 1];
