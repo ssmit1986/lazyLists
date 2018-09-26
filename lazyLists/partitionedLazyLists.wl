@@ -95,7 +95,24 @@ With[{
             lazyPartition[Hold[Drop[list, UpTo[ind]]], n]
         ]
     ]
-]
+];
+lazySetState[
+    partitionedLazyList[_List, lazyPartition[Hold[Drop[list_Symbol, _]], partition_Integer]],
+    newInd_Integer
+] /; 1 <= newInd <= Length[list] := lazyPartition[Hold[Drop[list, UpTo[newInd - 1]]], partition];
+
+lazySetState[
+    partitionedLazyList[_List, lazyPartition[Hold[Drop[list_Symbol, _]], partition_Integer]],
+    newInd_Integer
+] /; -Length[list] <= newInd < 0 := lazyPartition[Hold[Drop[list, UpTo[Length[list] + newInd]]], partition];
+
+lazySetState[
+    lz : partitionedLazyList[_List, lazyPartition[Hold[Drop[sym_Symbol, _]], _Integer]],
+    newInd_Integer
+] := (
+    Message[Part::partw, newInd, HoldForm[sym]];
+    lz
+);
 
 parseTakeSpec[n : (_Integer?Positive | All)] := {1, n, 1};
 parseTakeSpec[{m_Integer?Positive, n_Integer?Positive}] := Append[Sort[{m, n}], 1];
