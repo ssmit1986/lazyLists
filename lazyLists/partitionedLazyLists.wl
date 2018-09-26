@@ -65,6 +65,9 @@ partitionedLazyNestList[fun_, elem_, partition_Integer?Positive] := Function[
 lazyPartition[lazyList[] | {}, ___] := lazyList[];
 lazyPartition[lzHead[_, lazyFiniteList[list_, ind_, p0 : _Integer : 1]], newPart_Integer?Positive] :=
     lazyFiniteList[list, ind - p0, newPart];
+lazyPartition[lzHead[_, lazyPeriodicListInternal[list_, ind_, max_, p0 : _Integer : 1]], newPart_Integer?Positive] :=
+    lazyPeriodicListInternal[list, ind - p0, max, newPart];
+
 lazyPartition[lz : lzPattern, partition_Integer?Positive] := Replace[
     Take[lz, partition],
     (lazyList | partitionedLazyList)[list_List, tail_] :> partitionedLazyList[list, lazyPartition[tail, partition]]
@@ -97,6 +100,14 @@ With[{
 lazyPartition[Hold[list_Symbol], n_Integer?Positive] /; ListQ[list] := partitionedLazyList[
     Take[list, UpTo[n]],
     lazyFiniteList[list, n + 1, n]
+];
+
+lazyPeriodicListInternal[list_, i_, max_, part_] := partitionedLazyList[
+    Part[
+        list,
+        Mod[Range[i, i + part - 1], max, 1]
+    ],
+    lazyPeriodicListInternal[list, Mod[i + part, max, 1], max, part]
 ];
 
 parseTakeSpec[n : (_Integer?Positive | All)] := {1, n, 1};

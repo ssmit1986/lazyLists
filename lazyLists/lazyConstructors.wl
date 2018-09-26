@@ -236,18 +236,14 @@ lazyConstantArray[const_] := Function[
 Attributes[lazyPeriodicListInternal] = {HoldFirst};
 lazyPeriodicListInternal[list_, i_, max_] := lazyList[
     list[[i]],
-    lazyPeriodicListInternal[list, Mod[i, max] + 1, max]
+    lazyPeriodicListInternal[list, Mod[i + 1, max, 1], max]
 ];
 
-lazyPeriodicList[list_List] := Module[{
-    listVar = list
-},
-    lazyPeriodicList[Hold[listVar]]
-];
-lazyPeriodicList[Hold[list_Symbol]] := lazyPeriodicListInternal[list, 1, Length[list]];
+lazyPeriodicList[Hold[list_Symbol] | list_List] := lazyPeriodicListInternal[list, 1, Length[list]];
+lazyPeriodicList[Hold[list_Symbol] | list_List, part_Integer?Positive] := lazyPeriodicListInternal[list, 1, Length[list], part];
 
-lazySetState[lazyList[_, lazyPeriodicListInternal[list_, _, max_]], index_Integer] := 
-    lazyPeriodicListInternal[list, Mod[index - UnitStep[index], max] + 1, max];
+lazySetState[lzHead[_, lazyPeriodicListInternal[list_, _, max_, rest___]], index_Integer] := 
+    lazyPeriodicListInternal[list, Mod[index  + 1 - UnitStep[index], max, 1], max, rest];
 
 lazySetState::notSupported = "lazySetState is not supported for lazyList `1`";
 lazySetState[l_lazyList, _] := (Message[lazySetState::notSupported, Short[l]]; l)
