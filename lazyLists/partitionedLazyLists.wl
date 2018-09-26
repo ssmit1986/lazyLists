@@ -24,6 +24,7 @@ partitionedLazyList::cannotPartition = "Cannot partition lazyList `1` because no
 Attributes[partitionedLazyList] = {HoldRest};
 partitionedLazyList[] := lazyList[];
 partitionedLazyList[lazyList[], ___] := lazyList[];
+partitionedLazyList[{Shortest[first___], lazyList[]..}, ___] := partitionedLazyList[{first}, lazyList[]];
 partitionedLazyList[$Failed] := $Failed;
 partitionedLazyList[lz : lazyList[Except[_List], _]] := (
     Message[partitionedLazyList::cannotPartition, Short[lz]];

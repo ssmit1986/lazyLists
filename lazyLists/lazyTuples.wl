@@ -64,7 +64,7 @@ rangeTuplesAtPositions[lengths : {__Integer}] := decompose[basis[lengths]];
 
 (* lazyList that generates the elements of Tuples[Range /@ lengths] *)
 Options[indexLazyList] = {
-    "PartitionSize" -> 1,
+    "PartitionSize" -> 10,
     "Start" -> 1
 };
 
@@ -89,12 +89,15 @@ lazyTuples[
         {
             Function[
                 If[ Min[Subtract[lengths, Max /@ #]] < 0,
-                    Append[
+                    Append[lazyList[]] @ Map[
                         Quiet @ Check[
-                            Part[##],
+                            MapThread[
+                                Part,
+                                {elementLists, #}
+                            ],
                             Nothing
-                        ]& @@@ Transpose[#],
-                        lazyList[]
+                        ]&,
+                        Transpose[#]
                     ],
                     Transpose[
                         Developer`ToPackedArray[
@@ -122,16 +125,32 @@ lazyTuples[
 ] /; And[
     MatchQ[elementList, {__}],
     UnsameQ[elementList, Range @ Length @ elementList]
-] := Map[
-    {
-        Transpose[Part[elementList, #]& /@ #]&,
-        Listable
-    },
-    indexLazyList[ConstantArray[Length[elementList], tupLength], opts]
+] := With[{
+    maxLenght = Length[elementList]
+},
+    Map[
+        {
+            If[ Max[#] > maxLenght,
+                Append[lazyList[]] @ Map[
+                    Quiet @ Check[
+                        Part[elementList, #],
+                        Nothing
+                    ]&,
+                    Transpose[#]
+                ],
+                Transpose[Part[elementList, #]& /@ #]
+            ]&,
+            Listable
+        },
+        indexLazyList[ConstantArray[Length[elementList], tupLength], opts]
+    ]
 ];
 
 (* Effectively equal to lazyTuples[Range /@ lengths] *)
-lazyTuples[lengths : {__Integer}, opts : OptionsPattern[]] := indexLazyList[lengths, opts];
+lazyTuples[lengths : {__Integer}, opts : OptionsPattern[]] := Map[
+    {Transpose, Listable},
+    indexLazyList[lengths, opts]
+];
 
 (*
     Modify the function Combinatorica`Private`NC from Combinatorica, which is a compiled function that underlies NextComposition from that package.
@@ -175,13 +194,13 @@ bulkExtractElementsUsingIndexList[
     indices_List | Hold[indices_Symbol]
 ] /; And[
     MatrixQ[indices, IntegerQ],
-    Length[elementLists] === Dimensions[indices][[2]]
+    Length[elementLists] === Length[indices]
 ] := Transpose[
     Developer`ToPackedArray @ MapThread[
         Part,
         {
             elementLists,
-            Transpose[Developer`ToPackedArray[indices]]
+            indices
         }
     ]
 ];
