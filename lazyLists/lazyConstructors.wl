@@ -47,6 +47,7 @@ lazyPeriodicList::usage = "lazyPeriodicList[list] is an infinite lazyList that c
 $lazyIterationLimit::usage = "Iteration limit used for finding successive elements in a lazy list";
 
 emptyLazyListQ::usage = "emptyLazyListQ tests if an expression is equal to lazyList[]";
+endOfLazyList::usage = "A special token that will terminate any lazyList whenever it is encountered";
 
 Begin["`Private`"]
 (* Implementation of the package *)
@@ -62,6 +63,8 @@ Attributes[lazyList] = {HoldRest};
 lazyList[{}] := lazyList[];
 lazyList[Nothing, tail_] := tail;
 lazyList[list_List] := lazyFiniteList[list, 1];
+lazyList[endOfLazyList, ___] := lazyList[]
+
 
 Attributes[lazyFiniteList] = {HoldFirst};
 lazyList::noList = "Symbol `1` is not a list";

@@ -88,7 +88,7 @@ bulkExtractElementsUsingIndexList[elementLists_List | elementLists_Symbol | Hold
 },
     Function[
         If[ Min[Subtract[lengths, Max /@ #]] < 0,
-            Append[lazyList[]] @ Map[
+            Append[endOfLazyList] @ Map[
                 Quiet @ Check[
                     MapThread[
                         Part,
@@ -120,7 +120,7 @@ bulkExtractElementsUsingIndexList[elementList_List | elementList_Symbol | Hold[e
 },
     Function[
         If[ Max[#] > maxLenght,
-            Append[lazyList[]] @ Map[
+            Append[endOfLazyList] @ Map[
                 Quiet @ Check[
                     Part[elementList, #],
                     Nothing
@@ -153,7 +153,7 @@ lazyTuples[lengths : {__Integer}, opts : OptionsPattern[]] := Map[
     {
         Function[
             If[ Min[lengths - Max /@ #] < 0,
-                 Append[lazyList[]] @ Select[
+                 Append[endOfLazyList] @ Select[
                      Transpose[#],
                      Min[lengths - #] >= 0 &
                  ],
@@ -193,7 +193,7 @@ lazyTuples[
         {
             Function[
                 If[ Max[#] > maxIndex,
-                     Append[lazyList[]] @ Select[#, Max[#] <= maxIndex &],
+                     Append[endOfLazyList] @ Select[#, Max[#] <= maxIndex &],
                      #
                 ]
             ],
