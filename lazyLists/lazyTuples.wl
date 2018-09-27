@@ -47,12 +47,11 @@ decompose[base : {__Integer}] := (
     },
         Function[
             Block[{ (* Block is faster than Module *)
-                c = Subtract[#, 1],
-                q
+                qr = Transpose[{#, Subtract[#, 1]}]
             },
                 1 + Table[
-                    {q, c} = Transpose @ QuotientRemainder[c, i];
-                    q,
+                    qr = QuotientRemainder[qr[[All, 2]], i];
+                    qr[[All, 1]],
                     {i, baseVar}
                 ]
             ]
