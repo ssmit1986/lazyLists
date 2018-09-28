@@ -30,13 +30,22 @@ lazyCatenate[lazyList[arg : Except[_List | _lazyList], _]] := (Message[lazyCaten
 
 (* Default failure messages for Take and Part *)
 
-lazyList::illDefined = "lazyList `1` is not well-defined";
 Scan[
-    Function[
-        lazyList /: Alternatives[Part, Take, TakeWhile, partWhile, LengthWhile][lz : #, ___] := (Message[lazyList::illDefined, Short[lz]]; $Failed) 
+    Function[{
+        head
+    },
+        head::illDefined = "lazyList `1` is not well-defined";
+        Scan[
+            Function[
+                head /: Alternatives[Part, Take, TakeWhile, partWhile, LengthWhile][lz : #, ___] :=
+                    (Message[head::illDefined, Short[lz]]; $Failed) 
+            ],
+            {head[_], head[_, _, __]}
+        ]
     ],
-    {lzHead[_], lzHead[_, _, __]}
+    {lazyList, partitionedLazyList}
 ];
+
 
 lazyList::take = "Cannot take `1` in `2`";
 lazyList /: Take[lz_lazyList, spec_, ___] := (Message[lazyList::take, spec, Short[lz]]; lazyList[]);

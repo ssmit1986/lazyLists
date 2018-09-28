@@ -136,26 +136,26 @@ partitionedLazyList /: Take[
     ] /; Length[list] >= maxIndex
 ];
 
-partitionedLazyList /: Take[lz_partitionedLazyList, {m_Integer?Positive, n_Integer?Positive, step : _Integer : 1}] /; n < m := Replace[
+partitionedLazyList /: Take[lz : validPartitionedLazyListPattern, {m_Integer?Positive, n_Integer?Positive, step : _Integer : 1}] /; n < m := Replace[
     Take[lz, parseTakeSpec[{m, n, step}]],
     {
         partitionedLazyList[list_List, rest_] :> partitionedLazyList[Reverse[list], rest]
     }
 ];
 
-partitionedLazyList /: Take[lz_partitionedLazyList, spec_] := With[{
+partitionedLazyList /: Take[lz : validPartitionedLazyListPattern, spec_] := With[{
     parsedSpec = parseTakeSpec[spec]
 },
     Take[lz, parsedSpec] /; parsedSpec =!= $Failed && parsedSpec =!= spec
 ];
 
 partitionedLazyList /: Take[
-    lz_partitionedLazyList,
+    lz : validPartitionedLazyListPattern,
     {start : Except[1, (_Integer?Positive)], stop : (_Integer?Positive | All), step_Integer?Positive}
 ] := With[{
     advancedLz = Quiet[Part[lz, {start}], {Part::partw}]
 },
-    If[ MatchQ[advancedLz, partitionedLazyList[_List, _]],
+    If[ MatchQ[advancedLz, validPartitionedLazyListPattern],
         Take[
             advancedLz, 
             {
@@ -169,7 +169,7 @@ partitionedLazyList /: Take[
 ];
 
 partitionedLazyList /: Take[
-    partLz : partitionedLazyList[_List, _],
+    partLz : validPartitionedLazyListPattern,
     {1, n : (_Integer?Positive | All), step_Integer?Positive}
 ] := partitionedLazyList @@ MapAt[
     Catenate[First[#, {}]]&,
@@ -252,15 +252,15 @@ partitionedLazyList /: Take[
 ];
 
 partitionedLazyList /: Part[_partitionedLazyList, {0} | 0] := partitionedLazyList;
-partitionedLazyList /: Part[partLz_partitionedLazyList, 1] := First[partLz];
-partitionedLazyList /: Part[partLz_partitionedLazyList, {1}] := partLz;
-partitionedLazyList /: Part[partLz_partitionedLazyList, n_Integer?Positive] := First[Part[partLz, {n}], $Failed];
+partitionedLazyList /: Part[partLz : validPartitionedLazyListPattern, 1] := First[partLz];
+partitionedLazyList /: Part[partLz : validPartitionedLazyListPattern, {1}] := partLz;
+partitionedLazyList /: Part[partLz : validPartitionedLazyListPattern, n_Integer?Positive] := First[Part[partLz, {n}], $Failed];
 partitionedLazyList /: Part[partitionedLazyList[list : {_, ___}, tail_], {n_Integer?Positive}] /; n <= Length[list] :=
     partitionedLazyList[Drop[list, n - 1], tail];
 
-partitionedLazyList /: Part[partLz_partitionedLazyList, span_Span] := Take[partLz, List @@ span];
+partitionedLazyList /: Part[partLz : validPartitionedLazyListPattern, span_Span] := Take[partLz, List @@ span];
 
-partitionedLazyList /: Part[partLz : partitionedLazyList[_List, _], {n_Integer?Positive}] := Catch[
+partitionedLazyList /: Part[partLz : validPartitionedLazyListPattern, {n_Integer?Positive}] := Catch[
     Block[{
         $IterationLimit = $lazyIterationLimit,
         count = n,
@@ -298,7 +298,7 @@ partitionedLazyList /: Part[partLz : partitionedLazyList[_List, _], {n_Integer?P
     "partPartitioned"
 ];
 
-partitionedLazyList /: Part[l : _partitionedLazyList, indices : {_Integer, __Integer}] /; VectorQ[indices, Positive]:= Catch[
+partitionedLazyList /: Part[lz : validPartitionedLazyListPattern, indices : {_Integer, __Integer}] /; VectorQ[indices, Positive]:= Catch[
     Module[{
         sortedIndices = Sort[indices],
         eval
@@ -313,7 +313,7 @@ partitionedLazyList /: Part[l : _partitionedLazyList, indices : {_Integer, __Int
                             eval (* and return the lazyList to the next iteration *)
                         }
                     ],
-                    l,
+                    lz,
                     Prepend[Differences[sortedIndices] + 1, First[sortedIndices]]
                 ],
                 Ordering[indices]

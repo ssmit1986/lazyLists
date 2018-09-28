@@ -55,6 +55,8 @@ Begin["`Private`"]
 lzPattern = _lazyList | _partitionedLazyList;
 lzHead = lazyList | partitionedLazyList;
 emptyLazyListQ = Function[# === lazyList[]];
+validLazyListPattern = lazyList[_, _];
+validPartitionedLazyListPattern = partitionedLazyList[_List, _];
 
 $lazyIterationLimit = Infinity;
 
@@ -166,7 +168,7 @@ With[{ (* pattern needs to be With'ed in because of the HoldRest attribute of la
     ] := Replace[
         Check[gen[f, state, rest], $Failed],
         {
-            Except[lazyList[_, _]] :> (Message[Part::partw, state, Short[l]]; l)
+            Except[validLazyListPattern] :> (Message[Part::partw, state, Short[l]]; l)
         }
     ]
 ];
@@ -265,7 +267,7 @@ lazyMapThread[f_, lists : {___, _List, ___}] := lazyMapThread[
     ]
 ]
 
-lazyMapThread[f_, lists : {lazyList[_, _]..}] := lazyList[
+lazyMapThread[f_, lists : {validLazyListPattern..}] := lazyList[
     f[lists[[All, 1]]],
     lazyMapThread[f, lists[[All, 2]]]
 ];
