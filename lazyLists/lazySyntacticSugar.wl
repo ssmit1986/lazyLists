@@ -3,7 +3,6 @@
 BeginPackage["lazyLists`"]
 (* Exported symbols added here with SymbolName::usage *) 
 
-partWhile::usage = "partWhile[lz, test] gives lazyList[elem, tail], with elem the last element in lz that passes test";
 lazyCatenate::usage = "lazyCatenate catenates lists of lazyLists, lazyLists of lists and lazyLists of lazyLists into one lazyList";
 
 setLazyListable::usage = "setLazyListable[sym] sets UpValues to lazyList that ensure that sym threads over lazyLists. 
@@ -82,7 +81,7 @@ Scan[
 ];
 
 (* Elements from lazyLists are extracted by repeatedly evaluating the next element and sowing the results *)
-lazyList /: Take[l : validLazyListPattern, n_Integer?Positive] := ReleaseHold[
+lazyList /: Take[lz : validLazyListPattern, n_Integer?Positive] := ReleaseHold[
     lazyList @@ MapAt[
         First[#, {}]&,
         Reverse @ Reap[
@@ -90,7 +89,7 @@ lazyList /: Take[l : validLazyListPattern, n_Integer?Positive] := ReleaseHold[
                 Quiet[
                     Block[{$IterationLimit = $lazyIterationLimit},
                         ReplaceRepeated[
-                            l,
+                            lz,
                             {
                                 lazyList[first_, tail_] :> (Sow[first, "take"]; tail)
                             },
@@ -108,24 +107,24 @@ lazyList /: Take[l : validLazyListPattern, n_Integer?Positive] := ReleaseHold[
     ]
 ];
 
-lazyList /: Take[l : validLazyListPattern, {m_Integer?Positive, n_Integer?Positive}] /; n < m := Replace[
-    Take[l, {n, m}],
+lazyList /: Take[lz : validLazyListPattern, {m_Integer?Positive, n_Integer?Positive}] /; n < m := Replace[
+    Take[lz, {n, m}],
     {
         lazyList[list_List, rest_] :> lazyList[Reverse[list], rest]
     }
 ];
 
-lazyList /: Take[l : validLazyListPattern, {m_Integer?Positive, n : (_Integer?Positive | All)}] /; (n === All || n > m) := Replace[
-    Quiet[l[[{m}]], {Part::partw}],
+lazyList /: Take[lz : validLazyListPattern, {m_Integer?Positive, n : (_Integer?Positive | All)}] /; (n === All || n > m) := Replace[
+    Quiet[lz[[{m}]], {Part::partw}],
     {
-        lz : validLazyListPattern :> Take[lz, Replace[n, int_Integer :> int - m + 1]],
+        l : validLazyListPattern :> Take[l, Replace[n, int_Integer :> int - m + 1]],
         _ -> lazyList[]
     }
 ];
 
-lazyList /: Take[l : validLazyListPattern, All] := TakeWhile[l];
+lazyList /: Take[lz : validLazyListPattern, All] := TakeWhile[lz];
 
-lazyList /: TakeWhile[l : validLazyListPattern, function : _ : Function[True], opts : OptionsPattern[MaxIterations -> Infinity]] := lazyList @@ MapAt[
+lazyList /: TakeWhile[lz : validLazyListPattern, function : _ : Function[True], opts : OptionsPattern[MaxIterations -> Infinity]] := lazyList @@ MapAt[
     First[#, {}]&,
     Reverse @ Reap[
         Quiet[
@@ -140,7 +139,7 @@ lazyList /: TakeWhile[l : validLazyListPattern, function : _ : Function[True], o
                         first_?function
                     ];
                     ReplaceRepeated[
-                        l,
+                        lz,
                         {
                             lazyList[pattern, tail_] :> (Sow[first, "take"]; tail),
                             other_ :> Throw[other, "takeWhile"]
@@ -157,52 +156,63 @@ lazyList /: TakeWhile[l : validLazyListPattern, function : _ : Function[True], o
     1
 ];
 
-lazyList /: partWhile[l : validLazyListPattern, function : _ : Function[True], opts : OptionsPattern[MaxIterations -> Infinity]] := Quiet[
-    Catch[
-        Block[{
-            $IterationLimit = $lazyIterationLimit,
-            first,
-            pattern
-        },
-            pattern = If[ function === Function[True],
-                first_,
-                first_?function
-            ];
-            ReplaceRepeated[
-                {l, First[l]},
-                {
-                    {lazyList[pattern, tail_], prev_} :> {tail, first},
-                    {other_, prev_} :> Throw[lazyList[prev, other], "partWhile"]
-                },
-                MaxIterations -> OptionValue[MaxIterations]
-            ]
-        ],
-        "partWhile"
+lazyList /: LengthWhile[lz : validLazyListPattern, function : _ : Function[True], opts : OptionsPattern[MaxIterations -> Infinity]] := Quiet[
+    Block[{
+        $IterationLimit = $lazyIterationLimit,
+        first,
+        pattern,
+        count = 0
+    },
+        pattern = If[ function === Function[True],
+            first_,
+            first_?function
+        ];
+        Replace[
+            Catch[
+                ReplaceRepeated[
+                    {lz, First[lz]},
+                    {
+                        {lazyList[pattern, tail_], prev_} :> (count++; {tail, first}),
+                        {other_, prev_} :> Throw[lazyList[prev, other], "lengthWhile"]
+                    },
+                    MaxIterations -> OptionValue[MaxIterations]
+                ],
+                "lengthWhile"
+            ],
+            {
+                (* This happens whenever $lazyIterationLimit was exceeded *)
+                {l_lazyList, prev_} :> <|"Index" -> Infinity, "Element" -> l|>,
+                l_lazyList :> <|"Index" -> count, "Element" -> l|>
+            }
+        ]
     ],
     {ReplaceRepeated::rrlim}
 ];
 
-lazyList /: Part[l : lazyList[], i_] := (Message[Part::partw, Short[i], Short[l]]; $Failed);
+lazyList /: Part[lz : lazyList[], i_] := (Message[Part::partw, Short[i], Short[lz]]; $Failed);
 lazyList /: Part[lazyList[___], 0 | {0}] := lazyList;
 lazyList /: Part[lazyList[first_, _], 1] := first;
-lazyList /: Part[l : validLazyListPattern, {1}] := l;
+lazyList /: Part[lz : validLazyListPattern, {1}] := lz;
 lazyList /: Part[lazyList[_, tail_], {2}] := tail;
-lazyList /: Part[l : validLazyListPattern, {-1}] := partWhile[l, Function[True]];
-lazyList /: Part[l : validLazyListPattern, n_Integer] := First[Part[l, {n}], $Failed];
+lazyList /: Part[lz : validLazyListPattern, {-1}] := Replace[
+    LengthWhile[lz, Function[True]],
+    KeyValuePattern["Element" -> el_] :> el
+];
+lazyList /: Part[lz : validLazyListPattern, n_Integer] := First[Part[lz, {n}], $Failed];
 
-lazyList /: Part[l : validLazyListPattern, Span[m_Integer, n_Integer]] := Replace[
-    Take[l, {m, n}],
+lazyList /: Part[lz : validLazyListPattern, Span[m_Integer, n_Integer]] := Replace[
+    Take[lz, {m, n}],
     {
-        lazyList[] | lazyList[_, lazyList[]] :> (Message[Part::partw, Max[m, n], Short[l]]; $Failed)
+        lazyList[] | lazyList[_, lazyList[]] :> (Message[Part::partw, Max[m, n], Short[lz]]; $Failed)
     }
 ];
 
-lazyList /: Part[l : validLazyListPattern, Span[m_Integer, n_Integer, incr_Integer]] := Part[
-    l,
+lazyList /: Part[lz : validLazyListPattern, Span[m_Integer, n_Integer, incr_Integer]] := Part[
+    lz,
     Range[m, n, incr]
 ];
 
-lazyList /: Part[l : validLazyListPattern, indices : {_Integer, __Integer}] /; VectorQ[indices, Positive]:= Catch[
+lazyList /: Part[lz : validLazyListPattern, indices : {_Integer, __Integer}] /; VectorQ[indices, Positive]:= Catch[
     Module[{
         sortedIndices = Sort[indices],
         eval
@@ -217,7 +227,7 @@ lazyList /: Part[l : validLazyListPattern, indices : {_Integer, __Integer}] /; V
                             eval (* and return the lazyList to the next iteration *)
                         }
                     ],
-                    l,
+                    lz,
                     Prepend[Differences[sortedIndices] + 1, First[sortedIndices]]
                 ],
                 Ordering[indices]
@@ -228,11 +238,11 @@ lazyList /: Part[l : validLazyListPattern, indices : {_Integer, __Integer}] /; V
     "part"
 ];
 
-lazyList /: Part[l : validLazyListPattern, {n_Integer?Positive}] := Replace[
+lazyList /: Part[lz : validLazyListPattern, {n_Integer?Positive}] := Replace[
     Quiet[
         Block[{$IterationLimit = $lazyIterationLimit},
             ReplaceRepeated[
-                l,
+                lz,
                 {
                     lazyList[first_, tail_] :> tail
                 },
@@ -242,7 +252,7 @@ lazyList /: Part[l : validLazyListPattern, {n_Integer?Positive}] := Replace[
         {ReplaceRepeated::rrlim}
     ],
     {
-        lazyList[] :> (Message[Part::partw, n, Short[l]]; $Failed)
+        lazyList[] :> (Message[Part::partw, n, Short[lz]]; $Failed)
     }
 ];
 

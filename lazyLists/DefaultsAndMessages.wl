@@ -37,7 +37,7 @@ Scan[
         head::illDefined = "lazyList `1` is not well-defined";
         Scan[
             Function[
-                head /: Alternatives[Part, Take, TakeWhile, partWhile, LengthWhile][lz : #, ___] :=
+                head /: Alternatives[Part, Take, TakeWhile, LengthWhile][lz : #, ___] :=
                     (Message[head::illDefined, Short[lz]]; $Failed) 
             ],
             {head[_], head[_, _, __]}
