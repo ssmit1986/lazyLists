@@ -46,3 +46,6 @@ See lazyLists.nb for details and examples.
 * 26 September 2018
 	* Various updates to `partitionedLazyList` to bring it more in line with ordinary `lazyList`.
 	* Re-implement `lazyTuples` using `partitionedLazyList` to make tuples generation significantly faster.
+* 28 September 2018
+    * Implement `LengthWhile` for `lazyList` and `partitionedLazyList`. Replaces `partWhile`, which was removed.
+    * Add the `endOfLazyList` token, which is used to force lazy lists to terminate.
