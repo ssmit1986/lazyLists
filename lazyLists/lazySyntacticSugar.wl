@@ -362,18 +362,6 @@ lazyCatenate[lazyList[listOrLazyListPattern[], tail_]] := lazyCatenate[tail];
 lazyCatenate[lazyList[list_List, tail_]] := lazyCatenate[lazyList[lazyList[list], tail]];
 lazyCatenate[lazyList[lazyList[first_, tail1_], tail2_]] := lazyList[first, lazyCatenate[lazyList[tail1, tail2]]];
 
-lazyCatenate[lists : {___, __List, partitionedLazyList[_, _], rest___}] := 
-    lazyCatenate[
-        SequenceReplace[
-            lists,
-            {l1__List, partitionedLazyList[l2_List, tail_]} :> partitionedLazyList[Join[l1, l2], tail]
-        ]
-    ];
-lazyCatenate[{fst__partitionedLazyList, lists__List}] := lazyCatenate[{fst, partitionedLazyList[Join[lists], lazyList[]]}];
-
-lazyCatenate[{partitionedLazyList[list_List, tail_], rest__partitionedLazyList}] := partitionedLazyList[list, lazyCatenate[{tail, rest}]];
-
-
 End[]
 
 EndPackage[]

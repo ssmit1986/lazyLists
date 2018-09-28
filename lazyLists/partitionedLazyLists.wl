@@ -464,6 +464,16 @@ lazyTranspose[
     lz : partitionedLazyList[lists : {{___}..}, _]
 ] /; SameQ @@ (Length /@ lists) := Map[{Transpose, Listable}, lz];
 
+lazyCatenate[lists : {___, __List, partitionedLazyList[_, _], rest___}] := 
+    lazyCatenate[
+        SequenceReplace[
+            lists,
+            {l1__List, partitionedLazyList[l2_List, tail_]} :> partitionedLazyList[Join[l1, l2], tail]
+        ]
+    ];
+lazyCatenate[{fst__partitionedLazyList, lists__List}] := lazyCatenate[{fst, partitionedLazyList[Join[lists], lazyList[]]}];
+
+lazyCatenate[{partitionedLazyList[list_List, tail_], rest__partitionedLazyList}] := partitionedLazyList[list, lazyCatenate[{tail, rest}]];
 
 End[]
 
