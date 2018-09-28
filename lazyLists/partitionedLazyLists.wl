@@ -304,12 +304,75 @@ partitionedLazyList /: TakeWhile[
     1
 ];
 
+partitionedLazyList /: LengthWhile[
+    lz : partitionedLazyList[{___, el_}, _],
+    function : _ : Function[True],
+    opts : OptionsPattern[MaxIterations -> Infinity]
+] := Quiet[
+    Block[{
+        $IterationLimit = $lazyIterationLimit,
+        count = 0,
+        ind
+    },
+        Replace[
+            Catch[
+                ReplaceRepeated[
+                    {lz, el},
+                    {
+                        If[ function === Function[True]
+                            ,
+                            {partitionedLazyList[list : {___, elem_}, tail_], prev_} :> (
+                                count += Length[list];
+                                {tail, elem}
+                            )
+                            ,
+                            {partitionedLazyList[list : {___, elem_}, tail_], prev_} :> (
+                                count += (
+                                    ind = LengthWhile[list, function]
+                                );
+                                Switch[ ind,
+                                    Length[list],
+                                        {tail, elem},
+                                    0,
+                                        Throw[
+                                            partitionedLazyList[{prev}, tail],
+                                            "lengthWhile"
+                                        ],
+                                    _,
+                                        Throw[
+                                            partitionedLazyList[Drop[list, ind - 1], tail],
+                                            "lengthWhile"
+                                        ]
+                                ]
+                            )
+                        ],
+                        {other_, prev_} :> Throw[partitionedLazyList[{prev}, other], "lengthWhile"]
+                    },
+                    MaxIterations -> OptionValue[MaxIterations]
+                ],
+                "lengthWhile"
+            ],
+            {
+                (* This happens whenever $lazyIterationLimit was exceeded *)
+                {l : validPartitionedLazyListPattern, prev_} :> <|"Index" -> Infinity, "Element" -> l|>,
+                l : validPartitionedLazyListPattern :> <|"Index" -> count, "Element" -> l|>
+            }
+        ]
+    ],
+    {ReplaceRepeated::rrlim}
+];
+
 partitionedLazyList /: Part[_partitionedLazyList, {0} | 0] := partitionedLazyList;
 partitionedLazyList /: Part[partLz : validPartitionedLazyListPattern, 1] := First[partLz];
 partitionedLazyList /: Part[partLz : validPartitionedLazyListPattern, {1}] := partLz;
-partitionedLazyList /: Part[partLz : validPartitionedLazyListPattern, n_Integer?Positive] := First[Part[partLz, {n}], $Failed];
+partitionedLazyList /: Part[partLz : validPartitionedLazyListPattern, n : (_Integer?Positive | -1)] := First[Part[partLz, {n}], $Failed];
 partitionedLazyList /: Part[partitionedLazyList[list : {_, ___}, tail_], {n_Integer?Positive}] /; n <= Length[list] :=
     partitionedLazyList[Drop[list, n - 1], tail];
+partitionedLazyList /: Part[lz : validPartitionedLazyListPattern, {-1}] := Replace[
+    LengthWhile[lz, Function[True]],
+    KeyValuePattern["Element" -> el_] :> el
+];
+
 
 partitionedLazyList /: Part[partLz : validPartitionedLazyListPattern, span_Span] := Take[partLz, List @@ span];
 

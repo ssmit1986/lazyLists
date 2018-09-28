@@ -181,8 +181,8 @@ lazyList /: LengthWhile[lz : validLazyListPattern, function : _ : Function[True]
             ],
             {
                 (* This happens whenever $lazyIterationLimit was exceeded *)
-                {l_lazyList, prev_} :> <|"Index" -> Infinity, "Element" -> l|>,
-                l_lazyList :> <|"Index" -> count, "Element" -> l|>
+                {l : validLazyListPattern, prev_} :> <|"Index" -> Infinity, "Element" -> l|>,
+                l : validLazyListPattern :> <|"Index" -> count, "Element" -> l|>
             }
         ]
     ],
@@ -198,7 +198,7 @@ lazyList /: Part[lz : validLazyListPattern, {-1}] := Replace[
     LengthWhile[lz, Function[True]],
     KeyValuePattern["Element" -> el_] :> el
 ];
-lazyList /: Part[lz : validLazyListPattern, n_Integer] := First[Part[lz, {n}], $Failed];
+lazyList /: Part[lz : validLazyListPattern, n : (_Integer?Positive | -1)] := First[Part[lz, {n}], $Failed];
 
 lazyList /: Part[lz : validLazyListPattern, Span[m_Integer, n_Integer]] := Replace[
     Take[lz, {m, n}],
