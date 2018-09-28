@@ -251,6 +251,59 @@ partitionedLazyList /: Take[
     1
 ];
 
+partitionedLazyList /: TakeWhile[
+    partLz : validPartitionedLazyListPattern,
+    function : _ : Function[True],
+    opts : OptionsPattern[MaxIterations -> Infinity]
+] := partitionedLazyList @@ MapAt[
+    Catenate[First[#, {}]]&,
+    Reverse @ Reap[
+        Quiet[
+            Catch[
+                Block[{
+                    $IterationLimit = $lazyIterationLimit,
+                    first,
+                    ind
+                },
+                    ReplaceRepeated[
+                        partLz,
+                        {
+                            If[ function === Function[True]
+                                ,
+                                partitionedLazyList[list_List, tail_] :> (
+                                    Sow[list, "partTakeWhile"];
+                                    tail
+                                )
+                                ,
+                                partitionedLazyList[list_List, tail_] :> (
+                                    ind = LengthWhile[list, function];
+                                    If[ ind === Length[list]
+                                        ,
+                                        Sow[list, "partTakeWhile"];
+                                        tail
+                                        ,
+                                        Sow[Take[list, ind], "partTakeWhile"];
+                                        Throw[
+                                            partitionedLazyList[Drop[list, ind], tail],
+                                            "takeWhile"
+                                        ]
+                                    ]
+                                )
+                            ],
+                            other_ :> Throw[other, "takeWhile"]
+                        },
+                        MaxIterations -> OptionValue[MaxIterations]
+                    ]
+                ],
+                "takeWhile"
+            ],
+            {ReplaceRepeated::rrlim}
+        ],
+        "partTakeWhile"
+    ],
+    1
+];
+
 partitionedLazyList /: Part[_partitionedLazyList, {0} | 0] := partitionedLazyList;
 partitionedLazyList /: Part[partLz : validPartitionedLazyListPattern, 1] := First[partLz];
 partitionedLazyList /: Part[partLz : validPartitionedLazyListPattern, {1}] := partLz;
