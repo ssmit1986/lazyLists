@@ -1,0 +1,54 @@
+(* Wolfram Language Package *)
+
+(* Created by the Wolfram Workbench 18-Sep-2018 *)
+BeginPackage["lazyLists`"]
+(* Exported symbols added here with SymbolName::usage *) 
+
+Begin["`Private`"]
+(* Implementation of the package *)
+
+twoSidedGenerator[___] := lazyList[];
+leftSidedGenerator[___] := lazyList[];
+rightSidedGenerator[___] := lazyList[];
+finiteGenerator[___] := lazyList[];
+
+
+lazySetState::notSupported = "lazySetState is not supported for lazyList `1`";
+lazySetState[l_lazyList, _] := (Message[lazySetState::notSupported, Short[l]]; l)
+
+
+lazyList::notFinite = "lazyList `1` cannot be recognised as a finite list";
+lazyFinitePart[lz : lzPattern, _] := (Message[lazyList::notFinite, Short[lz]]; $Failed);
+lazyFiniteTake[lz : lzPattern, _] := (Message[lazyList::notFinite, Short[lz]]; $Failed);
+
+
+lazyCatenate::invrp = "Argument `1` is not a valid list or lazyList";
+lazyCatenate[{___, arg : Except[_List | _lazyList], ___}]  := (Message[lazyCatenate::invrp, Short[arg]]; $Failed);
+lazyCatenate[lazyList[arg : Except[_List | _lazyList], _]] := (Message[lazyCatenate::invrp, Short[arg]]; $Failed);
+
+
+
+(* Default failure messages for Take and Part *)
+
+lazyList::illDefined = "lazyList `1` is not well-defined";
+Scan[
+    Function[
+        lazyList /: Alternatives[Part, Take, TakeWhile, partWhile, LengthWhile][lz : #, ___] := (Message[lazyList::illDefined, Short[lz]]; $Failed) 
+    ],
+    {lzHead[_], lzHead[_, _, __]}
+];
+
+lazyList::take = "Cannot take `1` in `2`";
+lazyList /: Take[lz_lazyList, spec_, ___] := (Message[lazyList::take, spec, Short[lz]]; lazyList[]);
+lazyList::part = "Cannot take part `1` in `2`";
+lazyList /: Part[lz_lazyList, spec_, ___] := (Message[lazyList::part, spec, Short[lz]]; $Failed);
+
+partitionedLazyList::take = "Cannot take `1` in `2`";
+partitionedLazyList /: Take[lz_partitionedLazyList, spec_, ___] := (Message[lazyList::take, spec, Short[lz]]; lazyList[]);
+partitionedLazyList::part = "Cannot take part `1` in `2`";
+partitionedLazyList /: Part[lz_partitionedLazyList, spec_, ___] := (Message[lazyList::part, spec, Short[lz]]; $Failed);
+
+End[]
+
+EndPackage[]
+

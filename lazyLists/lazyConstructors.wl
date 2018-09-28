@@ -89,13 +89,8 @@ With[{
     ]
 ];
 
-lazyList::notFinite = "lazyList `1` cannot be recognised as a finite list";
-
 lazyFinitePart[lzHead[_, (lazyFiniteList | lazyPeriodicListInternal)[list_, __]], spec__] := Part[list, spec];
-lazyFinitePart[lz : lzPattern, _] := (Message[lazyList::notFinite, Short[lz]]; $Failed);
-
 lazyFiniteTake[lzHead[_, (lazyFiniteList | lazyPeriodicListInternal)[list_, __]], spec_] := Take[list, spec];
-lazyFiniteTake[lz : lzPattern, _] := (Message[lazyList::notFinite, Short[lz]]; $Failed);
 
 lazySetState[lzHead[_, lazyFiniteList[list_, _, rest___]], index_Integer] /; 0 < index <= Length[list] :=
     lazyFiniteList[list, index, rest];
@@ -146,19 +141,16 @@ leftSidedGenerator[f_, pos_, max_, step_] /; pos <= max := lazyList[
     f[pos],
     leftSidedGenerator[f, pos + step, max, step]
 ];
-leftSidedGenerator[___] := lazyList[];
 
 rightSidedGenerator[f_, pos_, min_, step_] /; min <= pos := lazyList[
     f[pos],
     rightSidedGenerator[f, pos + step, min, step]
 ];
-rightSidedGenerator[___] := lazyList[];
 
 finiteGenerator[f_, pos_, min_, max_, step_] /; Between[pos, {min, max}] := lazyList[
     f[pos],
     finiteGenerator[f, pos + step, min, max, step]
 ];
-finiteGenerator[___] := lazyList[];
 
 generatorPattern = Alternatives[twoSidedGenerator, leftSidedGenerator, rightSidedGenerator, finiteGenerator];
 
@@ -248,8 +240,6 @@ lazyPeriodicList[Hold[list_Symbol] | list_List, part_Integer?Positive] := lazyPe
 lazySetState[lzHead[_, lazyPeriodicListInternal[list_, _, max_, rest___]], index_Integer] := 
     lazyPeriodicListInternal[list, Mod[index  + 1 - UnitStep[index], max, 1], max, rest];
 
-lazySetState::notSupported = "lazySetState is not supported for lazyList `1`";
-lazySetState[l_lazyList, _] := (Message[lazySetState::notSupported, Short[l]]; l)
 
 lazyPartMap[l_lazyList, indices : {__Integer}] := Module[{
     sortedIndices = Sort[indices]

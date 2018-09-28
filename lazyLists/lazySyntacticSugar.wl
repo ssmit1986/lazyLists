@@ -81,14 +81,6 @@ Scan[
     {Plus, Times, Power, Divide, Subtract}
 ];
 
-lazyList::illDefined = "lazyList `1` is not well-defined";
-Scan[
-    Function[
-        lazyList /: Alternatives[Part, Take, TakeWhile, partWhile][l : #, ___] := (Message[lazyList::illDefined, Short[l]]; $Failed) 
-    ],
-    {lazyList[_], lazyList[_, _, __]}
-];
-
 (* Elements from lazyLists are extracted by repeatedly evaluating the next element and sowing the results *)
 lazyList /: Take[l_lazyList, n_Integer?Positive] := ReleaseHold[
     lazyList @@ MapAt[
@@ -381,16 +373,6 @@ lazyCatenate[{fst__partitionedLazyList, lists__List}] := lazyCatenate[{fst, part
 
 lazyCatenate[{partitionedLazyList[list_List, tail_], rest__partitionedLazyList}] := partitionedLazyList[list, lazyCatenate[{tail, rest}]];
 
-
-lazyCatenate::invrp = "Argument `1` is not a valid list or lazyList";
-lazyCatenate[{___, arg : Except[_List | _lazyList], ___}]  := (Message[lazyCatenate::invrp, Short[arg]]; $Failed);
-lazyCatenate[lazyList[arg : Except[_List | _lazyList], _]] := (Message[lazyCatenate::invrp, Short[arg]]; $Failed);
-
-(* Default failure messages for Take and Part *)
-lazyList::take = "Cannot take `1` in `2`";
-lazyList /: Take[lz_lazyList, spec_, ___] := (Message[lazyList::take, spec, Short[lz]]; lazyList[]);
-lazyList::part = "Cannot take part `1` in `2`";
-lazyList /: Part[lz_lazyList, spec_, ___] := (Message[lazyList::part, spec, Short[lz]]; $Failed);
 
 End[]
 

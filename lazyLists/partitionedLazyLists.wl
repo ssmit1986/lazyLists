@@ -465,12 +465,6 @@ lazyTranspose[
 ] /; SameQ @@ (Length /@ lists) := Map[{Transpose, Listable}, lz];
 
 
-(* Default failure messages for Take and Part *)
-partitionedLazyList::take = "Cannot take `1` in `2`";
-partitionedLazyList /: Take[lz_partitionedLazyList, spec_, ___] := (Message[lazyList::take, spec, Short[lz]]; lazyList[]);
-partitionedLazyList::part = "Cannot take part `1` in `2`";
-partitionedLazyList /: Part[lz_partitionedLazyList, spec_, ___] := (Message[lazyList::part, spec, Short[lz]]; $Failed);
-
 End[]
 
 EndPackage[]
