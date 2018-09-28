@@ -6,6 +6,7 @@ BeginPackage["lazyLists`"]
 Begin["`Private`"]
 
 lazyList /: Rest[lazyList[_, tail_]] := tail;
+lazyList /: Most[lazyList[elem_, _]] := {elem};
 
 lazyList /: Prepend[lz_lazyList, element_] := lazyList[element, lz];
 
