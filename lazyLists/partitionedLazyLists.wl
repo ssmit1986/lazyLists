@@ -4,17 +4,6 @@
 BeginPackage["lazyLists`"]
 (* Exported symbols added here with SymbolName::usage *) 
 
-partitionedLazyList::usage = "Is a special wrapper for lazyLists that generate ordinary Lists.
-The elements of the inner Lists are treated as if they're seperate elements of the outer lazyList, making it possible to generate elements in chunks.
-List operations on partitionedLazyList such as Map and FoldList will be automatically applied to the generated lists for efficiency";
-
-partitionedLazyRange::usage = "partitionedLazyRange[start, step, partitionLength] works like lazyRange, but yields a partitionedLazyList.
-partitionedLazyRange[partitionLength] generates the natural numbers in chuncks of length partitionLength";
-
-partitionedLazyNestList::usage = "partitionedLazyNestList[fun, elem, partitionLength] is a partitioned version of lazyNestList.
-Each new partition is generated with NestList";
-
-lazyPartition::usage = "lazyPartition[lz, n] turns an ordinary lazyList into a partitioned lazyList with chunks of length n";
 
 Begin["`Private`"]
 (* Implementation of the package *)
