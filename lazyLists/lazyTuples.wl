@@ -5,14 +5,6 @@ Quiet[Needs["Combinatorica`"]];
 BeginPackage["lazyLists`", {"Combinatorica`"}]
 (* Exported symbols added here with SymbolName::usage *) 
 
-lazyTuples::usage = "lazyTuples is a lazy version of Tuples with mostly the same syntax.
-lazyTuples[n] is a special case that generates an infinite list of all n-tuples of integers \[GreaterEqual] 1";
-nextIntegerTuple::usage = "nextIntegerTuple[{int1, int2, ...}] generates the next integer tuple in a canonical order";
-
-bulkExtractElementsUsingIndexList::usage = "bulkExtractElementsUsingIndexList[lists, indices] converts elements from Tuples[Range /@ Length /@ lists] into elements from Tuples[lists]";
-
-rangeTuplesAtPositions::usage = "rangeTuplesAtPositions[Length /@ lists] is a CompiledFunction that directly generates elements of Tuples[Range /@ Length /@ lists]";
-
 Begin["`Private`"]
 (* Implementation of the package *)
 
@@ -47,12 +39,11 @@ decompose[base : {__Integer}] := (
     },
         Function[
             Block[{ (* Block is faster than Module *)
-                c = Subtract[#, 1],
-                q
+                qr = Transpose[{#, Subtract[#, 1]}]
             },
                 1 + Table[
-                    {q, c} = Transpose @ QuotientRemainder[c, i];
-                    q,
+                    qr = QuotientRemainder[qr[[All, 2]], i];
+                    qr[[All, 1]],
                     {i, baseVar}
                 ]
             ]
@@ -89,7 +80,7 @@ bulkExtractElementsUsingIndexList[elementLists_List | elementLists_Symbol | Hold
 },
     Function[
         If[ Min[Subtract[lengths, Max /@ #]] < 0,
-            Append[lazyList[]] @ Map[
+            Append[endOfLazyList] @ Map[
                 Quiet @ Check[
                     MapThread[
                         Part,
@@ -121,7 +112,7 @@ bulkExtractElementsUsingIndexList[elementList_List | elementList_Symbol | Hold[e
 },
     Function[
         If[ Max[#] > maxLenght,
-            Append[lazyList[]] @ Map[
+            Append[endOfLazyList] @ Map[
                 Quiet @ Check[
                     Part[elementList, #],
                     Nothing
@@ -154,7 +145,7 @@ lazyTuples[lengths : {__Integer}, opts : OptionsPattern[]] := Map[
     {
         Function[
             If[ Min[lengths - Max /@ #] < 0,
-                 Append[lazyList[]] @ Select[
+                 Append[endOfLazyList] @ Select[
                      Transpose[#],
                      Min[lengths - #] >= 0 &
                  ],
@@ -194,7 +185,7 @@ lazyTuples[
         {
             Function[
                 If[ Max[#] > maxIndex,
-                     Append[lazyList[]] @ Select[#, Max[#] <= maxIndex &],
+                     Append[endOfLazyList] @ Select[#, Max[#] <= maxIndex &],
                      #
                 ]
             ],

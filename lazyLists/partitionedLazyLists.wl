@@ -4,17 +4,6 @@
 BeginPackage["lazyLists`"]
 (* Exported symbols added here with SymbolName::usage *) 
 
-partitionedLazyList::usage = "Is a special wrapper for lazyLists that generate ordinary Lists.
-The elements of the inner Lists are treated as if they're seperate elements of the outer lazyList, making it possible to generate elements in chunks.
-List operations on partitionedLazyList such as Map and FoldList will be automatically applied to the generated lists for efficiency";
-
-partitionedLazyRange::usage = "partitionedLazyRange[start, step, partitionLength] works like lazyRange, but yields a partitionedLazyList.
-partitionedLazyRange[partitionLength] generates the natural numbers in chuncks of length partitionLength";
-
-partitionedLazyNestList::usage = "partitionedLazyNestList[fun, elem, partitionLength] is a partitioned version of lazyNestList.
-Each new partition is generated with NestList";
-
-lazyPartition::usage = "lazyPartition[lz, n] turns an ordinary lazyList into a partitioned lazyList with chunks of length n";
 
 Begin["`Private`"]
 (* Implementation of the package *)
@@ -24,7 +13,7 @@ partitionedLazyList::cannotPartition = "Cannot partition lazyList `1` because no
 Attributes[partitionedLazyList] = {HoldRest};
 partitionedLazyList[] := lazyList[];
 partitionedLazyList[lazyList[], ___] := lazyList[];
-partitionedLazyList[{Shortest[first___], lazyList[]..}, ___] := partitionedLazyList[{first}, lazyList[]];
+partitionedLazyList[{Shortest[first___], endOfLazyList, ___}, ___] := partitionedLazyList[{first}, lazyList[]];
 partitionedLazyList[$Failed] := $Failed;
 partitionedLazyList[lz : lazyList[Except[_List], _]] := (
     Message[partitionedLazyList::cannotPartition, Short[lz]];
@@ -136,26 +125,26 @@ partitionedLazyList /: Take[
     ] /; Length[list] >= maxIndex
 ];
 
-partitionedLazyList /: Take[lz_partitionedLazyList, {m_Integer?Positive, n_Integer?Positive, step : _Integer : 1}] /; n < m := Replace[
+partitionedLazyList /: Take[lz : validPartitionedLazyListPattern, {m_Integer?Positive, n_Integer?Positive, step : _Integer : 1}] /; n < m := Replace[
     Take[lz, parseTakeSpec[{m, n, step}]],
     {
         partitionedLazyList[list_List, rest_] :> partitionedLazyList[Reverse[list], rest]
     }
 ];
 
-partitionedLazyList /: Take[lz_partitionedLazyList, spec_] := With[{
+partitionedLazyList /: Take[lz : validPartitionedLazyListPattern, spec_] := With[{
     parsedSpec = parseTakeSpec[spec]
 },
     Take[lz, parsedSpec] /; parsedSpec =!= $Failed && parsedSpec =!= spec
 ];
 
 partitionedLazyList /: Take[
-    lz_partitionedLazyList,
+    lz : validPartitionedLazyListPattern,
     {start : Except[1, (_Integer?Positive)], stop : (_Integer?Positive | All), step_Integer?Positive}
 ] := With[{
     advancedLz = Quiet[Part[lz, {start}], {Part::partw}]
 },
-    If[ MatchQ[advancedLz, partitionedLazyList[_List, _]],
+    If[ MatchQ[advancedLz, validPartitionedLazyListPattern],
         Take[
             advancedLz, 
             {
@@ -169,7 +158,7 @@ partitionedLazyList /: Take[
 ];
 
 partitionedLazyList /: Take[
-    partLz : partitionedLazyList[_List, _],
+    partLz : validPartitionedLazyListPattern,
     {1, n : (_Integer?Positive | All), step_Integer?Positive}
 ] := partitionedLazyList @@ MapAt[
     Catenate[First[#, {}]]&,
@@ -251,16 +240,132 @@ partitionedLazyList /: Take[
     1
 ];
 
+partitionedLazyList /: TakeWhile[
+    partLz : validPartitionedLazyListPattern,
+    function : _ : Function[True],
+    opts : OptionsPattern[MaxIterations -> Infinity]
+] := partitionedLazyList @@ MapAt[
+    Catenate[First[#, {}]]&,
+    Reverse @ Reap[
+        Quiet[
+            Catch[
+                Block[{
+                    $IterationLimit = $lazyIterationLimit,
+                    first,
+                    ind
+                },
+                    ReplaceRepeated[
+                        partLz,
+                        {
+                            If[ function === Function[True]
+                                ,
+                                partitionedLazyList[list_List, tail_] :> (
+                                    Sow[list, "partTakeWhile"];
+                                    tail
+                                )
+                                ,
+                                partitionedLazyList[list_List, tail_] :> (
+                                    ind = LengthWhile[list, function];
+                                    If[ ind === Length[list]
+                                        ,
+                                        Sow[list, "partTakeWhile"];
+                                        tail
+                                        ,
+                                        Sow[Take[list, ind], "partTakeWhile"];
+                                        Throw[
+                                            partitionedLazyList[Drop[list, ind], tail],
+                                            "takeWhile"
+                                        ]
+                                    ]
+                                )
+                            ],
+                            other_ :> Throw[other, "takeWhile"]
+                        },
+                        MaxIterations -> OptionValue[MaxIterations]
+                    ]
+                ],
+                "takeWhile"
+            ],
+            {ReplaceRepeated::rrlim}
+        ],
+        "partTakeWhile"
+    ],
+    1
+];
+
+partitionedLazyList /: LengthWhile[
+    lz : partitionedLazyList[{___, el_}, _],
+    function : _ : Function[True],
+    opts : OptionsPattern[MaxIterations -> Infinity]
+] := Quiet[
+    Block[{
+        $IterationLimit = $lazyIterationLimit,
+        count = 0,
+        ind
+    },
+        Replace[
+            Catch[
+                ReplaceRepeated[
+                    {lz, el},
+                    {
+                        If[ function === Function[True]
+                            ,
+                            {partitionedLazyList[list : {___, elem_}, tail_], prev_} :> (
+                                count += Length[list];
+                                {tail, elem}
+                            )
+                            ,
+                            {partitionedLazyList[list : {___, elem_}, tail_], prev_} :> (
+                                count += (
+                                    ind = LengthWhile[list, function]
+                                );
+                                Switch[ ind,
+                                    Length[list],
+                                        {tail, elem},
+                                    0,
+                                        Throw[
+                                            partitionedLazyList[{prev}, tail],
+                                            "lengthWhile"
+                                        ],
+                                    _,
+                                        Throw[
+                                            partitionedLazyList[Drop[list, ind - 1], tail],
+                                            "lengthWhile"
+                                        ]
+                                ]
+                            )
+                        ],
+                        {other_, prev_} :> Throw[partitionedLazyList[{prev}, other], "lengthWhile"]
+                    },
+                    MaxIterations -> OptionValue[MaxIterations]
+                ],
+                "lengthWhile"
+            ],
+            {
+                (* This happens whenever $lazyIterationLimit was exceeded *)
+                {l : validPartitionedLazyListPattern, prev_} :> <|"Index" -> Infinity, "Element" -> l|>,
+                l : validPartitionedLazyListPattern :> <|"Index" -> count, "Element" -> l|>
+            }
+        ]
+    ],
+    {ReplaceRepeated::rrlim}
+];
+
 partitionedLazyList /: Part[_partitionedLazyList, {0} | 0] := partitionedLazyList;
-partitionedLazyList /: Part[partLz_partitionedLazyList, 1] := First[partLz];
-partitionedLazyList /: Part[partLz_partitionedLazyList, {1}] := partLz;
-partitionedLazyList /: Part[partLz_partitionedLazyList, n_Integer?Positive] := First[Part[partLz, {n}], $Failed];
+partitionedLazyList /: Part[partLz : validPartitionedLazyListPattern, 1] := First[partLz];
+partitionedLazyList /: Part[partLz : validPartitionedLazyListPattern, {1}] := partLz;
+partitionedLazyList /: Part[partLz : validPartitionedLazyListPattern, n : (_Integer?Positive | -1)] := First[Part[partLz, {n}], $Failed];
 partitionedLazyList /: Part[partitionedLazyList[list : {_, ___}, tail_], {n_Integer?Positive}] /; n <= Length[list] :=
     partitionedLazyList[Drop[list, n - 1], tail];
+partitionedLazyList /: Part[lz : validPartitionedLazyListPattern, {-1}] := Replace[
+    LengthWhile[lz, Function[True]],
+    KeyValuePattern["Element" -> el_] :> el
+];
 
-partitionedLazyList /: Part[partLz_partitionedLazyList, span_Span] := Take[partLz, List @@ span];
 
-partitionedLazyList /: Part[partLz : partitionedLazyList[_List, _], {n_Integer?Positive}] := Catch[
+partitionedLazyList /: Part[partLz : validPartitionedLazyListPattern, span_Span] := Take[partLz, List @@ span];
+
+partitionedLazyList /: Part[partLz : validPartitionedLazyListPattern, {n_Integer?Positive}] := Catch[
     Block[{
         $IterationLimit = $lazyIterationLimit,
         count = n,
@@ -298,7 +403,7 @@ partitionedLazyList /: Part[partLz : partitionedLazyList[_List, _], {n_Integer?P
     "partPartitioned"
 ];
 
-partitionedLazyList /: Part[l : _partitionedLazyList, indices : {_Integer, __Integer}] /; VectorQ[indices, Positive]:= Catch[
+partitionedLazyList /: Part[lz : validPartitionedLazyListPattern, indices : {_Integer, __Integer}] /; VectorQ[indices, Positive]:= Catch[
     Module[{
         sortedIndices = Sort[indices],
         eval
@@ -313,7 +418,7 @@ partitionedLazyList /: Part[l : _partitionedLazyList, indices : {_Integer, __Int
                             eval (* and return the lazyList to the next iteration *)
                         }
                     ],
-                    l,
+                    lz,
                     Prepend[Differences[sortedIndices] + 1, First[sortedIndices]]
                 ],
                 Ordering[indices]
@@ -464,12 +569,16 @@ lazyTranspose[
     lz : partitionedLazyList[lists : {{___}..}, _]
 ] /; SameQ @@ (Length /@ lists) := Map[{Transpose, Listable}, lz];
 
+lazyCatenate[lists : {___, __List, partitionedLazyList[_, _], rest___}] := 
+    lazyCatenate[
+        SequenceReplace[
+            lists,
+            {l1__List, partitionedLazyList[l2_List, tail_]} :> partitionedLazyList[Join[l1, l2], tail]
+        ]
+    ];
+lazyCatenate[{fst__partitionedLazyList, lists__List}] := lazyCatenate[{fst, partitionedLazyList[Join[lists], lazyList[]]}];
 
-(* Default failure messages for Take and Part *)
-partitionedLazyList::take = "Cannot take `1` in `2`";
-partitionedLazyList /: Take[lz_partitionedLazyList, spec_, ___] := (Message[lazyList::take, spec, Short[lz]]; lazyList[]);
-partitionedLazyList::part = "Cannot take part `1` in `2`";
-partitionedLazyList /: Part[lz_partitionedLazyList, spec_, ___] := (Message[lazyList::part, spec, Short[lz]]; $Failed);
+lazyCatenate[{partitionedLazyList[list_List, tail_], rest__partitionedLazyList}] := partitionedLazyList[list, lazyCatenate[{tail, rest}]];
 
 End[]
 
