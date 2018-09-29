@@ -509,6 +509,21 @@ partitionedLazyList /: FoldList[fun_, current_, partitionedLazyList[first_List, 
     ]
 ];
 
+partitionedLazyList /: FoldPairList[fun_, current_, partitionedLazyList[first_List, tail_], g : _ : First] := Block[{
+    state,
+    fold
+},
+    fold = FoldPairList[fun, current, first, Function[state = Last[#]; g[#]]];
+    With[{
+        st = state
+    },
+        partitionedLazyList[
+            fold,
+            FoldPairList[fun, st, tail, g]
+        ]
+    ]
+];
+
 partitionedLazyList /: Cases[partitionedLazyList[list_List, tail_], patt_] := partitionedLazyList[
     Cases[list, patt],
     Cases[tail, patt]

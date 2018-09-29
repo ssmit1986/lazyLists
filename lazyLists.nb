@@ -10,7 +10,7 @@ Cell[BoxData[{
   RowBox[{"\"\<lazyLists`*\>\"", ",", "\"\<lazyLists`Private`*\>\""}], 
   "]"}], "\[IndentingNewLine]", 
  RowBox[{"<<", "lazyLists`"}]}], "Input",
- CellLabel->"In[1]:=",ExpressionUUID->"2d6a87cf-3ef1-4832-b8b9-0995d6d1b646"],
+ CellLabel->"In[3]:=",ExpressionUUID->"2d6a87cf-3ef1-4832-b8b9-0995d6d1b646"],
 
 Cell[CellGroupData[{
 
@@ -202,6 +202,10 @@ Cell[CellGroupData[{
 Cell[TextData[StyleBox["Part, Take",
  FontWeight->
   "Bold"]], "Item",ExpressionUUID->"aa5df912-6326-4bba-a487-5ea8a0dabd1e"],
+
+Cell[TextData[StyleBox["TakeWhile, LengthWhile",
+ FontWeight->
+  "Bold"]], "Item",ExpressionUUID->"eaaf9966-d5dd-4f96-8eaf-d9d5cc0841ee"],
 
 Cell[TextData[StyleBox["Append, Prepend",
  FontWeight->
@@ -2605,8 +2609,9 @@ Cell[BoxData[
                     None, Evaluator -> Automatic, Method -> "Preemptive"], 
                     Alignment -> {Center, Center}, ImageSize -> 
                     Dynamic[{
-                    Automatic, 3.5 CurrentValue["FontCapHeight"]/
-                    AbsoluteCurrentValue[Magnification]}]], 
+                    Automatic, 
+                    3.5 (CurrentValue["FontCapHeight"]/AbsoluteCurrentValue[
+                    Magnification])}]], 
                     GraphicsBox[{
                     Thickness[0.038461538461538464`], {
                     FaceForm[{
@@ -2718,7 +2723,8 @@ cUM4Hz0+AG0eosQ=
                     ShowStringCharacters -> False, NumberMarks -> False, 
                     PrintPrecision -> 3, ShowSyntaxStyles -> False}]}}, 
                   GridBoxAlignment -> {"Rows" -> {{Top}}}, AutoDelete -> 
-                  False, GridBoxItemSize -> {
+                  False, 
+                  GridBoxItemSize -> {
                    "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}, 
                   BaselinePosition -> {1, 1}], True -> GridBox[{{
                     PaneBox[
@@ -2730,8 +2736,9 @@ cUM4Hz0+AG0eosQ=
                     None, Evaluator -> Automatic, Method -> "Preemptive"], 
                     Alignment -> {Center, Center}, ImageSize -> 
                     Dynamic[{
-                    Automatic, 3.5 CurrentValue["FontCapHeight"]/
-                    AbsoluteCurrentValue[Magnification]}]], 
+                    Automatic, 
+                    3.5 (CurrentValue["FontCapHeight"]/AbsoluteCurrentValue[
+                    Magnification])}]], 
                     GraphicsBox[{
                     Thickness[0.038461538461538464`], {
                     FaceForm[{
@@ -3354,7 +3361,6 @@ Cell[BoxData[
             ImageSize->{Automatic, 25}],
            Appearance->None,
            BaselinePosition->Baseline,
-           
            ButtonFunction:>OutputSizeLimit`ButtonFunction[
             OutputSizeLimit`Defer, 118, 16516784530864736406, 5/2],
            Enabled->True,
@@ -3573,8 +3579,9 @@ Cell[BoxData[
                     None, Evaluator -> Automatic, Method -> "Preemptive"], 
                     Alignment -> {Center, Center}, ImageSize -> 
                     Dynamic[{
-                    Automatic, 3.5 CurrentValue["FontCapHeight"]/
-                    AbsoluteCurrentValue[Magnification]}]], 
+                    Automatic, 
+                    3.5 (CurrentValue["FontCapHeight"]/AbsoluteCurrentValue[
+                    Magnification])}]], 
                     GraphicsBox[{
                     Thickness[0.038461538461538464`], {
                     FaceForm[{
@@ -3698,8 +3705,9 @@ cUM4Hz0+AG0eosQ=
                     None, Evaluator -> Automatic, Method -> "Preemptive"], 
                     Alignment -> {Center, Center}, ImageSize -> 
                     Dynamic[{
-                    Automatic, 3.5 CurrentValue["FontCapHeight"]/
-                    AbsoluteCurrentValue[Magnification]}]], 
+                    Automatic, 
+                    3.5 (CurrentValue["FontCapHeight"]/AbsoluteCurrentValue[
+                    Magnification])}]], 
                     GraphicsBox[{
                     Thickness[0.038461538461538464`], {
                     FaceForm[{
@@ -4489,8 +4497,9 @@ Cell[BoxData[
               Evaluator -> Automatic, Method -> "Preemptive"], 
              Alignment -> {Center, Center}, ImageSize -> 
              Dynamic[{
-               Automatic, 3.5 CurrentValue["FontCapHeight"]/
-                AbsoluteCurrentValue[Magnification]}]], 
+               Automatic, 
+                3.5 (CurrentValue["FontCapHeight"]/AbsoluteCurrentValue[
+                 Magnification])}]], 
             GraphicsBox[{
               Thickness[0.038461538461538464`], {
                FaceForm[{
@@ -4515,7 +4524,6 @@ Cell[BoxData[
                FaceForm[{
                  RGBColor[0.5, 0.5, 0.5], 
                  Opacity[1.]}], 
-               
                FilledCurveBox[{{{0, 2, 0}, {0, 1, 0}, {0, 1, 0}, {0, 1, 0}, {
                 0, 1, 0}, {0, 1, 0}, {0, 1, 0}}}, {{{20.5426, 
                 19.116799999999998`}, {16.3832, 21.876199999999997`}, {
@@ -4524,6 +4532,7 @@ Cell[BoxData[
                 18.212100000000003`}, {16.3832, 18.212100000000003`}, {
                 16.3832, 16.357399999999995`}, {20.5426, 
                 19.116799999999998`}}}], 
+               
                FilledCurveBox[{{{0, 2, 0}, {0, 1, 0}, {0, 1, 0}, {0, 1, 0}, {
                 0, 1, 0}, {0, 1, 0}, {0, 1, 0}}}, {{{5.30508, 13.8391}, {
                 9.46445, 11.079700000000003`}, {9.46445, 
@@ -4609,8 +4618,9 @@ cUM4Hz0+AG0eosQ=
               Evaluator -> Automatic, Method -> "Preemptive"], 
              Alignment -> {Center, Center}, ImageSize -> 
              Dynamic[{
-               Automatic, 3.5 CurrentValue["FontCapHeight"]/
-                AbsoluteCurrentValue[Magnification]}]], 
+               Automatic, 
+                3.5 (CurrentValue["FontCapHeight"]/AbsoluteCurrentValue[
+                 Magnification])}]], 
             GraphicsBox[{
               Thickness[0.038461538461538464`], {
                FaceForm[{
@@ -4731,6 +4741,7 @@ cUM4Hz0+AG0eosQ=
                     RowBox[{
                     RowBox[{"lazyLists`Private`q$", "=", 
                     RowBox[{"Quotient", "[", 
+                    
                     RowBox[{"lazyLists`Private`c$", ",", 
                     "lazyLists`Private`i"}], "]"}]}], ";", 
                     RowBox[{"lazyLists`Private`c$", "=", 
