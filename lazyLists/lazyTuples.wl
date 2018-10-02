@@ -14,7 +14,7 @@ basis[lengths : {__Integer}] := (
 );
 
 (* Compilation only works for Machine integers *)
-decompose[base : {__Integer}] /; Max[base] < 2^63 := (
+decompose[base : {__Integer}] /; AllTrue[base, Developer`MachineIntegerQ] := (
     decompose[base] = Compile[{
         {n, _Integer, 1}
     }, 
