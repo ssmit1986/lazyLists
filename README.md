@@ -8,7 +8,7 @@ Implements Haskell-style lazy lists in Mathematica and adds syntactic sugar to v
 2. You can start using the code by opening the file lazyLists.nb and running the intialisation lines at the top
 3. If, instead, you want to use the code from another notebook, just set the directory with `SetDirectory` to the directory of lazyLists.nb and then simply run
 
-    <<lazyLists`
+       << lazyLists`
 
 4. If you want to install the package as a Wolfram application so that you can `Get` it from anywhere you:
     1. Evaluate `SystemOpen[$UserBaseDirectory]`
