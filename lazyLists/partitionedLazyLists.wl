@@ -53,6 +53,16 @@ partitionedLazyNestList[fun_, elem_, partition_Integer?Positive] := Function[
 ][elem, 1];
 
 lazyPartition[lazyList[] | {}, ___] := lazyList[];
+
+lazyPartition[lazyList[fst_, lazyList[rest_List]], newPart_Integer?Positive] := With[{
+    newRest = Drop[rest, UpTo[newPart - 1]]
+},
+    partitionedLazyList[
+        Prepend[Take[rest, UpTo[newPart - 1]], fst],
+        lazyPartition[newRest, newPart]
+    ]
+];
+
 lazyPartition[lzHead[_, lazyFiniteList[list_, ind_, p0 : _Integer : 1]], newPart_Integer?Positive] :=
     lazyFiniteList[list, ind - p0, newPart];
 lazyPartition[lzHead[_, lazyPeriodicListInternal[list_, ind_, max_, p0 : _Integer : 1]], newPart_Integer?Positive] :=

@@ -21,7 +21,7 @@ Attributes[lazyList] = {HoldRest};
 
 lazyList[{}] := lazyList[];
 lazyList[Nothing, tail_] := tail;
-lazyList[list_List] := lazyFiniteList[list, 1];
+lazyList[{fst_, rest___}] := lazyList[fst, lazyList[{rest}]];
 lazyList[endOfLazyList, ___] := lazyList[]
 
 
