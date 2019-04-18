@@ -48,16 +48,16 @@ With[{
     ]
 ];
 
-lazyFinitePart[lzHead[_, (lazyFiniteList | lazyPeriodicListInternal)[list_, __]], spec__] := Part[list, spec];
-lazyFiniteTake[lzHead[_, (lazyFiniteList | lazyPeriodicListInternal)[list_, __]], spec_] := Take[list, spec];
+lazyFinitePart[lzHead[_, HoldPattern[(lazyFiniteList | lazyPeriodicListInternal)[list_, __]]], spec__] := Part[list, spec];
+lazyFiniteTake[lzHead[_, HoldPattern[(lazyFiniteList | lazyPeriodicListInternal)[list_, __]]], spec_] := Take[list, spec];
 
-lazySetState[lzHead[_, lazyFiniteList[list_, _, rest___]], index_Integer] /; 0 < index <= Length[list] :=
+lazySetState[lzHead[_, HoldPattern @ lazyFiniteList[list_, _, rest___]], index_Integer] /; 0 < index <= Length[list] :=
     lazyFiniteList[list, index, rest];
 
-lazySetState[lzHead[_, lazyFiniteList[list_, _, rest___]], index_Integer] /; -Length[list] <= index < 0 := 
+lazySetState[lzHead[_, HoldPattern @ lazyFiniteList[list_, _, rest___]], index_Integer] /; -Length[list] <= index < 0 := 
     lazyFiniteList[list, index + Length[list] + 1, rest];
 
-lazySetState[lz : lzHead[_, lazyFiniteList[list_, _, ___]], index_Integer] := (
+lazySetState[lz : lzHead[_, HoldPattern @ lazyFiniteList[list_, _, ___]], index_Integer] := (
     Message[Part::partw, index, Short[lz]];
     lz
 );
@@ -196,7 +196,7 @@ lazyPeriodicListInternal[list_, i_, max_] := lazyList[
 lazyPeriodicList[Hold[list_Symbol] | list_List] := lazyPeriodicListInternal[list, 1, Length[list]];
 lazyPeriodicList[Hold[list_Symbol] | list_List, part_Integer?Positive] := lazyPeriodicListInternal[list, 1, Length[list], part];
 
-lazySetState[lzHead[_, lazyPeriodicListInternal[list_, _, max_, rest___]], index_Integer] := 
+lazySetState[lzHead[_, HoldPattern @ lazyPeriodicListInternal[list_, _, max_, rest___]], index_Integer] := 
     lazyPeriodicListInternal[list, Mod[index  + 1 - UnitStep[index], max, 1], max, rest];
 
 
