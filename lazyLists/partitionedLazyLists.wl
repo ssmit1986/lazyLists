@@ -72,23 +72,19 @@ lazyPartition[lz : lzPattern, partition_Integer?Positive] := Replace[
     Take[lz, partition],
     (lazyList | partitionedLazyList)[list_List, tail_] :> partitionedLazyList[list, lazyPartition[tail, partition]]
 ];
-lazyPartition[list_List, partition_Integer?Positive] := With[{
-    rest = Drop[list, UpTo[partition]]
-},
-    partitionedLazyList[
-        Take[list, UpTo[partition]],
-        lazyPartition[rest, partition]
-    ]
-];
 
 With[{
     msgs = {Take::take, Take::normal}
 },
     lazyFiniteList[list_, ind_, partition_] := Quiet[
         Check[
-            partitionedLazyList[
-                Take[list, {ind, UpTo[ind + partition - 1]}],
-                lazyFiniteList[list, ind + partition, partition]
+            With[{
+                nextIndex = ind + partition
+            },
+                partitionedLazyList[
+                    Take[list, {ind, UpTo[ind + partition - 1]}],
+                    lazyFiniteList[list, nextIndex, partition]
+                ]
             ],
             lazyList[],
             msgs
@@ -97,10 +93,7 @@ With[{
     ]
 ];
 
-lazyPartition[Hold[list_Symbol], n_Integer?Positive] /; ListQ[list] := partitionedLazyList[
-    Take[list, UpTo[n]],
-    lazyFiniteList[list, n + 1, n]
-];
+lazyPartition[Hold[list_Symbol?ListQ] | list_List, n_Integer?Positive] := lazyFiniteList[list, 1, n];
 
 lazyPeriodicListInternal[list_, i_, max_, part_] := partitionedLazyList[
     Part[

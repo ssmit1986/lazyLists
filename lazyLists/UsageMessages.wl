@@ -58,7 +58,7 @@ partitionedLazyRange[partitionLength] generates the natural numbers in chuncks o
 partitionedLazyNestList::usage = "partitionedLazyNestList[fun, elem, partitionLength] is a partitioned version of lazyNestList.
 Each new partition is generated with NestList";
 
-lazyPartition::usage = "lazyPartition[lz, n] turns an ordinary lazyList into a partitioned lazyList with chunks of length n";
+lazyPartition::usage = "lazyPartition[l, n] turns an ordinary list or lazyList into a partitioned lazyList with chunks of length n";
 
 
 lazyCatenate::usage = "lazyCatenate catenates lists of lazyLists, lazyLists of lists and lazyLists of lazyLists into one lazyList";
