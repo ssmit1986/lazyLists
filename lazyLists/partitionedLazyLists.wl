@@ -598,6 +598,24 @@ lazyCatenate[{fst__partitionedLazyList, lists__List}] := lazyCatenate[{fst, part
 
 lazyCatenate[{partitionedLazyList[list_List, tail_], rest__partitionedLazyList}] := partitionedLazyList[list, lazyCatenate[{tail, rest}]];
 
+repartitionAll[exprs_List, lengthFun : Except[_Integer?Positive] : Min] := With[{
+    lengths = Cases[exprs, partitionedLazyList[l_List, ___] :> Length[l]]
+},
+    If[ SameQ @@ lengths && FreeQ[exprs, _lazyList, {1}, Heads -> False],
+        exprs,
+        repartitionAll[exprs, lengthFun[lengths]] /; MatchQ[lengths, {__Integer}]
+    ]
+];
+repartitionAll[exprs_List, newLength_Integer?Positive] := Replace[
+    exprs,
+    {
+        partLz_partitionedLazyList  :> Take[partLz, newLength],
+        lz_lazyList :> lazyPartition[lz, newLength]
+    },
+    {1}
+];
+repartitionAll[other_, ___] := other;
+
 End[]
 
 EndPackage[]
