@@ -39,11 +39,6 @@ setLazyListable[sym_Symbol] := (
         Unevaluated[expr],
         lazyList
     ];
-    partitionedLazyList /: sym[
-        first : Except[_partitionedLazyList]...,
-        lz_partitionedLazyList,
-        rest : Except[_partitionedLazyList]...
-    ] := Map[sym[first, #, rest]&, lz];
     partitionedLazyList /: sym[first___, lz_partitionedLazyList, rest___] := Thread[
         Unevaluated[
             Thread[Unevaluated[sym[##]]]&[first, lz, rest]
