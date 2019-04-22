@@ -57,6 +57,8 @@ partitionedLazyList /: Take[lz_partitionedLazyList, spec_, ___] := (Message[lazy
 partitionedLazyList::part = "Cannot take part `1` in `2`";
 partitionedLazyList /: Part[lz_partitionedLazyList, spec_, ___] := (Message[lazyList::part, spec, Short[lz]]; $Failed);
 
+lazyMapThread[___] := lazyList[];
+
 End[]
 
 EndPackage[]

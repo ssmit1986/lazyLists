@@ -35,6 +35,7 @@ lazyAppendTo[lazyList[first_, lazyFiniteList[list_Symbol, i_]], element_] := (
 
 Attributes[setLazyListable] = {HoldFirst};
 setLazyListable[sym_Symbol] := (
+    lazyList /: (expr : sym[___, lazyList[], ___]) := lazyList[];
     lazyList /: (expr : sym[___, _lazyList, ___]) := Thread[
         Unevaluated[expr],
         lazyList
@@ -48,6 +49,7 @@ setLazyListable[sym_Symbol] := (
     sym
 );
 setLazyListable[{sym_Symbol, Listable}] := (
+    lazyList /: (expr : sym[___, lazyList[], ___]) := lazyList[];
     lazyList /: (expr : sym[___, _lazyList, ___]) := Thread[
         Unevaluated[expr],
         lazyList

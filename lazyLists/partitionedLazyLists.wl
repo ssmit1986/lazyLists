@@ -567,34 +567,6 @@ partitionedLazyList /: Select[partitionedLazyList[first_List, tail_], fun_] := p
     Select[tail, fun]
 ];
 
-lazyMapThread[fun_, lists : {partitionedLazyList[_, _]..}] := With[{
-    minLen = Min[Length /@ lists[[All, 1]]]
-},
-    With[{
-        rest = Drop[lists[[All, 1]], None, minLen],
-        tails = lists[[All, 2]]
-    },
-        partitionedLazyList[
-            MapThread[fun, Take[lists[[All, 1]], All, minLen]],
-            lazyMapThread[
-                fun,
-                MapThread[
-                    partitionedLazyList,
-                    {
-                        rest,
-                        tails
-                    }
-                ]
-            ]
-        ]
-    ]
-];
-
-lazyTranspose[lists : {partitionedLazyList[_, _]..}] := lazyMapThread[List, lists];
-lazyTranspose[
-    lz : partitionedLazyList[lists : {{___}..}, _]
-] /; SameQ @@ (Length /@ lists) := Map[{Transpose, Listable}, lz];
-
 lazyCatenate[lists : {___, __List, partitionedLazyList[_, _], rest___}] := 
     lazyCatenate[
         SequenceReplace[
@@ -609,13 +581,20 @@ lazyCatenate[{partitionedLazyList[list_List, tail_], rest__partitionedLazyList}]
 Options[repartitionAll] = {
     "RepartitionFunction" -> Min
 };
+repartitionAll[exprs : {___, lazyList[], ___}, ___] := Replace[
+    exprs,
+    {
+        lz : lzPattern -> lazyList[]
+    },
+    {1}
+]
 repartitionAll[exprs_List, opts : OptionsPattern[]] := With[{
-    lengths = Cases[exprs, partitionedLazyList[l_List, ___] :> Length[l]]
+    lengths = Cases[exprs, partitionedLazyList[lst_List, ___] :> Length[lst]]
 },
     If[ SameQ @@ lengths && FreeQ[exprs, _lazyList, {1}, Heads -> False],
         exprs,
-        repartitionAll[exprs, OptionValue["RepartitionFunction"][lengths]] /; MatchQ[lengths, {__Integer}]
-    ]
+        repartitionAll[exprs, OptionValue["RepartitionFunction"][lengths]]
+    ] /; MatchQ[lengths, {__Integer}]
 ];
 repartitionAll[exprs_List, newLength_Integer?Positive] := repartitionAll[
     Replace[
@@ -630,6 +609,29 @@ repartitionAll[exprs_List, newLength_Integer?Positive] := repartitionAll[
 ];
 repartitionAll[other_, ___] := other;
 
+Options[lazyMapThread] = Options[repartitionAll];
+lazyMapThread[fun_, lists : {lzHead[_, _]..}, opts : OptionsPattern[]] := With[{
+    repartitioned = repartitionAll[lists, opts]
+},
+    With[{
+        heads = repartitioned[[All, 1]],
+        tails = repartitioned[[All, 2]]
+    },
+        partitionedLazyList[
+            MapThread[fun, heads],
+            lazyMapThread[
+                fun,
+                tails
+            ]
+        ]
+    ] /; FreeQ[repartitioned, lazyList[], {1}, Heads -> False]
+];
+
+Options[lazyTranspose] = Options[repartitionAll];
+lazyTranspose[lists : {lzHead[_, _]..}, opts : OptionsPattern[]] := lazyMapThread[List, lists, opts];
+lazyTranspose[
+    lz : partitionedLazyList[lists : {{___}..}, _]
+] /; SameQ @@ (Length /@ lists) := Map[{Transpose, Listable}, lz];
 
 End[]
 
