@@ -68,9 +68,17 @@ lazyPartition[lzHead[_, HoldPattern @ lazyFiniteList[list_, ind_, p0 : _Integer 
 lazyPartition[lzHead[_, HoldPattern @ lazyPeriodicListInternal[list_, ind_, max_, p0 : _Integer : 1]], newPart_Integer?Positive] :=
     lazyPeriodicListInternal[list, ind - p0, max, newPart];
 
+lazyPartition[partitionedLazyList[list_, lazyPartition[tail_, _]], partition_Integer?Positive] := Take[
+    partitionedLazyList[list, lazyPartition[tail, partition]],
+    partition
+];
+
 lazyPartition[lz : lzPattern, partition_Integer?Positive] := Replace[
     Take[lz, partition],
-    (lazyList | partitionedLazyList)[list_List, tail_] :> partitionedLazyList[list, lazyPartition[tail, partition]]
+    {
+        lazyList[list_List, lazyList[]] :> partitionedLazyList[list, lazyList[]],
+        (lazyList | partitionedLazyList)[list_List, tail : Except[lazyList[]]] :> partitionedLazyList[list, lazyPartition[tail, partition]]
+    }
 ];
 
 With[{
@@ -598,23 +606,30 @@ lazyCatenate[{fst__partitionedLazyList, lists__List}] := lazyCatenate[{fst, part
 
 lazyCatenate[{partitionedLazyList[list_List, tail_], rest__partitionedLazyList}] := partitionedLazyList[list, lazyCatenate[{tail, rest}]];
 
-repartitionAll[exprs_List, lengthFun : Except[_Integer?Positive] : Min] := With[{
+Options[repartitionAll] = {
+    "RepartitionFunction" -> Min
+};
+repartitionAll[exprs_List, opts : OptionsPattern[]] := With[{
     lengths = Cases[exprs, partitionedLazyList[l_List, ___] :> Length[l]]
 },
     If[ SameQ @@ lengths && FreeQ[exprs, _lazyList, {1}, Heads -> False],
         exprs,
-        repartitionAll[exprs, lengthFun[lengths]] /; MatchQ[lengths, {__Integer}]
+        repartitionAll[exprs, OptionValue["RepartitionFunction"][lengths]] /; MatchQ[lengths, {__Integer}]
     ]
 ];
-repartitionAll[exprs_List, newLength_Integer?Positive] := Replace[
-    exprs,
-    {
-        partLz_partitionedLazyList  :> Take[partLz, newLength],
-        lz_lazyList :> lazyPartition[lz, newLength]
-    },
-    {1}
+repartitionAll[exprs_List, newLength_Integer?Positive] := repartitionAll[
+    Replace[
+        exprs,
+        {
+            partLz_partitionedLazyList  :> Take[partLz, newLength],
+            lz_lazyList :> lazyPartition[lz, newLength]
+        },
+        {1}
+    ],
+    "RepartitionFunction" -> Min
 ];
 repartitionAll[other_, ___] := other;
+
 
 End[]
 
