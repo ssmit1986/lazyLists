@@ -35,31 +35,30 @@ lazyAppendTo[lazyList[first_, lazyFiniteList[list_Symbol, i_]], element_] := (
 
 Attributes[setLazyListable] = {HoldFirst};
 setLazyListable[sym_Symbol] := (
+    lazyList /: (expr : sym[___, lazyList[], ___]) := lazyList[];
+    partitionedLazyList /: sym[first___, lz_partitionedLazyList, rest___] := Function[
+        Thread[
+            Unevaluated[
+                Thread[Unevaluated[sym[##]]]&[##]
+            ],
+            partitionedLazyList
+        ]
+    ] @@ repartitionAll[{first, lz, rest}];
     lazyList /: (expr : sym[___, _lazyList, ___]) := Thread[
         Unevaluated[expr],
         lazyList
-    ];
-    partitionedLazyList /: sym[
-        first : Except[_partitionedLazyList]...,
-        lz_partitionedLazyList,
-        rest : Except[_partitionedLazyList]...
-    ] := Map[sym[first, #, rest]&, lz];
-    partitionedLazyList /: sym[first___, lz_partitionedLazyList, rest___] := Thread[
-        Unevaluated[
-            Thread[Unevaluated[sym[##]]]&[first, lz, rest]
-        ],
-        partitionedLazyList
     ];
     sym
 );
 setLazyListable[{sym_Symbol, Listable}] := (
+    lazyList /: (expr : sym[___, lazyList[], ___]) := lazyList[];
+    partitionedLazyList /: (expr : sym[first___, lz_partitionedLazyList, rest___]) := Thread[
+        Unevaluated[sym[##]],
+        partitionedLazyList
+    ]& @@ repartitionAll[{first, lz, rest}];
     lazyList /: (expr : sym[___, _lazyList, ___]) := Thread[
         Unevaluated[expr],
         lazyList
-    ];
-    partitionedLazyList /: (expr : sym[___, _partitionedLazyList, ___]) := Thread[
-        Unevaluated[expr],
-        partitionedLazyList
     ];
     sym
 );

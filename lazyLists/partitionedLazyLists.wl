@@ -68,17 +68,17 @@ lazyPartition[lzHead[_, HoldPattern @ lazyFiniteList[list_, ind_, p0 : _Integer 
 lazyPartition[lzHead[_, HoldPattern @ lazyPeriodicListInternal[list_, ind_, max_, p0 : _Integer : 1]], newPart_Integer?Positive] :=
     lazyPeriodicListInternal[list, ind - p0, max, newPart];
 
+lazyPartition[partitionedLazyList[list_, lazyPartition[tail_, _]], partition_Integer?Positive] := Take[
+    partitionedLazyList[list, lazyPartition[tail, partition]],
+    partition
+];
+
 lazyPartition[lz : lzPattern, partition_Integer?Positive] := Replace[
     Take[lz, partition],
-    (lazyList | partitionedLazyList)[list_List, tail_] :> partitionedLazyList[list, lazyPartition[tail, partition]]
-];
-lazyPartition[list_List, partition_Integer?Positive] := With[{
-    rest = Drop[list, UpTo[partition]]
-},
-    partitionedLazyList[
-        Take[list, UpTo[partition]],
-        lazyPartition[rest, partition]
-    ]
+    {
+        lazyList[list_List, lazyList[]] :> partitionedLazyList[list, lazyList[]],
+        (lazyList | partitionedLazyList)[list_List, tail : Except[lazyList[]]] :> partitionedLazyList[list, lazyPartition[tail, partition]]
+    }
 ];
 
 With[{
@@ -86,9 +86,13 @@ With[{
 },
     lazyFiniteList[list_, ind_, partition_] := Quiet[
         Check[
-            partitionedLazyList[
-                Take[list, {ind, UpTo[ind + partition - 1]}],
-                lazyFiniteList[list, ind + partition, partition]
+            With[{
+                nextIndex = ind + partition
+            },
+                partitionedLazyList[
+                    Take[list, {ind, UpTo[ind + partition - 1]}],
+                    lazyFiniteList[list, nextIndex, partition]
+                ]
             ],
             lazyList[],
             msgs
@@ -97,10 +101,7 @@ With[{
     ]
 ];
 
-lazyPartition[Hold[list_Symbol], n_Integer?Positive] /; ListQ[list] := partitionedLazyList[
-    Take[list, UpTo[n]],
-    lazyFiniteList[list, n + 1, n]
-];
+lazyPartition[Hold[list_Symbol?ListQ] | list_List, n_Integer?Positive] := lazyFiniteList[list, 1, n];
 
 lazyPeriodicListInternal[list_, i_, max_, part_] := partitionedLazyList[
     Part[
@@ -566,34 +567,6 @@ partitionedLazyList /: Select[partitionedLazyList[first_List, tail_], fun_] := p
     Select[tail, fun]
 ];
 
-lazyMapThread[fun_, lists : {partitionedLazyList[_, _]..}] := With[{
-    minLen = Min[Length /@ lists[[All, 1]]]
-},
-    With[{
-        rest = Drop[lists[[All, 1]], None, minLen],
-        tails = lists[[All, 2]]
-    },
-        partitionedLazyList[
-            MapThread[fun, Take[lists[[All, 1]], All, minLen]],
-            lazyMapThread[
-                fun,
-                MapThread[
-                    partitionedLazyList,
-                    {
-                        rest,
-                        tails
-                    }
-                ]
-            ]
-        ]
-    ]
-];
-
-lazyTranspose[lists : {partitionedLazyList[_, _]..}] := lazyMapThread[List, lists];
-lazyTranspose[
-    lz : partitionedLazyList[lists : {{___}..}, _]
-] /; SameQ @@ (Length /@ lists) := Map[{Transpose, Listable}, lz];
-
 lazyCatenate[lists : {___, __List, partitionedLazyList[_, _], rest___}] := 
     lazyCatenate[
         SequenceReplace[
@@ -604,6 +577,61 @@ lazyCatenate[lists : {___, __List, partitionedLazyList[_, _], rest___}] :=
 lazyCatenate[{fst__partitionedLazyList, lists__List}] := lazyCatenate[{fst, partitionedLazyList[Join[lists], lazyList[]]}];
 
 lazyCatenate[{partitionedLazyList[list_List, tail_], rest__partitionedLazyList}] := partitionedLazyList[list, lazyCatenate[{tail, rest}]];
+
+Options[repartitionAll] = {
+    "RepartitionFunction" -> Max
+};
+repartitionAll[exprs : {___, lazyList[], ___}, ___] := Replace[
+    exprs,
+    {
+        lz : lzPattern -> lazyList[]
+    },
+    {1}
+];
+repartitionAll[exprs_List, opts : OptionsPattern[]] := With[{
+    lengths = Cases[exprs, partitionedLazyList[lst_List, ___] :> Length[lst]]
+},
+    If[ SameQ @@ lengths && FreeQ[exprs, _lazyList, {1}, Heads -> False],
+        exprs,
+        repartitionAll[exprs, OptionValue["RepartitionFunction"][lengths]]
+    ] /; MatchQ[lengths, {__Integer}]
+];
+repartitionAll[exprs_List, newLength_Integer?Positive] := repartitionAll[
+    Replace[
+        exprs,
+        {
+            lz : partitionedLazyList[_, _lazyPartition] | _lazyList :> lazyPartition[lz, newLength],
+            partLz_partitionedLazyList :> Take[partLz, newLength]
+        },
+        {1}
+    ],
+    "RepartitionFunction" -> Min
+];
+repartitionAll[other_, ___] := other;
+
+Options[lazyMapThread] = Options[repartitionAll];
+lazyMapThread[fun_, lists : {lzHead[_, _]..}, opts : OptionsPattern[]] := With[{
+    repartitioned = repartitionAll[lists, opts]
+},
+    With[{
+        heads = repartitioned[[All, 1]],
+        tails = repartitioned[[All, 2]]
+    },
+        partitionedLazyList[
+            MapThread[fun, heads],
+            lazyMapThread[
+                fun,
+                tails
+            ]
+        ]
+    ] /; FreeQ[repartitioned, lazyList[], {1}, Heads -> False]
+];
+
+Options[lazyTranspose] = Options[repartitionAll];
+lazyTranspose[lists : {lzHead[_, _]..}, opts : OptionsPattern[]] := lazyMapThread[List, lists, opts];
+lazyTranspose[
+    lz : partitionedLazyList[lists : {{___}..}, _]
+] /; SameQ @@ (Length /@ lists) := Map[{Transpose, Listable}, lz];
 
 End[]
 
