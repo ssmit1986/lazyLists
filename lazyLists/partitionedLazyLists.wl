@@ -579,7 +579,7 @@ lazyCatenate[{fst__partitionedLazyList, lists__List}] := lazyCatenate[{fst, part
 lazyCatenate[{partitionedLazyList[list_List, tail_], rest__partitionedLazyList}] := partitionedLazyList[list, lazyCatenate[{tail, rest}]];
 
 Options[repartitionAll] = {
-    "RepartitionFunction" -> Min
+    "RepartitionFunction" -> Max
 };
 repartitionAll[exprs : {___, lazyList[], ___}, ___] := Replace[
     exprs,
@@ -587,7 +587,7 @@ repartitionAll[exprs : {___, lazyList[], ___}, ___] := Replace[
         lz : lzPattern -> lazyList[]
     },
     {1}
-]
+];
 repartitionAll[exprs_List, opts : OptionsPattern[]] := With[{
     lengths = Cases[exprs, partitionedLazyList[lst_List, ___] :> Length[lst]]
 },
@@ -600,8 +600,8 @@ repartitionAll[exprs_List, newLength_Integer?Positive] := repartitionAll[
     Replace[
         exprs,
         {
-            partLz_partitionedLazyList  :> Take[partLz, newLength],
-            lz_lazyList :> lazyPartition[lz, newLength]
+            lz : partitionedLazyList[_, _lazyPartition] | _lazyList :> lazyPartition[lz, newLength],
+            partLz_partitionedLazyList :> Take[partLz, newLength]
         },
         {1}
     ],

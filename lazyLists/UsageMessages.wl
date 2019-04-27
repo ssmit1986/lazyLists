@@ -80,7 +80,7 @@ bulkExtractElementsUsingIndexList::usage = "bulkExtractElementsUsingIndexList[li
 
 rangeTuplesAtPositions::usage = "rangeTuplesAtPositions[Length /@ lists] is a CompiledFunction that directly generates elements of Tuples[Range /@ Length /@ lists]";
 
-repartitionAll::usage = "repartitionAll[{lz1, lz2, ...}] returns the list of lazy lists, but with all partitioned lazylists restructured to be of the same partition length."
+repartitionAll::usage = "repartitionAll[{lz1, lz2, ...}] returns the list of lazy lists, but with all partitioned lazylists restructured to be of the same partition length. Ordinary lazyLists will be converted to partitionedLazyLists.";
 
 EndPackage[]
 
