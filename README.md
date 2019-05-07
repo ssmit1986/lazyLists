@@ -49,9 +49,12 @@ See lazyLists.nb for details and examples.
 * 28 September 2018
     * Implement `LengthWhile` for `lazyList` and `partitionedLazyList`. Replaces `partWhile`, which was removed.
     * Add the `endOfLazyList` token, which is used to force lazy lists to terminate.
-* 19 April 2018
+* 19 April 2019
     * Update some matching patterns that technically should use `HoldPattern`. Clear all definition in the package when reloading it. 
     * Test code in notebook in Mathematica V12.
-* 27 April 2018
+* 27 April 2019
     * Add new function `repartitionAll` which is used when threading over multiple `partitionedLazyList`s.
     * As a consequence, the `lazyListable` pseudo-attribute will now work with `partitionedLazyList`s that have been partitioned differently.
+* 07 May 2019
+    * Add unit tests.
+    * Fix dates in change log <_<
