@@ -5462,15 +5462,6 @@ Cell[BoxData[
  CellID->39914524,ExpressionUUID->"7d8b66a8-30b6-4815-b5fe-77a58d27757a"]
 }, Open  ]],
 
-Cell[BoxData[
- RowBox[{"Take", "[", 
-  RowBox[{
-   RowBox[{"lazyRange", "[", "]"}], ",", 
-   RowBox[{"{", 
-    RowBox[{"10", ",", "5"}], "}"}]}], "]"}]], "VerificationTest",
- CellLabel->"In[106]:=",
- CellID->174670767,ExpressionUUID->"830b147d-78b1-4c81-9903-020acfd5d82a"],
-
 Cell[CellGroupData[{
 
 Cell[BoxData[
@@ -5640,7 +5631,6 @@ Cell[BoxData[
            
            Appearance->FEPrivate`FrontEndResource[
             "MUnitExpressions", "ButtonAppearances"],
-           
            ButtonFunction:>
             Block[{$ContextPath}, Needs["MUnit`"]; MUnit`addOptions[]],
            Evaluator->Automatic,
@@ -5741,6 +5731,7 @@ Cell[BoxData[
             
             GridBoxAlignment->{
              "Columns" -> {{Automatic}}, "Rows" -> {{Center}}},
+            
             GridBoxItemSize->{
              "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
            "Grid"], True->
@@ -5795,6 +5786,7 @@ Cell[BoxData[
              PaneSelectorBox[{False->
               TagBox[GridBox[{
                  {
+                  
                   DynamicBox[FEPrivate`FrontEndResource[
                    "MUnitExpressions", "Add"],
                    ImageSizeCache->{21., {4., 12.}}], 
@@ -6066,6 +6058,7 @@ Cell[BoxData[
            
            Appearance->FEPrivate`FrontEndResource[
             "MUnitExpressions", "ButtonAppearances"],
+           
            ButtonFunction:>
             Block[{$ContextPath}, Needs["MUnit`"]; MUnit`addOptions[]],
            Evaluator->Automatic,
@@ -6508,6 +6501,7 @@ Cell[BoxData[
             "MUnitStrings", "MemoryConstraint-Label"]]:>
            Block[{$ContextPath}, Needs["MUnit`"]; 
             MUnit`InsertOptionRule["MemoryConstraint"]], 
+           
            DynamicBox[FEPrivate`FrontEndResource[
             "MUnitStrings", "SameTest-Label"]]:>
            Block[{$ContextPath}, Needs["MUnit`"]; 
@@ -6517,7 +6511,6 @@ Cell[BoxData[
             "MUnitStrings", "TestID-Label"]]:>
            Block[{$ContextPath}, Needs["MUnit`"]; 
             MUnit`InsertOptionRule["TestID"]], 
-           
            DynamicBox[FEPrivate`FrontEndResource[
             "MUnitStrings", "TimeConstraint-Label"]]:>
            Block[{$ContextPath}, Needs["MUnit`"]; 
@@ -6727,6 +6720,7 @@ Cell[BoxData[
             "MUnitStrings", "TestID-Label"]]:>
            Block[{$ContextPath}, Needs["MUnit`"]; 
             MUnit`InsertOptionRule["TestID"]], 
+           
            DynamicBox[FEPrivate`FrontEndResource[
             "MUnitStrings", "TimeConstraint-Label"]]:>
            Block[{$ContextPath}, Needs["MUnit`"]; 
@@ -6900,7 +6894,6 @@ Cell[BoxData[
               RawBoxes[
                FEPrivate`FrontEndResource[
                "MUnitStrings", "AddOptions-Tooltip"]]], "Tooltip"]& ],
-           
            Appearance->FEPrivate`FrontEndResource[
             "MUnitExpressions", "ButtonAppearances"],
            
@@ -7015,7 +7008,6 @@ Cell[BoxData[
                AdjustmentBoxOptions->{BoxBaselineShift->-50}]}
             },
             AutoDelete->False,
-            
             GridBoxAlignment->{
              "Columns" -> {{Automatic}}, "Rows" -> {{Center}}},
             
@@ -7113,6 +7105,7 @@ Cell[BoxData[
                 
                 GridBoxAlignment->{
                  "Columns" -> {{Automatic}}, "Rows" -> {{Center}}},
+                
                 GridBoxItemSize->{
                  "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
                "Grid"]}, Dynamic[
@@ -7339,7 +7332,6 @@ Cell[BoxData[
                    FontColor->RGBColor[0.9059, 0.3451, 0.102]]}
                 },
                 AutoDelete->False,
-                
                 GridBoxAlignment->{
                  "Columns" -> {{Automatic}}, "Rows" -> {{Center}}},
                 
@@ -7556,6 +7548,7 @@ Cell[BoxData[
                 
                 GridBoxAlignment->{
                  "Columns" -> {{Automatic}}, "Rows" -> {{Center}}},
+                
                 GridBoxItemSize->{
                  "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
                "Grid"]}, Dynamic[
@@ -7668,6 +7661,7 @@ Cell[BoxData[
               DynamicBox[FEPrivate`FrontEndResource["MUnitExpressions", "Add"],
                ImageSizeCache->{21., {4., 12.}}], 
               StyleBox[
+               
                DynamicBox[FEPrivate`FrontEndResource[
                 "MUnitStrings", "AddMessages-Label"],
                 ImageSizeCache->{102., {3., 10.}}], "ButtonText",
@@ -7773,6 +7767,7 @@ Cell[BoxData[
                 
                 GridBoxAlignment->{
                  "Columns" -> {{Automatic}}, "Rows" -> {{Center}}},
+                
                 GridBoxItemSize->{
                  "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
                "Grid"]}, Dynamic[
@@ -8108,7 +8103,6 @@ Cell[BoxData[
                AdjustmentBoxOptions->{BoxBaselineShift->-50}]}
             },
             AutoDelete->False,
-            
             GridBoxAlignment->{
              "Columns" -> {{Automatic}}, "Rows" -> {{Center}}},
             
@@ -8433,7 +8427,6 @@ Cell[BoxData[
               RawBoxes[
                FEPrivate`FrontEndResource[
                "MUnitStrings", "AddOptions-Tooltip"]]], "Tooltip"]& ],
-           
            Appearance->FEPrivate`FrontEndResource[
             "MUnitExpressions", "ButtonAppearances"],
            
@@ -8650,7 +8643,6 @@ Cell[BoxData[
               RawBoxes[
                FEPrivate`FrontEndResource[
                "MUnitStrings", "AddOptions-Tooltip"]]], "Tooltip"]& ],
-           
            Appearance->FEPrivate`FrontEndResource[
             "MUnitExpressions", "ButtonAppearances"],
            
@@ -16525,8 +16517,9 @@ Cell[BoxData[
                     None, Evaluator -> Automatic, Method -> "Preemptive"], 
                     Alignment -> {Center, Center}, ImageSize -> 
                     Dynamic[{
-                    Automatic, 3.5 CurrentValue["FontCapHeight"]/
-                    AbsoluteCurrentValue[Magnification]}]], 
+                    Automatic, 
+                    3.5 (CurrentValue["FontCapHeight"]/AbsoluteCurrentValue[
+                    Magnification])}]], 
                     GraphicsBox[{
                     Thickness[0.038461538461538464`], {
                     FaceForm[{
@@ -16568,7 +16561,6 @@ Cell[BoxData[
                     12.933999999999997`}, {18.917199999999998`, 14.7438}, {
                     9.46445, 14.7438}, {9.46445, 16.598}, {5.30508, 
                     13.8391}}}], 
-                    
                     FilledCurveBox[{{{0, 2, 0}, {0, 1, 0}, {0, 1, 0}, {0, 1, 
                     0}, {0, 1, 0}, {0, 1, 0}, {0, 1, 0}, {0, 1, 0}, {0, 1, 
                     0}, {0, 1, 0}, {0, 1, 0}, {0, 1, 0}, {0, 1, 0}, {0, 1, 
@@ -16650,8 +16642,9 @@ cUM4Hz0+AG0eosQ=
                     None, Evaluator -> Automatic, Method -> "Preemptive"], 
                     Alignment -> {Center, Center}, ImageSize -> 
                     Dynamic[{
-                    Automatic, 3.5 CurrentValue["FontCapHeight"]/
-                    AbsoluteCurrentValue[Magnification]}]], 
+                    Automatic, 
+                    3.5 (CurrentValue["FontCapHeight"]/AbsoluteCurrentValue[
+                    Magnification])}]], 
                     GraphicsBox[{
                     Thickness[0.038461538461538464`], {
                     FaceForm[{
@@ -16987,6 +16980,7 @@ Cell[BoxData[
               RawBoxes[
                FEPrivate`FrontEndResource[
                "MUnitStrings", "AddOptions-Tooltip"]]], "Tooltip"]& ],
+           
            Appearance->FEPrivate`FrontEndResource[
             "MUnitExpressions", "ButtonAppearances"],
            
@@ -17153,6 +17147,7 @@ Cell[BoxData[
                 
                 GridBoxAlignment->{
                  "Columns" -> {{Automatic}}, "Rows" -> {{Center}}},
+                
                 GridBoxItemSize->{
                  "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
                "Grid"], True->
@@ -17204,6 +17199,7 @@ Cell[BoxData[
            Method->"Queued"], 
           ActionMenuBox[
            ButtonBox["\<\"\"\>",
+            
             Appearance->FEPrivate`FrontEndResource[
              "MUnitExpressions", "ButtonAppearancesNoLeftBorder"],
             ButtonFunction:>{},
@@ -17369,6 +17365,7 @@ Cell[BoxData[
                 
                 GridBoxAlignment->{
                  "Columns" -> {{Automatic}}, "Rows" -> {{Center}}},
+                
                 GridBoxItemSize->{
                  "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
                "Grid"], True->
@@ -17420,6 +17417,7 @@ Cell[BoxData[
            Method->"Queued"], 
           ActionMenuBox[
            ButtonBox["\<\"\"\>",
+            
             Appearance->FEPrivate`FrontEndResource[
              "MUnitExpressions", "ButtonAppearancesNoLeftBorder"],
             ButtonFunction:>{},
@@ -18202,8 +18200,9 @@ Cell[BoxData[
                     None, Evaluator -> Automatic, Method -> "Preemptive"], 
                     Alignment -> {Center, Center}, ImageSize -> 
                     Dynamic[{
-                    Automatic, 3.5 CurrentValue["FontCapHeight"]/
-                    AbsoluteCurrentValue[Magnification]}]], 
+                    Automatic, 
+                    3.5 (CurrentValue["FontCapHeight"]/AbsoluteCurrentValue[
+                    Magnification])}]], 
                     GraphicsBox[{
                     Thickness[0.038461538461538464`], {
                     FaceForm[{
@@ -18327,8 +18326,9 @@ cUM4Hz0+AG0eosQ=
                     None, Evaluator -> Automatic, Method -> "Preemptive"], 
                     Alignment -> {Center, Center}, ImageSize -> 
                     Dynamic[{
-                    Automatic, 3.5 CurrentValue["FontCapHeight"]/
-                    AbsoluteCurrentValue[Magnification]}]], 
+                    Automatic, 
+                    3.5 (CurrentValue["FontCapHeight"]/AbsoluteCurrentValue[
+                    Magnification])}]], 
                     GraphicsBox[{
                     Thickness[0.038461538461538464`], {
                     FaceForm[{
@@ -20332,8 +20332,9 @@ Cell[BoxData[
               Evaluator -> Automatic, Method -> "Preemptive"], 
              Alignment -> {Center, Center}, ImageSize -> 
              Dynamic[{
-               Automatic, 3.5 CurrentValue["FontCapHeight"]/
-                AbsoluteCurrentValue[Magnification]}]], 
+               Automatic, 
+                3.5 (CurrentValue["FontCapHeight"]/AbsoluteCurrentValue[
+                 Magnification])}]], 
             GraphicsBox[{
               Thickness[0.038461538461538464`], {
                FaceForm[{
@@ -20453,8 +20454,9 @@ cUM4Hz0+AG0eosQ=
               Evaluator -> Automatic, Method -> "Preemptive"], 
              Alignment -> {Center, Center}, ImageSize -> 
              Dynamic[{
-               Automatic, 3.5 CurrentValue["FontCapHeight"]/
-                AbsoluteCurrentValue[Magnification]}]], 
+               Automatic, 
+                3.5 (CurrentValue["FontCapHeight"]/AbsoluteCurrentValue[
+                 Magnification])}]], 
             GraphicsBox[{
               Thickness[0.038461538461538464`], {
                FaceForm[{
@@ -21306,8 +21308,9 @@ Cell[BoxData[
                     None, Evaluator -> Automatic, Method -> "Preemptive"], 
                     Alignment -> {Center, Center}, ImageSize -> 
                     Dynamic[{
-                    Automatic, 3.5 CurrentValue["FontCapHeight"]/
-                    AbsoluteCurrentValue[Magnification]}]], 
+                    Automatic, 
+                    3.5 (CurrentValue["FontCapHeight"]/AbsoluteCurrentValue[
+                    Magnification])}]], 
                     GraphicsBox[{
                     Thickness[0.038461538461538464`], {
                     FaceForm[{
@@ -21432,8 +21435,9 @@ cUM4Hz0+AG0eosQ=
                     None, Evaluator -> Automatic, Method -> "Preemptive"], 
                     Alignment -> {Center, Center}, ImageSize -> 
                     Dynamic[{
-                    Automatic, 3.5 CurrentValue["FontCapHeight"]/
-                    AbsoluteCurrentValue[Magnification]}]], 
+                    Automatic, 
+                    3.5 (CurrentValue["FontCapHeight"]/AbsoluteCurrentValue[
+                    Magnification])}]], 
                     GraphicsBox[{
                     Thickness[0.038461538461538464`], {
                     FaceForm[{
@@ -21587,8 +21591,8 @@ cUM4Hz0+AG0eosQ=
                     ButtonFunction :> (Typeset`open$$ = True), Appearance -> 
                     None, Evaluator -> Automatic, Method -> "Preemptive"], 
                     Alignment -> {Center, Center}, ImageSize -> 
-                    Dynamic[{Automatic, 3.5 CurrentValue["FontCapHeight"]/
-                    AbsoluteCurrentValue[Magnification]}]], 
+                    Dynamic[{Automatic, 3.5 (CurrentValue["FontCapHeight"]/
+                    AbsoluteCurrentValue[Magnification])}]], 
                     GraphicsBox[{
                     Thickness[0.038461538461538464`], {
                     FaceForm[{
@@ -21707,8 +21711,8 @@ cUM4Hz0+AG0eosQ=
                     ButtonFunction :> (Typeset`open$$ = False), Appearance -> 
                     None, Evaluator -> Automatic, Method -> "Preemptive"], 
                     Alignment -> {Center, Center}, ImageSize -> 
-                    Dynamic[{Automatic, 3.5 CurrentValue["FontCapHeight"]/
-                    AbsoluteCurrentValue[Magnification]}]], 
+                    Dynamic[{Automatic, 3.5 (CurrentValue["FontCapHeight"]/
+                    AbsoluteCurrentValue[Magnification])}]], 
                     GraphicsBox[{
                     Thickness[0.038461538461538464`], {
                     FaceForm[{
@@ -22066,8 +22070,9 @@ cUM4Hz0+AG0eosQ=
                     None, Evaluator -> Automatic, Method -> "Preemptive"], 
                     Alignment -> {Center, Center}, ImageSize -> 
                     Dynamic[{
-                    Automatic, 3.5 CurrentValue["FontCapHeight"]/
-                    AbsoluteCurrentValue[Magnification]}]], 
+                    Automatic, 
+                    3.5 (CurrentValue["FontCapHeight"]/AbsoluteCurrentValue[
+                    Magnification])}]], 
                     GraphicsBox[{
                     Thickness[0.038461538461538464`], {
                     FaceForm[{
@@ -22191,8 +22196,9 @@ cUM4Hz0+AG0eosQ=
                     None, Evaluator -> Automatic, Method -> "Preemptive"], 
                     Alignment -> {Center, Center}, ImageSize -> 
                     Dynamic[{
-                    Automatic, 3.5 CurrentValue["FontCapHeight"]/
-                    AbsoluteCurrentValue[Magnification]}]], 
+                    Automatic, 
+                    3.5 (CurrentValue["FontCapHeight"]/AbsoluteCurrentValue[
+                    Magnification])}]], 
                     GraphicsBox[{
                     Thickness[0.038461538461538464`], {
                     FaceForm[{
@@ -22345,9 +22351,9 @@ cUM4Hz0+AG0eosQ=
                     "FEBitmaps", "SquarePlusIconMedium"]], ButtonFunction :> (
                     Typeset`open$$ = True), Appearance -> None, Evaluator -> 
                     Automatic, Method -> "Preemptive"], Alignment -> {
-                    Center, Center}, ImageSize -> Dynamic[{Automatic, 3.5 
-                    CurrentValue["FontCapHeight"]/AbsoluteCurrentValue[
-                    Magnification]}]], 
+                    Center, Center}, ImageSize -> Dynamic[{Automatic, 
+                    3.5 (CurrentValue["FontCapHeight"]/AbsoluteCurrentValue[
+                    Magnification])}]], 
                     GraphicsBox[{
                     Thickness[0.038461538461538464`], {
                     FaceForm[{
@@ -22466,8 +22472,8 @@ cUM4Hz0+AG0eosQ=
                     ButtonFunction :> (Typeset`open$$ = False), Appearance -> 
                     None, Evaluator -> Automatic, Method -> "Preemptive"], 
                     Alignment -> {Center, Center}, ImageSize -> 
-                    Dynamic[{Automatic, 3.5 CurrentValue["FontCapHeight"]/
-                    AbsoluteCurrentValue[Magnification]}]], 
+                    Dynamic[{Automatic, 3.5 (CurrentValue["FontCapHeight"]/
+                    AbsoluteCurrentValue[Magnification])}]], 
                     GraphicsBox[{
                     Thickness[0.038461538461538464`], {
                     FaceForm[{
@@ -22820,8 +22826,9 @@ cUM4Hz0+AG0eosQ=
                    None, Evaluator -> Automatic, Method -> "Preemptive"], 
                   Alignment -> {Center, Center}, ImageSize -> 
                   Dynamic[{
-                    Automatic, 3.5 CurrentValue["FontCapHeight"]/
-                    AbsoluteCurrentValue[Magnification]}]], 
+                    Automatic, 
+                    3.5 (CurrentValue["FontCapHeight"]/AbsoluteCurrentValue[
+                    Magnification])}]], 
                  GraphicsBox[{
                    Thickness[0.038461538461538464`], {
                     FaceForm[{
@@ -22945,8 +22952,9 @@ cUM4Hz0+AG0eosQ=
                    None, Evaluator -> Automatic, Method -> "Preemptive"], 
                   Alignment -> {Center, Center}, ImageSize -> 
                   Dynamic[{
-                    Automatic, 3.5 CurrentValue["FontCapHeight"]/
-                    AbsoluteCurrentValue[Magnification]}]], 
+                    Automatic, 
+                    3.5 (CurrentValue["FontCapHeight"]/AbsoluteCurrentValue[
+                    Magnification])}]], 
                  GraphicsBox[{
                    Thickness[0.038461538461538464`], {
                     FaceForm[{
@@ -23099,8 +23107,8 @@ cUM4Hz0+AG0eosQ=
                     ButtonFunction :> (Typeset`open$$ = True), Appearance -> 
                     None, Evaluator -> Automatic, Method -> "Preemptive"], 
                     Alignment -> {Center, Center}, ImageSize -> 
-                    Dynamic[{Automatic, 3.5 CurrentValue["FontCapHeight"]/
-                    AbsoluteCurrentValue[Magnification]}]], 
+                    Dynamic[{Automatic, 3.5 (CurrentValue["FontCapHeight"]/
+                    AbsoluteCurrentValue[Magnification])}]], 
                     GraphicsBox[{
                     Thickness[0.038461538461538464`], {
                     FaceForm[{
@@ -23220,8 +23228,8 @@ cUM4Hz0+AG0eosQ=
                     ButtonFunction :> (Typeset`open$$ = False), Appearance -> 
                     None, Evaluator -> Automatic, Method -> "Preemptive"], 
                     Alignment -> {Center, Center}, ImageSize -> 
-                    Dynamic[{Automatic, 3.5 CurrentValue["FontCapHeight"]/
-                    AbsoluteCurrentValue[Magnification]}]], 
+                    Dynamic[{Automatic, 3.5 (CurrentValue["FontCapHeight"]/
+                    AbsoluteCurrentValue[Magnification])}]], 
                     GraphicsBox[{
                     Thickness[0.038461538461538464`], {
                     FaceForm[{
@@ -35996,7 +36004,7 @@ Cell[BoxData[
  CellID->26061370,ExpressionUUID->"a477c7cf-2b79-416c-9d42-1cd1ca83a613"]
 }, Open  ]]
 },
-WindowSize->{1425, 1161},
+WindowSize->{1426, 1021},
 WindowMargins->{{226, Automatic}, {Automatic, 49}},
 WindowTitle->"VerificationTests.nb",
 DockedCells->Cell[
@@ -36415,7 +36423,7 @@ TaggingRules->{
     "PrimaryExamplesSection" -> Open}, "$testsRun" -> False},
 TrackCellChangeTimes->False,
 Magnification:>1.3 Inherited,
-FrontEndVersion->"11.3 for Microsoft Windows (64-bit) (March 6, 2018)",
+FrontEndVersion->"12.0 for Microsoft Windows (64-bit) (April 8, 2019)",
 StyleDefinitions->FrontEnd`FileName[{"MUnit"}, "MUnit.nb", CharacterEncoding -> 
   "UTF-8"]
 ]
