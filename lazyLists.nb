@@ -1653,10 +1653,10 @@ an ordinary list.", "Documentation" -> None, "OwnValues" -> None, "UpValues" ->
        Pattern[lazyLists`Private`expr, Blank[lazyLists`lazyList] + 
          BlankNullSequence[] + BlankNullSequence[]] :> Thread[
          Unevaluated[lazyLists`Private`expr], lazyLists`lazyList], 
-       Pattern[lazyLists`Private`expr, BlankNullSequence[] 
-         BlankNullSequence[] lazyLists`lazyList[]] :> lazyLists`lazyList[], 
-       Pattern[lazyLists`Private`expr, Blank[lazyLists`lazyList] 
-         BlankNullSequence[] BlankNullSequence[]] :> Thread[
+       Pattern[lazyLists`Private`expr, (BlankNullSequence[] 
+          BlankNullSequence[]) lazyLists`lazyList[]] :> lazyLists`lazyList[], 
+       Pattern[lazyLists`Private`expr, (Blank[lazyLists`lazyList] 
+          BlankNullSequence[]) BlankNullSequence[]] :> Thread[
          Unevaluated[lazyLists`Private`expr], lazyLists`lazyList], 
        Pattern[lazyLists`Private`expr, 
          Power[
@@ -11326,9 +11326,9 @@ automatically applied to the generated lists for efficiency.",
          lazyLists`repartitionAll[{
           lazyLists`Private`first$, lazyLists`Private`lz$, 
            lazyLists`Private`rest$}]], 
-       Pattern[lazyLists`Private`expr$, Pattern[lazyLists`Private`first$, 
-           BlankNullSequence[]] Pattern[lazyLists`Private`lz$, 
-           Blank[lazyLists`partitionedLazyList]] 
+       Pattern[lazyLists`Private`expr$, (Pattern[lazyLists`Private`first$, 
+            BlankNullSequence[]] Pattern[lazyLists`Private`lz$, 
+            Blank[lazyLists`partitionedLazyList]]) 
          Pattern[lazyLists`Private`rest$, 
            BlankNullSequence[]]] :> Apply[Thread[
           Unevaluated[
@@ -16501,8 +16501,9 @@ Cell[BoxData[
                     None, Evaluator -> Automatic, Method -> "Preemptive"], 
                     Alignment -> {Center, Center}, ImageSize -> 
                     Dynamic[{
-                    Automatic, 3.5 CurrentValue["FontCapHeight"]/
-                    AbsoluteCurrentValue[Magnification]}]], 
+                    Automatic, 
+                    3.5 (CurrentValue["FontCapHeight"]/AbsoluteCurrentValue[
+                    Magnification])}]], 
                     GraphicsBox[{
                     Thickness[0.038461538461538464`], {
                     FaceForm[{
@@ -16626,8 +16627,9 @@ cUM4Hz0+AG0eosQ=
                     None, Evaluator -> Automatic, Method -> "Preemptive"], 
                     Alignment -> {Center, Center}, ImageSize -> 
                     Dynamic[{
-                    Automatic, 3.5 CurrentValue["FontCapHeight"]/
-                    AbsoluteCurrentValue[Magnification]}]], 
+                    Automatic, 
+                    3.5 (CurrentValue["FontCapHeight"]/AbsoluteCurrentValue[
+                    Magnification])}]], 
                     GraphicsBox[{
                     Thickness[0.038461538461538464`], {
                     FaceForm[{
@@ -17497,8 +17499,9 @@ Cell[BoxData[
                     None, Evaluator -> Automatic, Method -> "Preemptive"], 
                     Alignment -> {Center, Center}, ImageSize -> 
                     Dynamic[{
-                    Automatic, 3.5 CurrentValue["FontCapHeight"]/
-                    AbsoluteCurrentValue[Magnification]}]], 
+                    Automatic, 
+                    3.5 (CurrentValue["FontCapHeight"]/AbsoluteCurrentValue[
+                    Magnification])}]], 
                     GraphicsBox[{
                     Thickness[0.038461538461538464`], {
                     FaceForm[{
@@ -17540,7 +17543,6 @@ Cell[BoxData[
                     12.933999999999997`}, {18.917199999999998`, 14.7438}, {
                     9.46445, 14.7438}, {9.46445, 16.598}, {5.30508, 
                     13.8391}}}], 
-                    
                     FilledCurveBox[{{{0, 2, 0}, {0, 1, 0}, {0, 1, 0}, {0, 1, 
                     0}, {0, 1, 0}, {0, 1, 0}, {0, 1, 0}, {0, 1, 0}, {0, 1, 
                     0}, {0, 1, 0}, {0, 1, 0}, {0, 1, 0}, {0, 1, 0}, {0, 1, 
@@ -17622,8 +17624,9 @@ cUM4Hz0+AG0eosQ=
                     None, Evaluator -> Automatic, Method -> "Preemptive"], 
                     Alignment -> {Center, Center}, ImageSize -> 
                     Dynamic[{
-                    Automatic, 3.5 CurrentValue["FontCapHeight"]/
-                    AbsoluteCurrentValue[Magnification]}]], 
+                    Automatic, 
+                    3.5 (CurrentValue["FontCapHeight"]/AbsoluteCurrentValue[
+                    Magnification])}]], 
                     GraphicsBox[{
                     Thickness[0.038461538461538464`], {
                     FaceForm[{
@@ -17792,11 +17795,10 @@ cUM4Hz0+AG0eosQ=
             42, "CopyTensor", 2, 1, 7, 2, 1, 5}, {36, 2, 6, 0, 4}, {4, 5, 
             3, -5}, {41, 257, 2, 0, 1, 2, 2, 4, 2, 2, 1}, {1}}, 
            Function[{lazyLists`Private`n}, 
-            
-            Module[{lazyLists`Private`c$ = lazyLists`Private`n - 1, 
+            Module[{
+             lazyLists`Private`c$ = lazyLists`Private`n - 1, 
               lazyLists`Private`q$}, 1 + 
-             Table[
-              lazyLists`Private`q$ = 
+             Table[lazyLists`Private`q$ = 
                 Quotient[lazyLists`Private`c$, lazyLists`Private`i]; 
                lazyLists`Private`c$ = 
                 Mod[lazyLists`Private`c$, lazyLists`Private`i]; 
@@ -18414,8 +18416,9 @@ Cell[BoxData[
               Evaluator -> Automatic, Method -> "Preemptive"], 
              Alignment -> {Center, Center}, ImageSize -> 
              Dynamic[{
-               Automatic, 3.5 CurrentValue["FontCapHeight"]/
-                AbsoluteCurrentValue[Magnification]}]], 
+               Automatic, 
+                3.5 (CurrentValue["FontCapHeight"]/AbsoluteCurrentValue[
+                 Magnification])}]], 
             GraphicsBox[{
               Thickness[0.038461538461538464`], {
                FaceForm[{
@@ -18535,8 +18538,9 @@ cUM4Hz0+AG0eosQ=
               Evaluator -> Automatic, Method -> "Preemptive"], 
              Alignment -> {Center, Center}, ImageSize -> 
              Dynamic[{
-               Automatic, 3.5 CurrentValue["FontCapHeight"]/
-                AbsoluteCurrentValue[Magnification]}]], 
+               Automatic, 
+                3.5 (CurrentValue["FontCapHeight"]/AbsoluteCurrentValue[
+                 Magnification])}]], 
             GraphicsBox[{
               Thickness[0.038461538461538464`], {
                FaceForm[{
@@ -20810,6 +20814,77 @@ Cell[BoxData[
 Cell[BoxData["22"], "Output",
  CellLabel->"Out[415]=",ExpressionUUID->"235b0966-a160-4eef-98c1-256cc98ef11e"]
 }, Open  ]]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[TextData[StyleBox["Running verification tests", "Section"]], \
+"Title",ExpressionUUID->"7f8ec0c4-ea1a-47b7-8db7-70f3d2af1951"],
+
+Cell["\<\
+You can run verification tests of the code to see if everything works as \
+expected. This is especially useful if you make your own changes to the code. \
+Most of the tests have been lifted from the example code above.\
+\>", "Text",ExpressionUUID->"7d7cd98d-988e-4a88-a39e-e45a2ebbfaac"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"testReport", "=", 
+   RowBox[{"TestReport", "[", 
+    RowBox[{"FileNameJoin", "[", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"NotebookDirectory", "[", "]"}], ",", 
+       "\"\<VerificationTests.nb\>\""}], "}"}], "]"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Length", "/@", 
+  RowBox[{"testReport", "[", "\"\<TestResultRules\>\"", "]"}]}]}], "Input",
+ CellLabel->"In[46]:=",ExpressionUUID->"d39108b1-440b-4934-83bc-ca7def2926a3"],
+
+Cell[BoxData[
+ RowBox[{"\[LeftAssociation]", 
+  RowBox[{
+   RowBox[{"\<\"TestsSucceeded\"\>", "\[Rule]", "187"}], ",", 
+   RowBox[{"\<\"TestsFailedWrongResults\"\>", "\[Rule]", "0"}], ",", 
+   RowBox[{"\<\"TestsFailedWithMessages\"\>", "\[Rule]", "0"}], ",", 
+   RowBox[{"\<\"TestsFailedWithErrors\"\>", "\[Rule]", "0"}]}], 
+  "\[RightAssociation]"}]], "Output",
+ CellLabel->"Out[47]=",ExpressionUUID->"4311d46b-efeb-4894-ade5-0bf12c03828b"]
+}, Open  ]],
+
+Cell["\<\
+Alternatively, run the tests from the *.wlt file that was generated from the \
+notebook. This is generally faster:\
+\>", "Text",ExpressionUUID->"d272576a-3f88-4d16-89a1-e82a544f61cd"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"testReport", "=", 
+   RowBox[{"TestReport", "[", 
+    RowBox[{"FileNameJoin", "[", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"NotebookDirectory", "[", "]"}], ",", 
+       "\"\<VerificationTests.wlt\>\""}], "}"}], "]"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Length", "/@", 
+  RowBox[{"testReport", "[", "\"\<TestResultRules\>\"", "]"}]}]}], "Input",
+ CellLabel->"In[44]:=",ExpressionUUID->"e671f9bb-d62b-46e6-95a8-e4e014fff349"],
+
+Cell[BoxData[
+ RowBox[{"\[LeftAssociation]", 
+  RowBox[{
+   RowBox[{"\<\"TestsSucceeded\"\>", "\[Rule]", "187"}], ",", 
+   RowBox[{"\<\"TestsFailedWrongResults\"\>", "\[Rule]", "0"}], ",", 
+   RowBox[{"\<\"TestsFailedWithMessages\"\>", "\[Rule]", "0"}], ",", 
+   RowBox[{"\<\"TestsFailedWithErrors\"\>", "\[Rule]", "0"}]}], 
+  "\[RightAssociation]"}]], "Output",
+ CellLabel->"Out[45]=",ExpressionUUID->"b4f8794c-0786-4f6c-af88-0c258d29dc1a"]
 }, Open  ]]
 }, Open  ]]
 },
