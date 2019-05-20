@@ -58,3 +58,5 @@ See lazyLists.nb for details and examples.
 * 07 May 2019
     * Add unit tests.
     * Fix dates in change log <_<
+* 20 May 2019
+    * Add additional unit tests and add section in example notebook that shows how to run them.
