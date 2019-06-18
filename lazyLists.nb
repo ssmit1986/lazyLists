@@ -21039,6 +21039,8 @@ expected. This is especially useful if you make your own changes to the code. \
 Most of the tests have been lifted from the example code above.\
 \>", "Text",ExpressionUUID->"7d7cd98d-988e-4a88-a39e-e45a2ebbfaac"],
 
+Cell[CellGroupData[{
+
 Cell[BoxData[{
  RowBox[{
   RowBox[{"testReport", "=", 
@@ -21051,13 +21053,25 @@ Cell[BoxData[{
   ";"}], "\[IndentingNewLine]", 
  RowBox[{"Length", "/@", 
   RowBox[{"testReport", "[", "\"\<TestResultRules\>\"", "]"}]}]}], "Input",
- CellLabel->
-  "In[540]:=",ExpressionUUID->"d39108b1-440b-4934-83bc-ca7def2926a3"],
+ CellLabel->"In[38]:=",ExpressionUUID->"d39108b1-440b-4934-83bc-ca7def2926a3"],
+
+Cell[BoxData[
+ RowBox[{"\[LeftAssociation]", 
+  RowBox[{
+   RowBox[{"\<\"TestsSucceeded\"\>", "\[Rule]", "209"}], ",", 
+   RowBox[{"\<\"TestsFailedWrongResults\"\>", "\[Rule]", "0"}], ",", 
+   RowBox[{"\<\"TestsFailedWithMessages\"\>", "\[Rule]", "0"}], ",", 
+   RowBox[{"\<\"TestsFailedWithErrors\"\>", "\[Rule]", "0"}]}], 
+  "\[RightAssociation]"}]], "Output",
+ CellLabel->"Out[39]=",ExpressionUUID->"01b13220-9aef-4189-9768-67af95440fe0"]
+}, Open  ]],
 
 Cell["\<\
 Alternatively, run the tests from the *.wlt file that was generated from the \
 notebook. This is generally faster:\
 \>", "Text",ExpressionUUID->"d272576a-3f88-4d16-89a1-e82a544f61cd"],
+
+Cell[CellGroupData[{
 
 Cell[BoxData[{
  RowBox[{
@@ -21071,7 +21085,18 @@ Cell[BoxData[{
   ";"}], "\[IndentingNewLine]", 
  RowBox[{"Length", "/@", 
   RowBox[{"testReport", "[", "\"\<TestResultRules\>\"", "]"}]}]}], "Input",
- CellLabel->"In[1]:=",ExpressionUUID->"e671f9bb-d62b-46e6-95a8-e4e014fff349"]
+ CellLabel->"In[36]:=",ExpressionUUID->"e671f9bb-d62b-46e6-95a8-e4e014fff349"],
+
+Cell[BoxData[
+ RowBox[{"\[LeftAssociation]", 
+  RowBox[{
+   RowBox[{"\<\"TestsSucceeded\"\>", "\[Rule]", "209"}], ",", 
+   RowBox[{"\<\"TestsFailedWrongResults\"\>", "\[Rule]", "0"}], ",", 
+   RowBox[{"\<\"TestsFailedWithMessages\"\>", "\[Rule]", "0"}], ",", 
+   RowBox[{"\<\"TestsFailedWithErrors\"\>", "\[Rule]", "0"}]}], 
+  "\[RightAssociation]"}]], "Output",
+ CellLabel->"Out[37]=",ExpressionUUID->"d18bcd95-785f-4883-8813-dd61216d9e79"]
+}, Open  ]]
 }, Open  ]]
 },
 WindowSize->{1181, 839},
