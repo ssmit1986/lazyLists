@@ -270,7 +270,10 @@ lazyList /: Map[f_, lazyList[first_, tail_]] := lazyList[
 lazySetState[l : lazyList[_, Map[f_, tail_]], state_] := With[{
     try = Check[lazySetState[tail, state], $Failed]
 },
-    Map[f, try] /; MatchQ[try, validLazyListPattern]
+    If[ MatchQ[try, validLazyListPattern],
+        Map[f, try],
+        l
+    ] 
 ];
 
 lazyList /: MapIndexed[f_, lazyList[first_, tail_], index : (_Integer?Positive) : 1] := lazyList[
