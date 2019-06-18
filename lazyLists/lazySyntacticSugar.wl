@@ -245,7 +245,7 @@ lazyList /: Part[lz : validLazyListPattern, {n_Integer?Positive}] := Replace[
     }
 ];
 
-With[{
+(*With[{
     patt = Append[generatorPattern, Map]
 },
     (* Mapping over a generator or Mapped list is the same as composition of the generator functions: *)
@@ -260,7 +260,7 @@ With[{
             ]
         ]
     ]
-];
+];*)
 
 lazyList /: Map[f_, lazyList[first_, tail_]] := lazyList[
     f[first],

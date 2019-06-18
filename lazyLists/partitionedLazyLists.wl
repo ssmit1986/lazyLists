@@ -439,7 +439,7 @@ partitionedLazyList /: Part[lz : validPartitionedLazyListPattern, indices : {_In
     ],
     "part"
 ];
-
+(*
 (* Mapping over a generator or Mapped list is the same as composition of the generator functions:*)
 partitionedLazyList /: Map[
     fun_,
@@ -469,6 +469,7 @@ partitionedLazyList /: Map[
         ]
     ]
 ];
+*)
  (* 
     The function specification {fun, Listable} signals that fun is listable and should be applied directly to the list. 
     Note that it's up to the user to ensure that fun is actually listable
