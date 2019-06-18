@@ -439,38 +439,8 @@ partitionedLazyList /: Part[lz : validPartitionedLazyListPattern, indices : {_In
     ],
     "part"
 ];
-(*
-(* Mapping over a generator or Mapped list is the same as composition of the generator functions:*)
-partitionedLazyList /: Map[
-    fun_,
-    partitionedLazyList[first_, Map[fgen_, tail_]]
-] := With[{
-    composition = Replace[
-        {fun, fgen},
-        {
-            {{f_, Listable}, {g_, Listable}} :> {Function[f[g[#]]], Listable},
-            {f : Except[{_, Listable}], {g_, Listable}} :> {Function[f /@ g[#]], Listable},
-            {{f_, Listable}, g : Except[{_, Listable}]} :> {Function[f[g /@ #]], Listable},
-            {f_, g_} :> Function[f[g[#]]] (* Don't use Composition here, because it doesn't auto-compile *)
-        }
-    ]
-},
-    partitionedLazyList[
-        Replace[
-            fun,
-            {
-                {f_, Listable} :> f[first],
-                f_ :> f /@ first
-            }
-        ],
-        Map[
-            composition,
-            tail
-        ]
-    ]
-];
-*)
- (* 
+
+(* 
     The function specification {fun, Listable} signals that fun is listable and should be applied directly to the list. 
     Note that it's up to the user to ensure that fun is actually listable
 *)
