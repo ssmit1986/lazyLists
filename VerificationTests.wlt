@@ -1245,7 +1245,7 @@ VerificationTest[(* 145 *)
 VerificationTest[(* 146 *)
 	Map[Sqrt, Map[Exp, Map[Sin, lazyRange[]]]]
 	,
-	lazyList[Power[E, Times[Sin[1], Power[2, -1]]], Map[Composition[Sqrt, Exp, Sin], Function[lazyList[Slot[1], Slot[0][Plus[Slot[2], Slot[1]], Slot[2]]]][Plus[1, 1], 1]]]	
+	lazyList[Power[E, Times[Sin[1], Power[2, -1]]], Map[Sqrt, Map[Exp, Map[Sin, Function[lazyList[Slot[1], Slot[0][Plus[Slot[2], Slot[1]], Slot[2]]]][Plus[1, 1], 1]]]]]	
 	,
 	TestID->"fb24aab4-c206-439c-9a7b-3f300593d086"
 ]
@@ -1253,7 +1253,7 @@ VerificationTest[(* 146 *)
 VerificationTest[(* 147 *)
 	Map[Sqrt, Map[Exp, lazyGenerator[Sin]]]
 	,
-	lazyList[Power[E, Times[Sin[1], Power[2, -1]]], lazyLists`Private`twoSidedGenerator[Composition[Sqrt, Exp, Sin], Plus[1, 1], 1]]	
+	lazyList[Power[E, Times[Sin[1], Power[2, -1]]], Map[Sqrt, Map[Exp, lazyLists`Private`twoSidedGenerator[Sin, Plus[1, 1], 1]]]]	
 	,
 	TestID->"f152549d-6a7c-4270-a618-b0ee9d3c21a9"
 ]
@@ -1261,7 +1261,7 @@ VerificationTest[(* 147 *)
 VerificationTest[(* 148 *)
 	Map[Sqrt, Map[Exp, partitionedLazyRange[10]]]
 	,
-	partitionedLazyList[List[Sqrt[E], E, Power[E, Times[3, Power[2, -1]]], Power[E, 2], Power[E, Times[5, Power[2, -1]]], Power[E, 3], Power[E, Times[7, Power[2, -1]]], Power[E, 4], Power[E, Times[9, Power[2, -1]]], Power[E, 5]], Map[Function[Sqrt[Exp[Slot[1]]]], partitionedLazyList[Function[lazyList[Slot[1], Slot[0][Plus[Slot[2], Slot[1]], Slot[2]]]][Plus[10, List[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]], 10]]]]	
+	partitionedLazyList[List[Sqrt[E], E, Power[E, Times[3, Power[2, -1]]], Power[E, 2], Power[E, Times[5, Power[2, -1]]], Power[E, 3], Power[E, Times[7, Power[2, -1]]], Power[E, 4], Power[E, Times[9, Power[2, -1]]], Power[E, 5]], Map[Sqrt, Map[Exp, partitionedLazyList[Function[lazyList[Slot[1], Slot[0][Plus[Slot[2], Slot[1]], Slot[2]]]][Plus[10, List[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]], 10]]]]]	
 	,
 	TestID->"cfb8b5a9-7ed4-4436-a4e7-8f498de8f7e0"
 ]
@@ -1269,7 +1269,7 @@ VerificationTest[(* 148 *)
 VerificationTest[(* 149 *)
 	Map[Sqrt, Map[List[Exp, Listable], partitionedLazyRange[10]]]
 	,
-	partitionedLazyList[List[Sqrt[E], E, Power[E, Times[3, Power[2, -1]]], Power[E, 2], Power[E, Times[5, Power[2, -1]]], Power[E, 3], Power[E, Times[7, Power[2, -1]]], Power[E, 4], Power[E, Times[9, Power[2, -1]]], Power[E, 5]], Map[List[Function[Map[Sqrt, Exp[Slot[1]]]], Listable], partitionedLazyList[Function[lazyList[Slot[1], Slot[0][Plus[Slot[2], Slot[1]], Slot[2]]]][Plus[10, List[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]], 10]]]]	
+	partitionedLazyList[List[Sqrt[E], E, Power[E, Times[3, Power[2, -1]]], Power[E, 2], Power[E, Times[5, Power[2, -1]]], Power[E, 3], Power[E, Times[7, Power[2, -1]]], Power[E, 4], Power[E, Times[9, Power[2, -1]]], Power[E, 5]], Map[Sqrt, Map[List[Exp, Listable], partitionedLazyList[Function[lazyList[Slot[1], Slot[0][Plus[Slot[2], Slot[1]], Slot[2]]]][Plus[10, List[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]], 10]]]]]	
 	,
 	TestID->"ad3f60f5-f540-4bbe-b1ed-e18edd98a5c4"
 ]
@@ -1277,7 +1277,7 @@ VerificationTest[(* 149 *)
 VerificationTest[(* 150 *)
 	Map[List[Sqrt, Listable], Map[Exp, partitionedLazyRange[10]]]
 	,
-	partitionedLazyList[List[Sqrt[E], E, Power[E, Times[3, Power[2, -1]]], Power[E, 2], Power[E, Times[5, Power[2, -1]]], Power[E, 3], Power[E, Times[7, Power[2, -1]]], Power[E, 4], Power[E, Times[9, Power[2, -1]]], Power[E, 5]], Map[List[Function[Sqrt[Map[Exp, Slot[1]]]], Listable], partitionedLazyList[Function[lazyList[Slot[1], Slot[0][Plus[Slot[2], Slot[1]], Slot[2]]]][Plus[10, List[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]], 10]]]]	
+	partitionedLazyList[List[Sqrt[E], E, Power[E, Times[3, Power[2, -1]]], Power[E, 2], Power[E, Times[5, Power[2, -1]]], Power[E, 3], Power[E, Times[7, Power[2, -1]]], Power[E, 4], Power[E, Times[9, Power[2, -1]]], Power[E, 5]], Map[List[Sqrt, Listable], Map[Exp, partitionedLazyList[Function[lazyList[Slot[1], Slot[0][Plus[Slot[2], Slot[1]], Slot[2]]]][Plus[10, List[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]], 10]]]]]	
 	,
 	TestID->"8b28ed93-5599-4b12-b84d-bd37d052ecea"
 ]
@@ -1285,7 +1285,7 @@ VerificationTest[(* 150 *)
 VerificationTest[(* 151 *)
 	Map[List[Sqrt, Listable], Map[List[Exp, Listable], partitionedLazyRange[10]]]
 	,
-	partitionedLazyList[List[Sqrt[E], E, Power[E, Times[3, Power[2, -1]]], Power[E, 2], Power[E, Times[5, Power[2, -1]]], Power[E, 3], Power[E, Times[7, Power[2, -1]]], Power[E, 4], Power[E, Times[9, Power[2, -1]]], Power[E, 5]], Map[List[Function[Sqrt[Exp[Slot[1]]]], Listable], partitionedLazyList[Function[lazyList[Slot[1], Slot[0][Plus[Slot[2], Slot[1]], Slot[2]]]][Plus[10, List[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]], 10]]]]	
+	partitionedLazyList[List[Sqrt[E], E, Power[E, Times[3, Power[2, -1]]], Power[E, 2], Power[E, Times[5, Power[2, -1]]], Power[E, 3], Power[E, Times[7, Power[2, -1]]], Power[E, 4], Power[E, Times[9, Power[2, -1]]], Power[E, 5]], Map[List[Sqrt, Listable], Map[List[Exp, Listable], partitionedLazyList[Function[lazyList[Slot[1], Slot[0][Plus[Slot[2], Slot[1]], Slot[2]]]][Plus[10, List[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]], 10]]]]]	
 	,
 	TestID->"4e2acbd3-503b-4447-a034-2730b0328cb1"
 ]
