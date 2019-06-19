@@ -245,23 +245,6 @@ lazyList /: Part[lz : validLazyListPattern, {n_Integer?Positive}] := Replace[
     }
 ];
 
-With[{
-    patt = Append[generatorPattern, Map]
-},
-    (* Mapping over a generator or Mapped list is the same as composition of the generator functions: *)
-    lazyList /: Map[f_, lazyList[first_, (gen : patt)[fgen_, args___]]] := With[{
-        composition = f @* fgen (* Evaluate the composition to flatten it out if necessary *)
-    },
-        lazyList[
-            f[first],
-            gen[
-                composition,
-                args
-            ]
-        ]
-    ]
-];
-
 lazyList /: Map[f_, lazyList[first_, tail_]] := lazyList[
     f[first],
     Map[f, tail]
@@ -270,7 +253,10 @@ lazyList /: Map[f_, lazyList[first_, tail_]] := lazyList[
 lazySetState[l : lazyList[_, Map[f_, tail_]], state_] := With[{
     try = Check[lazySetState[tail, state], $Failed]
 },
-    Map[f, try] /; MatchQ[try, validLazyListPattern]
+    If[ MatchQ[try, validLazyListPattern],
+        Map[f, try],
+        l
+    ] 
 ];
 
 lazyList /: MapIndexed[f_, lazyList[first_, tail_], index : (_Integer?Positive) : 1] := lazyList[
@@ -353,13 +339,54 @@ lazyCatenate[lists : {(_List | _lazyList)..., _List, (_List | _lazyList)...}] :=
         {1}
     ]
 ];
-lazyCatenate[{lz : (lazyList | partitionedLazyList)[_, _]}] := lz;
+lazyCatenate[{lz : lzHead[_, _]}] := lz;
 lazyCatenate[{lazyList[first_, tail_], rest__}] := lazyList[first, lazyCatenate[{tail, rest}]];
 
 (*Cases where the outer list is lazyList *)
 lazyCatenate[lazyList[listOrLazyListPattern[], tail_]] := lazyCatenate[tail];
 lazyCatenate[lazyList[list_List, tail_]] := lazyCatenate[lazyList[lazyList[list], tail]];
 lazyCatenate[lazyList[lazyList[first_, tail1_], tail2_]] := lazyList[first, lazyCatenate[lazyList[tail1, tail2]]];
+
+composeMappedFunctions[lz_lazyList] := With[{
+    patt = Append[generatorPattern, Map]
+},
+    ReplaceRepeated[
+        lz,
+        {
+             HoldPattern @ Map[f_, (gen : patt)[fgen_, args___]] :> With[{
+                composition = f @* fgen (* Evaluate the composition to flatten it out if necessary *)
+            },
+                gen[
+                    composition,
+                    args
+                ] /; True (* condition trick to make sure the With evaluates *)
+            ]
+        }
+    ]
+];
+
+composeMappedFunctions[lz_partitionedLazyList] := ReplaceRepeated[
+    lz,
+    {
+        HoldPattern @ Map[fun_, Map[fgen_, tail_]] :> With[{
+            composition = Replace[
+                {fun, fgen},
+                {
+                    (* Don't use Composition here, because it doesn't auto-compile *)
+                    {{f_, Listable}, {g_, Listable}} :> {Function[f[g[#]]], Listable},
+                    {f : Except[{_, Listable}], {g_, Listable}} :> {Function[f /@ g[#]], Listable},
+                    {{f_, Listable}, g : Except[{_, Listable}]} :> {Function[f[g /@ #]], Listable},
+                    {f_, g_} :> Function[f[g[#]]]
+                }
+            ]
+        },
+            Map[
+                composition,
+                tail
+            ] /; True (* condition trick to make sure the With evaluates *)
+        ]
+    }
+];
 
 End[]
 

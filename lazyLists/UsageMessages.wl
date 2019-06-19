@@ -82,5 +82,7 @@ rangeTuplesAtPositions::usage = "rangeTuplesAtPositions[Length /@ lists] is a Co
 
 repartitionAll::usage = "repartitionAll[{lz1, lz2, ...}] returns the list of lazy lists, but with all partitioned lazylists restructured to be of the same partition length. Ordinary lazyLists will be converted to partitionedLazyLists.";
 
+composeMappedFunctions::usage = "composeMappedFunctions[lzList] will convert mappings of the form f /@ g /@ ... /@ list with a single map f @* g @* ... /@ list";
+
 EndPackage[]
 
