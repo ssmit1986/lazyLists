@@ -1278,6 +1278,8 @@ VerificationTest[(* 150 *)
 	Take[Map[f, Map[g, partitionedLazyRange[5]]], 10]
 	,
 	partitionedLazyList[List[f[g[1]], f[g[2]], f[g[3]], f[g[4]], f[g[5]], f[g[6]], f[g[7]], f[g[8]], f[g[9]], f[g[10]]], partitionedLazyList[List[f[g[11]], f[g[12]], f[g[13]], f[g[14]], f[g[15]]], Map[f, Map[g, partitionedLazyList[Function[lazyList[Slot[1], Slot[0][Plus[Slot[2], Slot[1]], Slot[2]]]][Plus[5, List[11, 12, 13, 14, 15]], 5]]]]]]	
+	,
+	TestID->"a5450e1b-fb2c-44eb-8b13-ade880632dd7"
 ]
 
 VerificationTest[(* 151 *)
