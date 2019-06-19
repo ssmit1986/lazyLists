@@ -60,3 +60,6 @@ See lazyLists.nb for details and examples.
     * Fix dates in change log <_<
 * 20 May 2019
     * Add additional unit tests and add section in example notebook that shows how to run them.
+* 19 June 2019
+    * Fix a bug where `endOfLazyList` wouldn't work if returned from a function mapped over a `lazyList`.
+    * Add new function `composeMappedFunctions` which compacts multiple `Map`s into one. This was default behavior for `Map` before, but this feature was removed from `Map`.

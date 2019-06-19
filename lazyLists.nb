@@ -20900,14 +20900,13 @@ Cell[BoxData[
 
 Cell[CellGroupData[{
 
-Cell["Caveats", \
+Cell["Known issues and caveats", \
 "Subsection",ExpressionUUID->"913456ae-86bc-474d-90bb-1fe719afec8e"],
 
-Cell["\<\
-When defining your own lazyLists, make sure the last part of the list does \
-not evaluate to itself. Take etc. will not work correctly on such lists and \
-stop iterating prematurely:\
-\>", "Text",ExpressionUUID->"232911ec-716c-44a2-a324-124b95f3af23"],
+Cell[TextData[StyleBox["When defining your own lazyLists, make sure the last \
+part of the list does not evaluate to itself. Take etc. will not work \
+correctly on such lists and stop iterating prematurely:", "Item"]], \
+"Item",ExpressionUUID->"a9a3aa2a-2457-4fe3-be1a-dae91e7a5263"],
 
 Cell[CellGroupData[{
 
@@ -21024,7 +21023,136 @@ Cell[BoxData[
 
 Cell[BoxData["22"], "Output",
  CellLabel->"Out[539]=",ExpressionUUID->"e1ef0bac-b46d-49b7-b3c3-2a502ee84fdb"]
-}, Open  ]]
+}, Open  ]],
+
+Cell[TextData[{
+ "If a function mapped over a lazyList returns ",
+ StyleBox["endOfLazyList",
+  FontWeight->"Bold"],
+ ", the function ",
+ StyleBox["composeMappedFunctions",
+  FontWeight->"Bold"],
+ " may interfere with the intended functionality:"
+}], "Item",ExpressionUUID->"dd61c40d-c1b4-4831-8c39-544f28c56b5c"],
+
+Cell[TextData[{
+ "This will work correctly because the lazyList terminates during the first ",
+ StyleBox["Map",
+  FontWeight->"Bold"],
+ ":"
+}], "Text",ExpressionUUID->"ed6f184f-b245-4134-8303-3a33a37ddc3c"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Take", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"Sin", "/@", 
+    RowBox[{
+     RowBox[{"Function", "[", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"#", "===", "10"}], ",", "endOfLazyList", ",", "#"}], "]"}], 
+      "]"}], "/@", 
+     RowBox[{"lazyRange", "[", "]"}]}]}], ",", "\[IndentingNewLine]", "20"}], 
+  "\[IndentingNewLine]", "]"}]], "Input",
+ CellLabel->"In[5]:=",ExpressionUUID->"0298ebbd-56f4-4309-b165-821651549c40"],
+
+Cell[BoxData[
+ RowBox[{"lazyList", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"Sin", "[", "1", "]"}], ",", 
+     RowBox[{"Sin", "[", "2", "]"}], ",", 
+     RowBox[{"Sin", "[", "3", "]"}], ",", 
+     RowBox[{"Sin", "[", "4", "]"}], ",", 
+     RowBox[{"Sin", "[", "5", "]"}], ",", 
+     RowBox[{"Sin", "[", "6", "]"}], ",", 
+     RowBox[{"Sin", "[", "7", "]"}], ",", 
+     RowBox[{"Sin", "[", "8", "]"}], ",", 
+     RowBox[{"Sin", "[", "9", "]"}]}], "}"}], ",", 
+   RowBox[{"lazyList", "[", "]"}]}], "]"}]], "Output",
+ CellLabel->"Out[5]=",ExpressionUUID->"d0d00488-41eb-489c-b799-3b0f25685b2b"]
+}, Open  ]],
+
+Cell[TextData[{
+ "This will not work correctly since the ",
+ StyleBox["Sin",
+  FontWeight->"Bold"],
+ " function will be wrapped around ",
+ StyleBox["endOfLazyList",
+  FontWeight->"Bold"],
+ ":"
+}], "Text",ExpressionUUID->"46007d5f-4cdc-4b8c-bb36-654f81ac8ef7"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Take", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"composeMappedFunctions", "[", "\[IndentingNewLine]", 
+    RowBox[{"Sin", "/@", 
+     RowBox[{
+      RowBox[{"Function", "[", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"#", "===", "10"}], ",", "endOfLazyList", ",", "#"}], "]"}], 
+       "]"}], "/@", 
+      RowBox[{"lazyRange", "[", "]"}]}]}], "\[IndentingNewLine]", "]"}], ",", 
+   "\[IndentingNewLine]", "20"}], "\[IndentingNewLine]", "]"}]], "Input",
+ CellLabel->"In[6]:=",ExpressionUUID->"8e78562c-a9bf-4757-9675-72fe04b2057c"],
+
+Cell[BoxData[
+ RowBox[{"lazyList", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"Sin", "[", "1", "]"}], ",", 
+     RowBox[{"Sin", "[", "2", "]"}], ",", 
+     RowBox[{"Sin", "[", "3", "]"}], ",", 
+     RowBox[{"Sin", "[", "4", "]"}], ",", 
+     RowBox[{"Sin", "[", "5", "]"}], ",", 
+     RowBox[{"Sin", "[", "6", "]"}], ",", 
+     RowBox[{"Sin", "[", "7", "]"}], ",", 
+     RowBox[{"Sin", "[", "8", "]"}], ",", 
+     RowBox[{"Sin", "[", "9", "]"}], ",", 
+     RowBox[{"Sin", "[", "endOfLazyList", "]"}], ",", 
+     RowBox[{"Sin", "[", "11", "]"}], ",", 
+     RowBox[{"Sin", "[", "12", "]"}], ",", 
+     RowBox[{"Sin", "[", "13", "]"}], ",", 
+     RowBox[{"Sin", "[", "14", "]"}], ",", 
+     RowBox[{"Sin", "[", "15", "]"}], ",", 
+     RowBox[{"Sin", "[", "16", "]"}], ",", 
+     RowBox[{"Sin", "[", "17", "]"}], ",", 
+     RowBox[{"Sin", "[", "18", "]"}], ",", 
+     RowBox[{"Sin", "[", "19", "]"}], ",", 
+     RowBox[{"Sin", "[", "20", "]"}]}], "}"}], ",", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{"Sin", "@*", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"#1", "===", "10"}], ",", "endOfLazyList", ",", "#1"}], 
+         "]"}], "&"}], ")"}]}], ")"}], "/@", 
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"lazyList", "[", 
+        RowBox[{"#1", ",", 
+         RowBox[{"#0", "[", 
+          RowBox[{
+           RowBox[{"#2", "+", "#1"}], ",", "#2"}], "]"}]}], "]"}], "&"}], 
+      ")"}], "[", 
+     RowBox[{
+      RowBox[{"1", "+", "20"}], ",", "1"}], "]"}]}]}], "]"}]], "Output",
+ CellLabel->"Out[6]=",ExpressionUUID->"a94cd287-8fb1-41af-b461-fae6dc507570"]
+}, Open  ]],
+
+Cell[BoxData[""], \
+"Input",ExpressionUUID->"b31adb4d-ab10-4be7-ab7a-91da405ee1d2"]
 }, Open  ]]
 }, Open  ]],
 
@@ -21085,7 +21213,7 @@ Cell[BoxData[{
   ";"}], "\[IndentingNewLine]", 
  RowBox[{"Length", "/@", 
   RowBox[{"testReport", "[", "\"\<TestResultRules\>\"", "]"}]}]}], "Input",
- CellLabel->"In[36]:=",ExpressionUUID->"e671f9bb-d62b-46e6-95a8-e4e014fff349"],
+ CellLabel->"In[1]:=",ExpressionUUID->"e671f9bb-d62b-46e6-95a8-e4e014fff349"],
 
 Cell[BoxData[
  RowBox[{"\[LeftAssociation]", 
@@ -21095,7 +21223,7 @@ Cell[BoxData[
    RowBox[{"\<\"TestsFailedWithMessages\"\>", "\[Rule]", "0"}], ",", 
    RowBox[{"\<\"TestsFailedWithErrors\"\>", "\[Rule]", "0"}]}], 
   "\[RightAssociation]"}]], "Output",
- CellLabel->"Out[37]=",ExpressionUUID->"d18bcd95-785f-4883-8813-dd61216d9e79"]
+ CellLabel->"Out[2]=",ExpressionUUID->"41858693-9bf3-462f-90e6-c3c40e7ff789"]
 }, Open  ]]
 }, Open  ]]
 },
