@@ -1682,9 +1682,6 @@ VerificationTest[(* 197 *)
 	TestID->"081a33cc-6d46-4a5d-9e20-4f80c8af8f5c"
 ]
 
-(* ::Text:: *)
-(*Fails currently:*)
-
 VerificationTest[(* 198 *)
 	Take[Map[Sin, Map[Function[If[Greater[Slot[1], 10], endOfLazyList, Slot[1]]], lazyRange[]]], 20]
 	,

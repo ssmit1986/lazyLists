@@ -76,13 +76,13 @@ Cell[BoxData[
            "Grid"], True->
           TagBox[GridBox[{
              {
-              
-              DynamicBox[FEPrivate`FrontEndResource[
-               "MUnitExpressions", "Add"]], 
+              DynamicBox[FEPrivate`FrontEndResource["MUnitExpressions", "Add"],
+               ImageSizeCache->{21., {4., 12.}}], 
               StyleBox[
                
                DynamicBox[FEPrivate`FrontEndResource[
-                "MUnitStrings", "AddMessages-Label"]], "ButtonText",
+                "MUnitStrings", "AddMessages-Label"],
+                ImageSizeCache->{102., {3., 10.}}], "ButtonText",
                StripOnInput->False,
                LineColor->RGBColor[0.9059, 0.3451, 0.102],
                FrontFaceColor->RGBColor[0.9059, 0.3451, 0.102],
@@ -1092,7 +1092,6 @@ Cell[BoxData[
             "MUnitStrings", "MemoryConstraint-Label"]]:>
            Block[{$ContextPath}, Needs["MUnit`"]; 
             MUnit`InsertOptionRule["MemoryConstraint"]], 
-           
            DynamicBox[FEPrivate`FrontEndResource[
             "MUnitStrings", "SameTest-Label"]]:>
            Block[{$ContextPath}, Needs["MUnit`"]; 
@@ -1312,7 +1311,6 @@ Cell[BoxData[
             "MUnitStrings", "MemoryConstraint-Label"]]:>
            Block[{$ContextPath}, Needs["MUnit`"]; 
             MUnit`InsertOptionRule["MemoryConstraint"]], 
-           
            DynamicBox[FEPrivate`FrontEndResource[
             "MUnitStrings", "SameTest-Label"]]:>
            Block[{$ContextPath}, Needs["MUnit`"]; 
@@ -45998,9 +45996,6 @@ Cell[BoxData[
  CellID->154687751,ExpressionUUID->"bed1d1e6-a072-4e2a-8fdc-0cab9350a0cd"]
 }, Open  ]],
 
-Cell["Fails currently:", "Text",
- CellID->9756803,ExpressionUUID->"03b31bb3-163d-4cec-af3a-118597f94cce"],
-
 Cell[CellGroupData[{
 
 Cell[BoxData[
@@ -46139,7 +46134,6 @@ Cell[BoxData[
                 
                 GridBoxAlignment->{
                  "Columns" -> {{Automatic}}, "Rows" -> {{Center}}},
-                
                 GridBoxItemSize->{
                  "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
                "Grid"], True->
@@ -46192,7 +46186,6 @@ Cell[BoxData[
            Method->"Queued"], 
           ActionMenuBox[
            ButtonBox["\<\"\"\>",
-            
             Appearance->FEPrivate`FrontEndResource[
              "MUnitExpressions", "ButtonAppearancesNoLeftBorder"],
             ButtonFunction:>{},
@@ -46572,6 +46565,7 @@ Cell[BoxData[
             
             GridBoxAlignment->{
              "Columns" -> {{Automatic}}, "Rows" -> {{Center}}},
+            
             GridBoxItemSize->{
              "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
            "Grid"]}, Dynamic[
@@ -46678,11 +46672,11 @@ Cell[BoxData[
             ContentPadding->False,
             Evaluator->None,
             Method->"Preemptive"], {
+           
            DynamicBox[FEPrivate`FrontEndResource[
             "MUnitStrings", "MemoryConstraint-Label"]]:>
            Block[{$ContextPath}, Needs["MUnit`"]; 
             MUnit`InsertOptionRule["MemoryConstraint"]], 
-           
            DynamicBox[FEPrivate`FrontEndResource[
             "MUnitStrings", "SameTest-Label"]]:>
            Block[{$ContextPath}, Needs["MUnit`"]; 
@@ -47562,7 +47556,6 @@ Cell[BoxData[
                 
                 GridBoxAlignment->{
                  "Columns" -> {{Automatic}}, "Rows" -> {{Center}}},
-                
                 GridBoxItemSize->{
                  "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
                "Grid"], True->
@@ -47615,7 +47608,6 @@ Cell[BoxData[
            Method->"Queued"], 
           ActionMenuBox[
            ButtonBox["\<\"\"\>",
-            
             Appearance->FEPrivate`FrontEndResource[
              "MUnitExpressions", "ButtonAppearancesNoLeftBorder"],
             ButtonFunction:>{},
@@ -48223,7 +48215,6 @@ Cell[BoxData[
                 
                 GridBoxAlignment->{
                  "Columns" -> {{Automatic}}, "Rows" -> {{Center}}},
-                
                 GridBoxItemSize->{
                  "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
                "Grid"], True->
@@ -48276,7 +48267,6 @@ Cell[BoxData[
            Method->"Queued"], 
           ActionMenuBox[
            ButtonBox["\<\"\"\>",
-            
             Appearance->FEPrivate`FrontEndResource[
              "MUnitExpressions", "ButtonAppearancesNoLeftBorder"],
             ButtonFunction:>{},
@@ -48607,7 +48597,6 @@ Cell[BoxData[
             
             GridBoxAlignment->{
              "Columns" -> {{Automatic}}, "Rows" -> {{Center}}},
-            
             GridBoxItemSize->{
              "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
            "Grid"], True->
