@@ -388,6 +388,7 @@ composeMappedFunctions[lz_partitionedLazyList] := ReplaceRepeated[
     }
 ];
 
+(*
 (* TODO: Implement *)
 Scan[
     Function[sym,
@@ -408,7 +409,7 @@ Scan[
         {TakeLargestBy, TakeSmallestBy}
     ]
 ];
-
+*)
 End[]
 
 EndPackage[]
