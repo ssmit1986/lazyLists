@@ -471,20 +471,19 @@ partitionedLazyList /: FoldList[fun_, partitionedLazyList[{elem_, rest___}, tail
 partitionedLazyList /: FoldList[fun_, current_, partitionedLazyList[first_List, tail_]] := With[{
     fold = FoldList[fun, current, first]
 },
-    With[{
-        newTail = tail
-    },
+    With[{newTail = tail},
         If[ newTail === lazyList[],
             partitionedLazyList[
                 fold,
                 lazyList[]
             ],
-            With[{
-                last = Last[fold]
-            },
-                partitionedLazyList[
-                    Most @ fold, (* The last element of fold will be added in the next iteration *)
-                    FoldList[fun, last, newTail]
+            If[ fold === {}, (* If fold has length 0, the last element is assumed to have been Nothing *)
+                FoldList[fun, Nothing, newTail],
+                With[{last = Last[fold]},
+                    partitionedLazyList[
+                        Most @ fold, (* The last element of fold will be added in the next iteration *)
+                        FoldList[fun, last, newTail]
+                    ]
                 ]
             ]
         ]

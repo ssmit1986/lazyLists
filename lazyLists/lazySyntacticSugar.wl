@@ -388,6 +388,28 @@ composeMappedFunctions[lz_partitionedLazyList] := ReplaceRepeated[
     }
 ];
 
+(*
+(* TODO: Implement *)
+Scan[
+    Function[sym,
+        lazyList /: HoldPattern[sym[lazyList[], ___]] := lazyList[];
+        lazyList /: HoldPattern[sym[lazyList[first_, tail_], n_]] := Undefined,
+        {TakeLargest, TakeSmallest}
+    ]
+];
+
+Scan[
+    Function[sym,
+        lazyList /: HoldPattern[sym[lazyList[], ___]] := lazyList[];
+        With[{
+            smallOrLarge = Replace[sym, {TakeLargestBy -> TakeLargest, TakeSmallestBy -> TakeSmallest}]
+        },
+            lazyList /: HoldPattern[sym[lz : validLazyListPattern, f_, n_]] := smallOrLarge[Map[f, lz], n]
+        ],
+        {TakeLargestBy, TakeSmallestBy}
+    ]
+];
+*)
 End[]
 
 EndPackage[]
