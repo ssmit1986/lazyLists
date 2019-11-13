@@ -63,3 +63,5 @@ See lazyLists.nb for details and examples.
 * 19 June 2019
     * Fix a bug where `endOfLazyList` wouldn't work if returned from a function mapped over a `lazyList`.
     * Add new function `composeMappedFunctions` which compacts multiple `Map`s into one. This was default behavior for `Map` before, but this feature was removed from `Map`.
+* 13 November 2019
+    * Add support for using `Nothing` in `FoldList`.

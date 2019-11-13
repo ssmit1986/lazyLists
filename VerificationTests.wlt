@@ -1427,6 +1427,22 @@ VerificationTest[(* 167 *)
 ]
 
 VerificationTest[(* 168 *)
+	First[Take[FoldList[Function[If[Less[Slot[2], 15], Nothing, Slot[2]]], Nothing, lazyRange[10]], 20]]
+	,
+	List[15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34]	
+	,
+	TestID->"4f3d6397-e664-44d8-a0cf-3e752dc62c3c"
+]
+
+VerificationTest[(* 169 *)
+	Most[Take[FoldList[Function[If[Less[Slot[2], 15], Nothing, Slot[2]]], Nothing, partitionedLazyRange[10]], 20]]
+	,
+	List[15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34]	
+	,
+	TestID->"40919827-ae18-4769-8793-82574d5ca24b"
+]
+
+VerificationTest[(* 170 *)
 	First[Take[FoldPairList[Function[List[p[Slot[1], Slot[2]], q[Slot[1], Slot[2]]]], u, lazyRange[]], 4]]
 	,
 	List[p[u, 1], p[q[u, 1], 2], p[q[q[u, 1], 2], 3], p[q[q[q[u, 1], 2], 3], 4]]	
@@ -1438,7 +1454,7 @@ EndTestSection[]
 
 BeginTestSection["Cases, Pick, Select"]
 
-VerificationTest[(* 169 *)
+VerificationTest[(* 171 *)
 	MatchQ[Cases[lazyRange[0, Times[2, Power[3, -1]]], Blank[Integer]], lazyList[0, Blank[]]]
 	,
 	True	
@@ -1446,7 +1462,7 @@ VerificationTest[(* 169 *)
 	TestID->"eef58711-9a2b-4adf-bb35-fd6ddc3b49a1"
 ]
 
-VerificationTest[(* 170 *)
+VerificationTest[(* 172 *)
 	First[Take[Cases[lazyRange[0, Times[2, Power[3, -1]]], Blank[Integer]], 5]]
 	,
 	List[0, 2, 4, 6, 8]	
@@ -1454,7 +1470,7 @@ VerificationTest[(* 170 *)
 	TestID->"1c11a617-94ea-42b9-bf57-ccb346d33046"
 ]
 
-VerificationTest[(* 171 *)
+VerificationTest[(* 173 *)
 	MatchQ[Pick[lazyRange[0, 2], lazyRange[0, Times[2, Power[3, -1]]], Blank[Integer]], lazyList[0, Blank[]]]
 	,
 	True	
@@ -1462,7 +1478,7 @@ VerificationTest[(* 171 *)
 	TestID->"df1ac686-6c55-4310-b8be-df2063f48b70"
 ]
 
-VerificationTest[(* 172 *)
+VerificationTest[(* 174 *)
 	First[Take[Pick[lazyRange[0, 2], lazyRange[0, Times[2, Power[3, -1]]], Blank[Integer]], 5]]
 	,
 	List[0, 6, 12, 18, 24]	
@@ -1470,7 +1486,7 @@ VerificationTest[(* 172 *)
 	TestID->"232b3f69-ae25-4cc2-9e08-7fc39008ebff"
 ]
 
-VerificationTest[(* 173 *)
+VerificationTest[(* 175 *)
 	Select[lazyRange[], OddQ]
 	,
 	lazyList[1, Select[Function[lazyList[Slot[1], Slot[0][Plus[Slot[2], Slot[1]], Slot[2]]]][Plus[1, 1], 1], OddQ]]	
@@ -1478,7 +1494,7 @@ VerificationTest[(* 173 *)
 	TestID->"8d8036f1-5720-4811-8629-7c25ce67842b"
 ]
 
-VerificationTest[(* 174 *)
+VerificationTest[(* 176 *)
 	First[Take[Select[lazyRange[], OddQ], 5]]
 	,
 	List[1, 3, 5, 7, 9]	
@@ -1490,7 +1506,7 @@ EndTestSection[]
 
 BeginTestSection["lazyMapThread, lazyTranspose"]
 
-VerificationTest[(* 175 *)
+VerificationTest[(* 177 *)
 	First[Take[lazyMapThread[f, List[lazyRange[], lazyRange[2, 2]]], 5]]
 	,
 	List[f[List[1, 2]], f[List[2, 4]], f[List[3, 6]], f[List[4, 8]], f[List[5, 10]]]	
@@ -1498,7 +1514,7 @@ VerificationTest[(* 175 *)
 	TestID->"713e38e1-53ae-455a-bbf8-0bbc02d45524"
 ]
 
-VerificationTest[(* 176 *)
+VerificationTest[(* 178 *)
 	MapThread[f, List[Range[5], Times[2, Range[5]]]]
 	,
 	List[f[1, 2], f[2, 4], f[3, 6], f[4, 8], f[5, 10]]	
@@ -1506,7 +1522,7 @@ VerificationTest[(* 176 *)
 	TestID->"04ba0346-ff2e-4659-8597-53624df2a10d"
 ]
 
-VerificationTest[(* 177 *)
+VerificationTest[(* 179 *)
 	First[Take[lazyMapThread[f, List[lazyRange[], Range[5]]], All]]
 	,
 	List[f[List[1, 1]], f[List[2, 2]], f[List[3, 3]], f[List[4, 4]], f[List[5, 5]]]	
@@ -1514,7 +1530,7 @@ VerificationTest[(* 177 *)
 	TestID->"32188d20-9d34-4122-bf92-06bb3cf26702"
 ]
 
-VerificationTest[(* 178 *)
+VerificationTest[(* 180 *)
 	Most[Take[lazyMapThread[f, List[partitionedLazyList[Map[Range, lazyRange[]]], partitionedLazyRange[4], partitionedLazyRange[2, 2, 6]]], 10]]
 	,
 	List[f[1, 1, 2], f[1, 2, 4], f[2, 3, 6], f[1, 4, 8], f[2, 5, 10], f[3, 6, 12], f[1, 7, 14], f[2, 8, 16], f[3, 9, 18], f[4, 10, 20]]	
@@ -1522,7 +1538,7 @@ VerificationTest[(* 178 *)
 	TestID->"1da06e68-9eab-497a-92fa-298cc059d2a2"
 ]
 
-VerificationTest[(* 179 *)
+VerificationTest[(* 181 *)
 	lazyMapThread[f, List[partitionedLazyRange[3], lazyRange[]]]
 	,
 	partitionedLazyList[List[f[1, 1], f[2, 2], f[3, 3]], lazyMapThread[f, List[partitionedLazyList[List[4, 5, 6], partitionedLazyList[Function[lazyList[Slot[1], Slot[0][Plus[Slot[2], Slot[1]], Slot[2]]]][Plus[3, List[4, 5, 6]], 3]]], partitionedLazyList[List[4, 5, 6], lazyPartition[Function[lazyList[Slot[1], Slot[0][Plus[Slot[2], Slot[1]], Slot[2]]]][Plus[1, 6], 1], 3]]]]]	
@@ -1530,7 +1546,7 @@ VerificationTest[(* 179 *)
 	TestID->"afa9dc39-c825-4926-a453-fdf3dc86c42d"
 ]
 
-VerificationTest[(* 180 *)
+VerificationTest[(* 182 *)
 	First[Take[lazyTranspose[List[lazyRange[], lazyRange[start]]], 5]]
 	,
 	List[List[1, start], List[2, Plus[1, start]], List[3, Plus[2, start]], List[4, Plus[3, start]], List[5, Plus[4, start]]]	
@@ -1538,7 +1554,7 @@ VerificationTest[(* 180 *)
 	TestID->"6f32f0a8-9388-4926-998a-161b2cdd31a4"
 ]
 
-VerificationTest[(* 181 *)
+VerificationTest[(* 183 *)
 	First[Take[lazyMapThread[Identity, List[lazyRange[], lazyRange[start]]], 5]]
 	,
 	List[List[1, start], List[2, Plus[1, start]], List[3, Plus[2, start]], List[4, Plus[3, start]], List[5, Plus[4, start]]]	
@@ -1550,7 +1566,7 @@ EndTestSection[]
 
 BeginTestSection["lazyCatenate"]
 
-VerificationTest[(* 182 *)
+VerificationTest[(* 184 *)
 	lazyCatenate[List[List[1, 2]]]
 	,
 	lazyList[1, lazyList[List[2]]]	
@@ -1558,7 +1574,7 @@ VerificationTest[(* 182 *)
 	TestID->"d44e1a68-eed8-4007-8121-b5732cbc3f46"
 ]
 
-VerificationTest[(* 183 *)
+VerificationTest[(* 185 *)
 	lazyCatenate[List[lazyRange[]]]
 	,
 	lazyList[1, Function[lazyList[Slot[1], Slot[0][Plus[Slot[2], Slot[1]], Slot[2]]]][Plus[1, 1], 1]]	
@@ -1566,7 +1582,7 @@ VerificationTest[(* 183 *)
 	TestID->"5a71142c-3026-4188-bf98-8c2241e3e39e"
 ]
 
-VerificationTest[(* 184 *)
+VerificationTest[(* 186 *)
 	lazyCatenate[List[partitionedLazyRange[5]]]
 	,
 	partitionedLazyList[List[1, 2, 3, 4, 5], partitionedLazyList[Function[lazyList[Slot[1], Slot[0][Plus[Slot[2], Slot[1]], Slot[2]]]][Plus[5, List[1, 2, 3, 4, 5]], 5]]]	
@@ -1574,7 +1590,7 @@ VerificationTest[(* 184 *)
 	TestID->"503585d1-e1e3-4211-9795-8c4c977a7c4d"
 ]
 
-VerificationTest[(* 185 *)
+VerificationTest[(* 187 *)
 	lazyCatenate[List[List[1, 2], List[2, 3, 4]]]
 	,
 	lazyList[1, lazyList[List[2, 2, 3, 4]]]	
@@ -1582,7 +1598,7 @@ VerificationTest[(* 185 *)
 	TestID->"b2868662-c220-4ca5-9934-cf1408f55c4c"
 ]
 
-VerificationTest[(* 186 *)
+VerificationTest[(* 188 *)
 	First[Take[lazyCatenate[List[List[1, 2], List[2, 3, 4]]], All]]
 	,
 	List[1, 2, 2, 3, 4]	
@@ -1590,7 +1606,7 @@ VerificationTest[(* 186 *)
 	TestID->"26cc958a-8c1c-46fb-8da0-897ff4d162d5"
 ]
 
-VerificationTest[(* 187 *)
+VerificationTest[(* 189 *)
 	First[Take[lazyCatenate[List[lazyGenerator[f, 1, 1, 5], lazyGenerator[g, 1, 1, 5]]], All]]
 	,
 	List[f[1], f[2], f[3], f[4], f[5], g[1], g[2], g[3], g[4], g[5]]	
@@ -1598,7 +1614,7 @@ VerificationTest[(* 187 *)
 	TestID->"23dbb7e0-0165-415b-873b-c8ea5d62ef15"
 ]
 
-VerificationTest[(* 188 *)
+VerificationTest[(* 190 *)
 	First[Take[lazyCatenate[lazyGenerator[Range, 1, 1, 5]], All]]
 	,
 	List[1, 1, 2, 1, 2, 3, 1, 2, 3, 4, 1, 2, 3, 4, 5]	
@@ -1606,7 +1622,7 @@ VerificationTest[(* 188 *)
 	TestID->"6b951aba-15c0-4b1d-942a-9a5eb2395281"
 ]
 
-VerificationTest[(* 189 *)
+VerificationTest[(* 191 *)
 	First[Take[lazyCatenate[lazyGenerator[Function[lazyGenerator[Subscript[f, Slot[1]], Slot[1], Slot[1], Plus[Slot[1], 3]]], 1, 1, 5]], All]]
 	,
 	List[Subscript[f, 1][1], Subscript[f, 1][2], Subscript[f, 1][3], Subscript[f, 1][4], Subscript[f, 2][2], Subscript[f, 2][3], Subscript[f, 2][4], Subscript[f, 2][5], Subscript[f, 3][3], Subscript[f, 3][4], Subscript[f, 3][5], Subscript[f, 3][6], Subscript[f, 4][4], Subscript[f, 4][5], Subscript[f, 4][6], Subscript[f, 4][7], Subscript[f, 5][5], Subscript[f, 5][6], Subscript[f, 5][7], Subscript[f, 5][8]]	
@@ -1618,7 +1634,7 @@ EndTestSection[]
 
 BeginTestSection["endOfLazyList"]
 
-VerificationTest[(* 190 *)
+VerificationTest[(* 192 *)
 	lazyList[endOfLazyList, "stuff"]
 	,
 	lazyList[]	
@@ -1626,7 +1642,7 @@ VerificationTest[(* 190 *)
 	TestID->"9dc7e6eb-3363-4834-a585-2c2a9296a68d"
 ]
 
-VerificationTest[(* 191 *)
+VerificationTest[(* 193 *)
 	lazyList[endOfLazyList, lazyRange[]]
 	,
 	lazyList[]	
@@ -1634,7 +1650,7 @@ VerificationTest[(* 191 *)
 	TestID->"4f792f28-e364-415a-b4ef-4bcfc98a7be5"
 ]
 
-VerificationTest[(* 192 *)
+VerificationTest[(* 194 *)
 	partitionedLazyList[List[1, 2, 3, endOfLazyList, otherStuff], anyTail]
 	,
 	partitionedLazyList[List[1, 2, 3], lazyList[]]	
@@ -1642,7 +1658,7 @@ VerificationTest[(* 192 *)
 	TestID->"94817bc0-0d2d-4936-a5db-71739d8c11d6"
 ]
 
-VerificationTest[(* 193 *)
+VerificationTest[(* 195 *)
 	Take[Map[f, partitionedLazyList[List[1, 2, 3], partitionedLazyList[List[4, 5, 6, endOfLazyList, Apply[Sequence, Range[10]]], partitionedLazyRange[5]]]], 20]
 	,
 	partitionedLazyList[List[f[1], f[2], f[3], f[4], f[5], f[6]], lazyList[]]	
@@ -1650,7 +1666,7 @@ VerificationTest[(* 193 *)
 	TestID->"ed006187-1cdf-429c-bf81-1372cb1c21b2"
 ]
 
-VerificationTest[(* 194 *)
+VerificationTest[(* 196 *)
 	Take[Map[g, Map[f, partitionedLazyList[List[1, 2, 3], partitionedLazyList[List[4, 5, 6, endOfLazyList, Apply[Sequence, Range[10]]], partitionedLazyRange[5]]]]], 20]
 	,
 	partitionedLazyList[List[g[f[1]], g[f[2]], g[f[3]], g[f[4]], g[f[5]], g[f[6]]], lazyList[]]	
@@ -1658,7 +1674,7 @@ VerificationTest[(* 194 *)
 	TestID->"570c9489-e01d-4aa5-aa36-9409385fa8bf"
 ]
 
-VerificationTest[(* 195 *)
+VerificationTest[(* 197 *)
 	Take[Map[g, Map[List[Sin, Listable], partitionedLazyList[List[1, 2, 3], partitionedLazyList[List[4, 5, 6, endOfLazyList, Apply[Sequence, Range[10]]], partitionedLazyRange[5]]]]], 20]
 	,
 	partitionedLazyList[List[g[Sin[1]], g[Sin[2]], g[Sin[3]], g[Sin[4]], g[Sin[5]], g[Sin[6]]], lazyList[]]	
@@ -1666,7 +1682,7 @@ VerificationTest[(* 195 *)
 	TestID->"a82e8b8e-e760-4b09-8799-a58114510cc3"
 ]
 
-VerificationTest[(* 196 *)
+VerificationTest[(* 198 *)
 	Take[Map[List[Sqrt, Listable], Map[List[Sin, Listable], partitionedLazyList[List[1, 2, 3], partitionedLazyList[List[4, 5, 6, endOfLazyList, Apply[Sequence, Range[10]]], partitionedLazyRange[5]]]]], 20]
 	,
 	partitionedLazyList[List[Sqrt[Sin[1]], Sqrt[Sin[2]], Sqrt[Sin[3]], Sqrt[Sin[4]], Sqrt[Sin[5]], Sqrt[Sin[6]]], lazyList[]]	
@@ -1674,7 +1690,7 @@ VerificationTest[(* 196 *)
 	TestID->"7f54badb-04eb-4387-839f-c61a96a88f32"
 ]
 
-VerificationTest[(* 197 *)
+VerificationTest[(* 199 *)
 	Take[Map[List[Sqrt, Listable], Map[f, partitionedLazyList[List[1, 2, 3], partitionedLazyList[List[4, 5, 6, endOfLazyList, Apply[Sequence, Range[10]]], partitionedLazyRange[5]]]]], 20]
 	,
 	partitionedLazyList[List[Sqrt[f[1]], Sqrt[f[2]], Sqrt[f[3]], Sqrt[f[4]], Sqrt[f[5]], Sqrt[f[6]]], lazyList[]]	
@@ -1682,7 +1698,7 @@ VerificationTest[(* 197 *)
 	TestID->"081a33cc-6d46-4a5d-9e20-4f80c8af8f5c"
 ]
 
-VerificationTest[(* 198 *)
+VerificationTest[(* 200 *)
 	Take[Map[Sin, Map[Function[If[Greater[Slot[1], 10], endOfLazyList, Slot[1]]], lazyRange[]]], 20]
 	,
 	lazyList[List[Sin[1], Sin[2], Sin[3], Sin[4], Sin[5], Sin[6], Sin[7], Sin[8], Sin[9], Sin[10]], lazyList[]]	
@@ -1690,7 +1706,7 @@ VerificationTest[(* 198 *)
 	TestID->"d45fb48f-f591-4dc9-8f64-ddaa030a3ebd"
 ]
 
-VerificationTest[(* 199 *)
+VerificationTest[(* 201 *)
 	Take[Map[Sin, Map[Function[If[Greater[Slot[1], 10], endOfLazyList, Slot[1]]], partitionedLazyRange[5]]], 20]
 	,
 	partitionedLazyList[List[Sin[1], Sin[2], Sin[3], Sin[4], Sin[5], Sin[6], Sin[7], Sin[8], Sin[9], Sin[10]], lazyList[]]	
@@ -1698,7 +1714,7 @@ VerificationTest[(* 199 *)
 	TestID->"cb8edc20-4697-48dd-bd1b-bf5a62532ba3"
 ]
 
-VerificationTest[(* 200 *)
+VerificationTest[(* 202 *)
 	Take[Map[List[Sin, Listable], Map[Function[If[Greater[Slot[1], 10], endOfLazyList, Slot[1]]], partitionedLazyRange[5]]], 20]
 	,
 	partitionedLazyList[List[Sin[1], Sin[2], Sin[3], Sin[4], Sin[5], Sin[6], Sin[7], Sin[8], Sin[9], Sin[10]], lazyList[]]	
@@ -1706,7 +1722,7 @@ VerificationTest[(* 200 *)
 	TestID->"33c42b6a-5684-46b6-b03b-de033e81ecc1"
 ]
 
-VerificationTest[(* 201 *)
+VerificationTest[(* 203 *)
 	Take[Map[Sin, Map[List[Function[If[Greater[Max[Slot[1]], 10], Append[Slot[1], endOfLazyList], Slot[1]]], Listable], partitionedLazyRange[5]]], 20]
 	,
 	partitionedLazyList[List[Sin[1], Sin[2], Sin[3], Sin[4], Sin[5], Sin[6], Sin[7], Sin[8], Sin[9], Sin[10], Sin[11], Sin[12], Sin[13], Sin[14], Sin[15]], lazyList[]]	
@@ -1714,7 +1730,7 @@ VerificationTest[(* 201 *)
 	TestID->"827b77e3-adc4-411d-9a3d-cfd9afce8fd8"
 ]
 
-VerificationTest[(* 202 *)
+VerificationTest[(* 204 *)
 	Take[Map[List[Sin, Listable], Map[List[Function[If[Greater[Max[Slot[1]], 10], Append[Slot[1], endOfLazyList], Slot[1]]], Listable], partitionedLazyRange[5]]], 20]
 	,
 	partitionedLazyList[List[Sin[1], Sin[2], Sin[3], Sin[4], Sin[5], Sin[6], Sin[7], Sin[8], Sin[9], Sin[10], Sin[11], Sin[12], Sin[13], Sin[14], Sin[15]], lazyList[]]	
@@ -1726,7 +1742,7 @@ EndTestSection[]
 
 BeginTestSection["Edge cases"]
 
-VerificationTest[(* 203 *)
+VerificationTest[(* 205 *)
 	Set[badExample, Function[lazyList[1, Slot[0][]]][]]
 	,
 	lazyList[1, Function[lazyList[1, Slot[0][]]][]]	
@@ -1734,7 +1750,7 @@ VerificationTest[(* 203 *)
 	TestID->"cca6f375-6ddb-4152-aa3d-2349457bc8e2"
 ]
 
-VerificationTest[(* 204 *)
+VerificationTest[(* 206 *)
 	Last[badExample]
 	,
 	badExample	
@@ -1742,7 +1758,7 @@ VerificationTest[(* 204 *)
 	TestID->"d5669f68-30d9-4e7a-a0e0-4a892a683a43"
 ]
 
-VerificationTest[(* 205 *)
+VerificationTest[(* 207 *)
 	First[Take[badExample, 20]]
 	,
 	List[1, 1]	
@@ -1750,7 +1766,7 @@ VerificationTest[(* 205 *)
 	TestID->"0820b214-6494-4848-9ae0-3811250773bb"
 ]
 
-VerificationTest[(* 206 *)
+VerificationTest[(* 208 *)
 	Set[example, Function[lazyList[1, Slot[0][Plus[Slot[1], 1]]]][1]]
 	,
 	lazyList[1, Function[lazyList[1, Slot[0][Plus[Slot[1], 1]]]][Plus[1, 1]]]	
@@ -1758,7 +1774,7 @@ VerificationTest[(* 206 *)
 	TestID->"70bea84b-fb82-4ee1-8fff-c75fed296f60"
 ]
 
-VerificationTest[(* 207 *)
+VerificationTest[(* 209 *)
 	SameQ[example, Last[example]]
 	,
 	False	
@@ -1766,7 +1782,7 @@ VerificationTest[(* 207 *)
 	TestID->"1346241a-d07f-43e4-b438-f6bb7f8bcc01"
 ]
 
-VerificationTest[(* 208 *)
+VerificationTest[(* 210 *)
 	Take[example, 20]
 	,
 	lazyList[List[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], Function[lazyList[1, Slot[0][Plus[Slot[1], 1]]]][Plus[20, 1]]]	
@@ -1774,7 +1790,7 @@ VerificationTest[(* 208 *)
 	TestID->"8cc85caf-0ded-497b-bc70-c8c40b5ed440"
 ]
 
-VerificationTest[(* 209 *)
+VerificationTest[(* 211 *)
 	Set[position, Replace[Last[Take[example, 20]], List[RuleDelayed[lazyList[Blank[], Function[BlankSequence[]][Pattern[i, Blank[]]]], i]]]]
 	,
 	22	
