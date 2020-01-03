@@ -3,12 +3,11 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"$HistoryLength", "=", "10"}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
-  RowBox[{"SetDirectory", "[", 
+  RowBox[{"PacletDirectoryAdd", "[", 
    RowBox[{"NotebookDirectory", "[", "]"}], "]"}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{"<<", "lazyLists`"}]}], "Input",
- CellLabel->
-  "In[334]:=",ExpressionUUID->"2d6a87cf-3ef1-4832-b8b9-0995d6d1b646"],
+ CellLabel->"In[27]:=",ExpressionUUID->"2d6a87cf-3ef1-4832-b8b9-0995d6d1b646"],
 
 Cell[CellGroupData[{
 
@@ -33,8 +32,7 @@ Cell[BoxData[{
  RowBox[{"?", "lazyStream"}], "\[IndentingNewLine]", 
  RowBox[{"?", "lazyTuples"}], "\[IndentingNewLine]", 
  RowBox[{"?", "lazyConstantArray"}]}], "Input",
- CellLabel->
-  "In[337]:=",ExpressionUUID->"8f1d3194-9e73-46ae-83d7-5e7cad595285"],
+ CellLabel->"In[30]:=",ExpressionUUID->"8f1d3194-9e73-46ae-83d7-5e7cad595285"],
 
 Cell[BoxData[
  InterpretationBox[
@@ -1621,10 +1619,10 @@ an ordinary list.", "Documentation" -> None, "OwnValues" -> None, "UpValues" ->
        Pattern[lazyLists`Private`expr, Blank[lazyLists`lazyList] + 
          BlankNullSequence[] + BlankNullSequence[]] :> Thread[
          Unevaluated[lazyLists`Private`expr], lazyLists`lazyList], 
-       Pattern[lazyLists`Private`expr, (BlankNullSequence[] 
-          BlankNullSequence[]) lazyLists`lazyList[]] :> lazyLists`lazyList[], 
-       Pattern[lazyLists`Private`expr, (Blank[lazyLists`lazyList] 
-          BlankNullSequence[]) BlankNullSequence[]] :> Thread[
+       Pattern[lazyLists`Private`expr, BlankNullSequence[] 
+         BlankNullSequence[] lazyLists`lazyList[]] :> lazyLists`lazyList[], 
+       Pattern[lazyLists`Private`expr, Blank[lazyLists`lazyList] 
+         BlankNullSequence[] BlankNullSequence[]] :> Thread[
          Unevaluated[lazyLists`Private`expr], lazyLists`lazyList], 
        Pattern[lazyLists`Private`expr, 
          Power[
@@ -2219,8 +2217,7 @@ an ordinary list.", "Documentation" -> None, "OwnValues" -> None, "UpValues" ->
     "SubValues" -> None, "DefaultValues" -> None, "NValues" -> None, 
     "FormatValues" -> None, "Options" -> None, "Attributes" -> {HoldRest}, 
     "FullName" -> "lazyLists`lazyList"], False]]], "Output",
- CellLabel->
-  "Out[337]=",ExpressionUUID->"dafa9041-3744-4c3a-92d9-7aecf4b045fa"],
+ CellLabel->"Out[30]=",ExpressionUUID->"b6dd9b76-c8b0-4a2a-8e6b-d69ee43114af"],
 
 Cell[BoxData[
  InterpretationBox[
@@ -2610,8 +2607,7 @@ both infinite, symbolic values for start and step are allowed.",
     None, "NValues" -> None, "FormatValues" -> None, "Options" -> None, 
     "Attributes" -> {}, "FullName" -> "lazyLists`lazyGenerator"], 
    False]]], "Output",
- CellLabel->
-  "Out[338]=",ExpressionUUID->"324872a2-3662-4d7a-ab91-a428749930cb"],
+ CellLabel->"Out[31]=",ExpressionUUID->"5ab30b71-e263-4cd3-88c3-a95e991acb28"],
 
 Cell[BoxData[
  InterpretationBox[
@@ -2898,8 +2894,7 @@ faster than lazyGenerator.", "Documentation" -> None, "OwnValues" -> None,
     None, "DefaultValues" -> None, "NValues" -> None, "FormatValues" -> None, 
     "Options" -> None, "Attributes" -> {}, "FullName" -> 
     "lazyLists`lazyRange"], False]]], "Output",
- CellLabel->
-  "Out[339]=",ExpressionUUID->"a41ca728-41b1-4c96-870e-67e37e4e5e74"],
+ CellLabel->"Out[32]=",ExpressionUUID->"ef3ae2e4-8217-4521-a0ce-a91904bca9eb"],
 
 Cell[BoxData[
  InterpretationBox[
@@ -3175,8 +3170,7 @@ Cell[BoxData[
     None, "DefaultValues" -> None, "NValues" -> None, "FormatValues" -> None, 
     "Options" -> None, "Attributes" -> {}, "FullName" -> 
     "lazyLists`lazyPowerRange"], False]]], "Output",
- CellLabel->
-  "Out[340]=",ExpressionUUID->"409bc56c-6e56-4b2c-8cda-76ca1742706f"],
+ CellLabel->"Out[33]=",ExpressionUUID->"ab4ebcc9-985e-4a6f-baa2-83f132b0f794"],
 
 Cell[BoxData[
  InterpretationBox[
@@ -3431,8 +3425,7 @@ repeatedly.\"\>", "InformationUsageText",
     "SubValues" -> None, "DefaultValues" -> None, "NValues" -> None, 
     "FormatValues" -> None, "Options" -> None, "Attributes" -> {}, "FullName" -> 
     "lazyLists`lazyNestList"], False]]], "Output",
- CellLabel->
-  "Out[341]=",ExpressionUUID->"f4a1faa1-a800-4952-a75f-b1e5e9c67c8a"],
+ CellLabel->"Out[34]=",ExpressionUUID->"cc28482e-841e-435c-a122-67ba3f5940cd"],
 
 Cell[BoxData[
  InterpretationBox[
@@ -3741,8 +3734,7 @@ not longer changes according to sameTest.", "Documentation" -> None,
     "DefaultValues" -> None, "NValues" -> None, "FormatValues" -> None, 
     "Options" -> None, "Attributes" -> {}, "FullName" -> 
     "lazyLists`lazyFixedPointList"], False]]], "Output",
- CellLabel->
-  "Out[342]=",ExpressionUUID->"2ebe484b-b834-43b3-9882-e8c28f8c79f6"],
+ CellLabel->"Out[35]=",ExpressionUUID->"7b5508ed-21dd-40eb-88c5-5213191ee47a"],
 
 Cell[BoxData[
  InterpretationBox[
@@ -4016,8 +4008,7 @@ values in list periodically.", "Documentation" -> None, "OwnValues" -> None,
     "SubValues" -> None, "DefaultValues" -> None, "NValues" -> None, 
     "FormatValues" -> None, "Options" -> None, "Attributes" -> {}, "FullName" -> 
     "lazyLists`lazyPeriodicList"], False]]], "Output",
- CellLabel->
-  "Out[343]=",ExpressionUUID->"fb053f7e-943b-46e3-9b76-f18d39b8c15f"],
+ CellLabel->"Out[36]=",ExpressionUUID->"f44de1a9-4c6b-405f-b4be-336d1fae9c66"],
 
 Cell[BoxData[
  InterpretationBox[
@@ -4279,8 +4270,7 @@ reached.", "Documentation" -> None, "OwnValues" -> None, "UpValues" -> None,
     "SubValues" -> None, "DefaultValues" -> None, "NValues" -> None, 
     "FormatValues" -> None, "Options" -> None, "Attributes" -> {}, "FullName" -> 
     "lazyLists`lazyStream"], False]]], "Output",
- CellLabel->
-  "Out[344]=",ExpressionUUID->"ef708eb4-5985-4b09-8b42-0df8b18eea46"],
+ CellLabel->"Out[37]=",ExpressionUUID->"aaa917b5-2e2b-4c04-a734-4f73eba12afe"],
 
 Cell[BoxData[
  InterpretationBox[
@@ -4800,8 +4790,7 @@ n-tuples of integers \[GreaterEqual] 1.", "Documentation" -> None,
     "DefaultValues" -> None, "NValues" -> None, "FormatValues" -> None, 
     "Options" -> {"PartitionSize" -> 10, "Start" -> 1}, "Attributes" -> {}, 
     "FullName" -> "lazyLists`lazyTuples"], False]]], "Output",
- CellLabel->
-  "Out[345]=",ExpressionUUID->"9246505f-be30-4b01-9814-4c57330ce0f9"],
+ CellLabel->"Out[38]=",ExpressionUUID->"ec10782a-9e55-4e84-98b8-0254c62bbdf2"],
 
 Cell[BoxData[
  InterpretationBox[
@@ -5046,7 +5035,7 @@ of copies of elem.\"\>", "InformationUsageText",
     "NValues" -> None, "FormatValues" -> None, "Options" -> None, 
     "Attributes" -> {}, "FullName" -> "lazyLists`lazyConstantArray"], 
    False]]], "Output",
- CellLabel->"Out[346]=",ExpressionUUID->"c7ef08da-c3fb-4256-8c28-169b8a7a707f"]
+ CellLabel->"Out[39]=",ExpressionUUID->"6f50c561-0208-493c-97d2-c6e786fbd123"]
 }, Open  ]]
 }, Open  ]],
 
