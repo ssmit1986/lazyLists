@@ -4,14 +4,13 @@
 
 Paclet[
     Name -> "lazyLists",
-    Version -> "1",
+    Version -> "1.0",
     MathematicaVersion -> "11.3+",
     Description -> "Mathematica implementation of Haskell-style lazy lists.",
     Creator -> "Sjoerd Smit",
-    Extensions -> 
-        {
-            {"Documentation", Language -> "English"}
-        }
+    Extensions -> {
+            {"Kernel", Root -> "Kernel", Context -> "lazyLists`"}
+    }
 ]
 
 

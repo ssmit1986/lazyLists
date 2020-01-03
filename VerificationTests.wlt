@@ -3,7 +3,7 @@ BeginTestSection["VerificationTests"]
 BeginTestSection["Initialisation"]
 
 VerificationTest[(* 1 *)
-	CompoundExpression[Set[$HistoryLength, 10], With[List[Set[dir, If[Quiet[TrueQ[FileExistsQ[$TestFileName]]], DirectoryName[$TestFileName], NotebookDirectory[]]]], SetDirectory[dir]], Quiet[Get["lazyLists`"]], ClearAll["Global`*"], "Done"]
+	CompoundExpression[Set[$HistoryLength, 10], With[List[Set[dir, If[Quiet[TrueQ[FileExistsQ[$TestFileName]]], DirectoryName[$TestFileName], NotebookDirectory[]]]], PacletDirectoryAdd[dir]], Quiet[Get["lazyLists`"]], ClearAll["Global`*"], "Done"]
 	,
 	"Done"	
 	,
@@ -1509,7 +1509,7 @@ BeginTestSection["lazyMapThread, lazyTranspose"]
 VerificationTest[(* 177 *)
 	First[Take[lazyMapThread[f, List[lazyRange[], lazyRange[2, 2]]], 5]]
 	,
-	List[f[List[1, 2]], f[List[2, 4]], f[List[3, 6]], f[List[4, 8]], f[List[5, 10]]]	
+	List[f[1, 2], f[2, 4], f[3, 6], f[4, 8], f[5, 10]]	
 	,
 	TestID->"713e38e1-53ae-455a-bbf8-0bbc02d45524"
 ]
@@ -1525,7 +1525,7 @@ VerificationTest[(* 178 *)
 VerificationTest[(* 179 *)
 	First[Take[lazyMapThread[f, List[lazyRange[], Range[5]]], All]]
 	,
-	List[f[List[1, 1]], f[List[2, 2]], f[List[3, 3]], f[List[4, 4]], f[List[5, 5]]]	
+	List[f[1, 1], f[2, 2], f[3, 3], f[4, 4], f[5, 5]]	
 	,
 	TestID->"32188d20-9d34-4122-bf92-06bb3cf26702"
 ]
@@ -1555,7 +1555,7 @@ VerificationTest[(* 182 *)
 ]
 
 VerificationTest[(* 183 *)
-	First[Take[lazyMapThread[Identity, List[lazyRange[], lazyRange[start]]], 5]]
+	First[Take[lazyMapThread[List, List[lazyRange[], lazyRange[start]]], 5]]
 	,
 	List[List[1, start], List[2, Plus[1, start]], List[3, Plus[2, start]], List[4, Plus[3, start]], List[5, Plus[4, start]]]	
 	,

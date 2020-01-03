@@ -225,11 +225,11 @@ lazyMapThread[f_, lists : {___, _List, ___}] := lazyMapThread[
 ]
 
 lazyMapThread[f_, lists : {validLazyListPattern..}] := lazyList[
-    f[lists[[All, 1]]],
+    f @@ lists[[All, 1]],
     lazyMapThread[f, lists[[All, 2]]]
 ];
 
-lazyTranspose[list : {(_lazyList | _List)..}] := lazyMapThread[Identity, list];
+lazyTranspose[list : {(_lazyList | _List)..}] := lazyMapThread[List, list];
 
 
 End[]
