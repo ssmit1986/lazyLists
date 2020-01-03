@@ -3,7 +3,7 @@ BeginTestSection["VerificationTests"]
 BeginTestSection["Initialisation"]
 
 VerificationTest[(* 1 *)
-	CompoundExpression[Set[$HistoryLength, 10], With[List[Set[dir, If[Quiet[TrueQ[FileExistsQ[$TestFileName]]], DirectoryName[$TestFileName], NotebookDirectory[]]]], SetDirectory[dir]], Quiet[Get["lazyLists`"]], ClearAll["Global`*"], "Done"]
+	CompoundExpression[Set[$HistoryLength, 10], With[List[Set[dir, If[Quiet[TrueQ[FileExistsQ[$TestFileName]]], DirectoryName[$TestFileName], NotebookDirectory[]]]], PacletDirectoryAdd[dir]], Quiet[Get["lazyLists`"]], ClearAll["Global`*"], "Done"]
 	,
 	"Done"	
 	,
