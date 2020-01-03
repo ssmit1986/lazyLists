@@ -9,8 +9,6 @@ Paclet[
     Description -> "Mathematica implementation of Haskell-style lazy lists.",
     Creator -> "Sjoerd Smit",
     Extensions -> {
-            {"Kernel", Root -> "Kernel", Context -> "lazyLists`"}
+        {"Kernel", Root -> "Kernel", Context -> "lazyLists`"}
     }
 ]
-
-
