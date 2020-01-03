@@ -6,9 +6,8 @@ Cell[BoxData[{
   RowBox[{"PacletDirectoryAdd", "[", 
    RowBox[{"NotebookDirectory", "[", "]"}], "]"}], 
   ";"}], "\[IndentingNewLine]", 
- RowBox[{"<<", 
-  "lazyLists`"}]}], \
-"Input",ExpressionUUID->"2d6a87cf-3ef1-4832-b8b9-0995d6d1b646"],
+ RowBox[{"<<", "lazyLists`"}]}], "Input",
+ CellLabel->"In[1]:=",ExpressionUUID->"2d6a87cf-3ef1-4832-b8b9-0995d6d1b646"],
 
 Cell[CellGroupData[{
 
@@ -1620,10 +1619,10 @@ an ordinary list.", "Documentation" -> None, "OwnValues" -> None, "UpValues" ->
        Pattern[lazyLists`Private`expr, Blank[lazyLists`lazyList] + 
          BlankNullSequence[] + BlankNullSequence[]] :> Thread[
          Unevaluated[lazyLists`Private`expr], lazyLists`lazyList], 
-       Pattern[lazyLists`Private`expr, BlankNullSequence[] 
-         BlankNullSequence[] lazyLists`lazyList[]] :> lazyLists`lazyList[], 
-       Pattern[lazyLists`Private`expr, Blank[lazyLists`lazyList] 
-         BlankNullSequence[] BlankNullSequence[]] :> Thread[
+       Pattern[lazyLists`Private`expr, (BlankNullSequence[] 
+          BlankNullSequence[]) lazyLists`lazyList[]] :> lazyLists`lazyList[], 
+       Pattern[lazyLists`Private`expr, (Blank[lazyLists`lazyList] 
+          BlankNullSequence[]) BlankNullSequence[]] :> Thread[
          Unevaluated[lazyLists`Private`expr], lazyLists`lazyList], 
        Pattern[lazyLists`Private`expr, 
          Power[
@@ -20018,7 +20017,7 @@ Cell[BoxData[
  RowBox[{"lazyList", "[", "]"}]], "Output",
  CellLabel->"Out[509]=",ExpressionUUID->"bcf20fd4-7974-4422-9dca-96e818d6f7c1"]
 }, Open  ]]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -20375,8 +20374,7 @@ Cell["lazyMapThread", \
 Cell[TextData[{
  StyleBox["lazyMapThread",
   FontWeight->"Bold"],
- " is functionally similar to MapThread, except for efficiency reasons all \
-arguments are fed as a List into the first slot of the mapped function:"
+ " is functionally similar to MapThread:"
 }], "Text",ExpressionUUID->"edc0cb50-690c-4cee-b084-17a3472acd11"],
 
 Cell[CellGroupData[{
@@ -20393,28 +20391,22 @@ Cell[BoxData[
         RowBox[{"lazyRange", "[", 
          RowBox[{"2", ",", "2"}], "]"}]}], "}"}]}], "]"}], ",", 
     "\[IndentingNewLine]", "5"}], "\[IndentingNewLine]", "]"}]}]], "Input",
- CellLabel->
-  "In[521]:=",ExpressionUUID->"2f643a7b-e0c1-44f8-bfc1-340a161a0d8a"],
+ CellLabel->"In[22]:=",ExpressionUUID->"2f643a7b-e0c1-44f8-bfc1-340a161a0d8a"],
 
 Cell[BoxData[
  RowBox[{"{", 
   RowBox[{
    RowBox[{"f", "[", 
-    RowBox[{"{", 
-     RowBox[{"1", ",", "2"}], "}"}], "]"}], ",", 
+    RowBox[{"1", ",", "2"}], "]"}], ",", 
    RowBox[{"f", "[", 
-    RowBox[{"{", 
-     RowBox[{"2", ",", "4"}], "}"}], "]"}], ",", 
+    RowBox[{"2", ",", "4"}], "]"}], ",", 
    RowBox[{"f", "[", 
-    RowBox[{"{", 
-     RowBox[{"3", ",", "6"}], "}"}], "]"}], ",", 
+    RowBox[{"3", ",", "6"}], "]"}], ",", 
    RowBox[{"f", "[", 
-    RowBox[{"{", 
-     RowBox[{"4", ",", "8"}], "}"}], "]"}], ",", 
+    RowBox[{"4", ",", "8"}], "]"}], ",", 
    RowBox[{"f", "[", 
-    RowBox[{"{", 
-     RowBox[{"5", ",", "10"}], "}"}], "]"}]}], "}"}]], "Output",
- CellLabel->"Out[521]=",ExpressionUUID->"7af482d7-b167-4955-9980-3fd3f1766503"]
+    RowBox[{"5", ",", "10"}], "]"}]}], "}"}]], "Output",
+ CellLabel->"Out[22]=",ExpressionUUID->"0c94396f-41d3-414a-8e89-c3952dcccfec"]
 }, Open  ]],
 
 Cell["Compare with regular MapThread:", \
@@ -20430,8 +20422,7 @@ Cell[BoxData[
      RowBox[{"Range", "[", "5", "]"}], ",", 
      RowBox[{"2", 
       RowBox[{"Range", "[", "5", "]"}]}]}], "}"}]}], "]"}]], "Input",
- CellLabel->
-  "In[522]:=",ExpressionUUID->"3bbfeee5-cbb7-4e4d-8186-0d37f0b22777"],
+ CellLabel->"In[5]:=",ExpressionUUID->"3bbfeee5-cbb7-4e4d-8186-0d37f0b22777"],
 
 Cell[BoxData[
  RowBox[{"{", 
@@ -20446,7 +20437,7 @@ Cell[BoxData[
     RowBox[{"4", ",", "8"}], "]"}], ",", 
    RowBox[{"f", "[", 
     RowBox[{"5", ",", "10"}], "]"}]}], "}"}]], "Output",
- CellLabel->"Out[522]=",ExpressionUUID->"ac7c28bb-dd15-4044-8607-0a2169896914"]
+ CellLabel->"Out[5]=",ExpressionUUID->"43066e40-e63f-49a6-a7f8-0b9525cbb29c"]
 }, Open  ]],
 
 Cell["Normal lists are cast into lazyLists:", \
@@ -20465,35 +20456,29 @@ Cell[BoxData[
         RowBox[{"lazyRange", "[", "]"}], ",", 
         RowBox[{"Range", "[", "5", "]"}]}], "}"}]}], "]"}], ",", 
     "\[IndentingNewLine]", "All"}], "\[IndentingNewLine]", "]"}]}]], "Input",
- CellLabel->
-  "In[523]:=",ExpressionUUID->"455fa1d3-c1b1-4389-a06c-4ccf905f7260"],
+ CellLabel->"In[6]:=",ExpressionUUID->"455fa1d3-c1b1-4389-a06c-4ccf905f7260"],
 
 Cell[BoxData[
  RowBox[{"{", 
   RowBox[{
    RowBox[{"f", "[", 
-    RowBox[{"{", 
-     RowBox[{"1", ",", "1"}], "}"}], "]"}], ",", 
+    RowBox[{"1", ",", "1"}], "]"}], ",", 
    RowBox[{"f", "[", 
-    RowBox[{"{", 
-     RowBox[{"2", ",", "2"}], "}"}], "]"}], ",", 
+    RowBox[{"2", ",", "2"}], "]"}], ",", 
    RowBox[{"f", "[", 
-    RowBox[{"{", 
-     RowBox[{"3", ",", "3"}], "}"}], "]"}], ",", 
+    RowBox[{"3", ",", "3"}], "]"}], ",", 
    RowBox[{"f", "[", 
-    RowBox[{"{", 
-     RowBox[{"4", ",", "4"}], "}"}], "]"}], ",", 
+    RowBox[{"4", ",", "4"}], "]"}], ",", 
    RowBox[{"f", "[", 
-    RowBox[{"{", 
-     RowBox[{"5", ",", "5"}], "}"}], "]"}]}], "}"}]], "Output",
- CellLabel->"Out[523]=",ExpressionUUID->"43d48c30-4c15-4b35-8fd9-38542aa4e04b"]
+    RowBox[{"5", ",", "5"}], "]"}]}], "}"}]], "Output",
+ CellLabel->"Out[6]=",ExpressionUUID->"24eaa9b2-d3fe-44a1-a3d2-335aa3c776ad"]
 }, Open  ]],
 
 Cell["\<\
 lazyMapThread with partitionedLazyLists works like normal MapThread. All \
-lists must be partitionedLazyLists, but they are allowed to have different \
-partition lengths (note that the shorter partitions will be expanded to match \
-the length of the longest one):\
+lists will be converted to partitionedLazyLists, of the same partition \
+lengths (note that the shorter partitions will be expanded to match the \
+length of the longest one):\
 \>", "Text",ExpressionUUID->"f47cc524-5926-462a-bed0-b3523e673c00"],
 
 Cell[CellGroupData[{
@@ -20513,36 +20498,36 @@ Cell[BoxData[
         RowBox[{"partitionedLazyRange", "[", "4", "]"}], ",", 
         "\[IndentingNewLine]", 
         RowBox[{"partitionedLazyRange", "[", 
-         RowBox[{"2", ",", "2", ",", "6"}], "]"}]}], "\[IndentingNewLine]", 
-       "}"}]}], "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
-    "10"}], "\[IndentingNewLine]", "]"}]}]], "Input",
- CellLabel->
-  "In[524]:=",ExpressionUUID->"446ba979-f8d1-48cf-bba1-979672805b53"],
+         RowBox[{"2", ",", "2", ",", "6"}], "]"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"lazyRange", "[", "]"}]}], "\[IndentingNewLine]", "}"}]}], 
+     "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", "10"}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellLabel->"In[27]:=",ExpressionUUID->"446ba979-f8d1-48cf-bba1-979672805b53"],
 
 Cell[BoxData[
  RowBox[{"{", 
   RowBox[{
    RowBox[{"f", "[", 
-    RowBox[{"1", ",", "1", ",", "2"}], "]"}], ",", 
+    RowBox[{"1", ",", "1", ",", "2", ",", "1"}], "]"}], ",", 
    RowBox[{"f", "[", 
-    RowBox[{"1", ",", "2", ",", "4"}], "]"}], ",", 
+    RowBox[{"1", ",", "2", ",", "4", ",", "2"}], "]"}], ",", 
    RowBox[{"f", "[", 
-    RowBox[{"2", ",", "3", ",", "6"}], "]"}], ",", 
+    RowBox[{"2", ",", "3", ",", "6", ",", "3"}], "]"}], ",", 
    RowBox[{"f", "[", 
-    RowBox[{"1", ",", "4", ",", "8"}], "]"}], ",", 
+    RowBox[{"1", ",", "4", ",", "8", ",", "4"}], "]"}], ",", 
    RowBox[{"f", "[", 
-    RowBox[{"2", ",", "5", ",", "10"}], "]"}], ",", 
+    RowBox[{"2", ",", "5", ",", "10", ",", "5"}], "]"}], ",", 
    RowBox[{"f", "[", 
-    RowBox[{"3", ",", "6", ",", "12"}], "]"}], ",", 
+    RowBox[{"3", ",", "6", ",", "12", ",", "6"}], "]"}], ",", 
    RowBox[{"f", "[", 
-    RowBox[{"1", ",", "7", ",", "14"}], "]"}], ",", 
+    RowBox[{"1", ",", "7", ",", "14", ",", "7"}], "]"}], ",", 
    RowBox[{"f", "[", 
-    RowBox[{"2", ",", "8", ",", "16"}], "]"}], ",", 
+    RowBox[{"2", ",", "8", ",", "16", ",", "8"}], "]"}], ",", 
    RowBox[{"f", "[", 
-    RowBox[{"3", ",", "9", ",", "18"}], "]"}], ",", 
+    RowBox[{"3", ",", "9", ",", "18", ",", "9"}], "]"}], ",", 
    RowBox[{"f", "[", 
-    RowBox[{"4", ",", "10", ",", "20"}], "]"}]}], "}"}]], "Output",
- CellLabel->"Out[524]=",ExpressionUUID->"9dd507b2-ec9a-420a-a618-dedc7c8a2c9d"]
+    RowBox[{"4", ",", "10", ",", "20", ",", "10"}], "]"}]}], "}"}]], "Output",
+ CellLabel->"Out[27]=",ExpressionUUID->"e871385a-a5c1-4250-a9be-5d8f20387323"]
 }, Open  ]],
 
 Cell["\<\
@@ -20559,8 +20544,7 @@ Cell[BoxData[
     RowBox[{
      RowBox[{"partitionedLazyRange", "[", "3", "]"}], ",", 
      RowBox[{"lazyRange", "[", "]"}]}], "}"}]}], "]"}]], "Input",
- CellLabel->
-  "In[525]:=",ExpressionUUID->"1384792d-be85-4112-b897-96a98ce846a6"],
+ CellLabel->"In[28]:=",ExpressionUUID->"1384792d-be85-4112-b897-96a98ce846a6"],
 
 Cell[BoxData[
  RowBox[{"partitionedLazyList", "[", 
@@ -20614,7 +20598,7 @@ Cell[BoxData[
             RowBox[{
              RowBox[{"1", "+", "6"}], ",", "1"}], "]"}], ",", "3"}], "]"}]}], 
         "]"}]}], "}"}]}], "]"}]}], "]"}]], "Output",
- CellLabel->"Out[525]=",ExpressionUUID->"94d05da5-0e8e-4589-b08f-e551592fe8f4"]
+ CellLabel->"Out[28]=",ExpressionUUID->"45501061-a19e-4459-94ea-986ced5638d3"]
 }, Open  ]],
 
 Cell[TextData[{
@@ -20627,18 +20611,10 @@ Cell[TextData[{
    StyleBox[
     RowBox[{
      RowBox[{"lazyMapThread", "[", 
-      RowBox[{"Identity", ",", " ", "..."}], "]"}], " "}],
+      RowBox[{"List", ",", " ", "..."}], "]"}], " "}],
     FontWeight->"Bold"], TraditionalForm]],ExpressionUUID->
   "dce155cb-519c-4e39-b3c5-3fa4b0ca1fb6"],
- "for lazyLists and ",
- Cell[BoxData[
-  FormBox[
-   StyleBox[
-    RowBox[{"lazyMapThread", "[", 
-     RowBox[{"List", ",", " ", "..."}], "]"}],
-    FontWeight->"Bold"], TraditionalForm]],ExpressionUUID->
-  "3b6d5403-26d0-40b2-ac40-39a808e2d3b7"],
- " for partitionedLazyLists:"
+ ":"
 }], "Text",ExpressionUUID->"2529bce4-fac5-4af3-b60a-f2953a6e1f51"],
 
 Cell[CellGroupData[{
@@ -21200,7 +21176,7 @@ Cell[BoxData[{
   ";"}], "\[IndentingNewLine]", 
  RowBox[{"Length", "/@", 
   RowBox[{"testReport", "[", "\"\<TestResultRules\>\"", "]"}]}]}], "Input",
- CellLabel->"In[47]:=",ExpressionUUID->"e671f9bb-d62b-46e6-95a8-e4e014fff349"],
+ CellLabel->"In[20]:=",ExpressionUUID->"e671f9bb-d62b-46e6-95a8-e4e014fff349"],
 
 Cell[BoxData[
  RowBox[{"\[LeftAssociation]", 
@@ -21210,7 +21186,7 @@ Cell[BoxData[
    RowBox[{"\<\"TestsFailedWithMessages\"\>", "\[Rule]", "0"}], ",", 
    RowBox[{"\<\"TestsFailedWithErrors\"\>", "\[Rule]", "0"}]}], 
   "\[RightAssociation]"}]], "Output",
- CellLabel->"Out[48]=",ExpressionUUID->"5cb88dc8-7055-46c5-96ab-99426f7d10ee"]
+ CellLabel->"Out[21]=",ExpressionUUID->"094b9dc1-79de-4c03-a7c9-340031a85e71"]
 }, Open  ]]
 }, Closed]]
 },

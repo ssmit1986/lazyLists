@@ -21,7 +21,7 @@ lazyStream::usage = "lazyStream[streamObject] creates a lazyList that streams fr
 
 lazyConstantArray::usage = "lazyConstantArray[elem] produces an infinite list of copies of elem.";
 
-lazyMapThread::usage = "lazyMapThread[f, {lz1, lz2, ...}] is similar to MapThread, except all elements from the lazyLists are fed to the first slot of f as a regular List.";
+lazyMapThread::usage = "lazyMapThread[f, {lz1, lz2, ...}] is the lazy equivalent to MapThread. Mixing lazy lists and normal lists is allowed.";
 
 lazyTranspose::usage = "lazyTranspose[{lz1, lz2, ...}] creates a lazyList with tuples of elements from lz1, lz2, etc. 
 Equivalent to lazyMapThread[Identity, {lz1, lz2, ...}]";
