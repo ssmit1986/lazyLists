@@ -1,5 +1,3 @@
-(* Wolfram Language Init File *)
-
 ClearAll["lazyLists`*", "lazyLists`Private`*"];
 
 Get["lazyLists`UsageMessages`"];
