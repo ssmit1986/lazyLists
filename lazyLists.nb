@@ -21188,6 +21188,21 @@ Cell[BoxData[
   "\[RightAssociation]"}]], "Output",
  CellLabel->"Out[21]=",ExpressionUUID->"094b9dc1-79de-4c03-a7c9-340031a85e71"]
 }, Open  ]]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell[TextData[StyleBox["Re-building the paclet", "Section"]], \
+"Title",ExpressionUUID->"28c3538b-db04-4b32-b524-c3a53902e72a"],
+
+Cell[BoxData[
+ RowBox[{"PackPaclet", "[", 
+  RowBox[{"FileNameJoin", "[", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"NotebookDirectory", "[", "]"}], ",", "\"\<lazyLists\>\""}], 
+    "}"}], "]"}], "]"}]], "Input",
+ CellLabel->"In[30]:=",ExpressionUUID->"55db7a2d-4d4a-413f-ae5a-bc32c25ae622"]
 }, Closed]]
 },
 WindowSize->{1181, 839},
