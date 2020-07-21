@@ -3,11 +3,11 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"$HistoryLength", "=", "10"}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
-  RowBox[{"PacletDirectoryAdd", "[", 
+  RowBox[{"PacletDirectoryLoad", "[", 
    RowBox[{"NotebookDirectory", "[", "]"}], "]"}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{"<<", "lazyLists`"}]}], "Input",
- CellLabel->"In[1]:=",ExpressionUUID->"2d6a87cf-3ef1-4832-b8b9-0995d6d1b646"],
+ CellLabel->"In[14]:=",ExpressionUUID->"2d6a87cf-3ef1-4832-b8b9-0995d6d1b646"],
 
 Cell[CellGroupData[{
 
@@ -1501,11 +1501,11 @@ that generates a lazyList from an ordinary list.\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {3., 10.}}], True->
+               ImageSizeCache->{13., {4., 9.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {3., 10.}}]}, Dynamic[
+               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -2485,11 +2485,11 @@ allowed.\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {3., 10.}}], True->
+               ImageSizeCache->{13., {4., 9.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {3., 10.}}]}, Dynamic[
+               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -2819,11 +2819,11 @@ is generally slightly faster than lazyGenerator.\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {3., 10.}}], True->
+               ImageSizeCache->{13., {4., 9.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {3., 10.}}]}, Dynamic[
+               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -3099,11 +3099,11 @@ Cell[BoxData[
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {3., 10.}}], True->
+               ImageSizeCache->{13., {4., 9.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {3., 10.}}]}, Dynamic[
+               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -3363,11 +3363,11 @@ repeatedly.\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {3., 10.}}], True->
+               ImageSizeCache->{13., {4., 9.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {3., 10.}}]}, Dynamic[
+               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -3645,11 +3645,11 @@ elem until the result not longer changes according to sameTest.\"\>",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {3., 10.}}], True->
+               ImageSizeCache->{13., {4., 9.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {3., 10.}}]}, Dynamic[
+               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -3934,11 +3934,11 @@ cycles through the values in list periodically.\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {3., 10.}}], True->
+               ImageSizeCache->{13., {4., 9.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {3., 10.}}]}, Dynamic[
+               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -4208,11 +4208,11 @@ EndOfFile is reached.\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {3., 10.}}], True->
+               ImageSizeCache->{13., {4., 9.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {3., 10.}}]}, Dynamic[
+               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -4642,11 +4642,11 @@ list of all n-tuples of integers \[GreaterEqual] 1.\"\>",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {3., 10.}}], True->
+               ImageSizeCache->{13., {4., 9.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {3., 10.}}]}, Dynamic[
+               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -4977,11 +4977,11 @@ of copies of elem.\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {3., 10.}}], True->
+               ImageSizeCache->{13., {4., 9.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {3., 10.}}]}, Dynamic[
+               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -5271,11 +5271,11 @@ lazyList element-by-element. \\nIt is equivalent to Take[list, spec]\"\>",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {3., 10.}}], True->
+               ImageSizeCache->{13., {4., 9.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {3., 10.}}]}, Dynamic[
+               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -5563,11 +5563,11 @@ lazyList element-by-element. \\nIt is equivalent to Part[list, i, j, k, \
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {3., 10.}}], True->
+               ImageSizeCache->{13., {4., 9.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {3., 10.}}]}, Dynamic[
+               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -6029,11 +6029,11 @@ lazyNestList are supported.\\nMaps over supported lists are also supported.\"\
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {3., 10.}}], True->
+               ImageSizeCache->{13., {4., 9.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {3., 10.}}]}, Dynamic[
+               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -6610,11 +6610,11 @@ lazyLists of lists and lazyLists of lazyLists into one lazyList.\"\>",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {3., 10.}}], True->
+               ImageSizeCache->{13., {4., 9.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {3., 10.}}]}, Dynamic[
+               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -6987,11 +6987,11 @@ lz was originally.\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {3., 10.}}], True->
+               ImageSizeCache->{13., {4., 9.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {3., 10.}}]}, Dynamic[
+               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -7260,11 +7260,11 @@ lz was originally.\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {3., 10.}}], True->
+               ImageSizeCache->{13., {4., 9.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {3., 10.}}]}, Dynamic[
+               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -7611,11 +7611,11 @@ act first.\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {3., 10.}}], True->
+               ImageSizeCache->{13., {4., 9.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {3., 10.}}]}, Dynamic[
+               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -8070,11 +8070,11 @@ of f as a regular List.\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {3., 10.}}], True->
+               ImageSizeCache->{13., {4., 9.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {3., 10.}}]}, Dynamic[
+               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -8407,11 +8407,11 @@ lazyMapThread[Identity, {lz1, lz2, ...}]\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {3., 10.}}], True->
+               ImageSizeCache->{13., {4., 9.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {3., 10.}}]}, Dynamic[
+               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -8562,8 +8562,8 @@ Map[Part[l, {#}]&, {i, j, k, ...}] but faster.\"\>", "InformationUsageText",
                     RowBox[{"{", "#2", "}"}], "\[RightDoubleBracket]"}], 
                     "&"}], ",", 
                     RowBox[{"lazyLists`Private`l", "\[LeftDoubleBracket]", 
-                    RowBox[{
-                    "lazyLists`Private`sortedIndices", "\[LeftDoubleBracket]", 
+                    RowBox[{"lazyLists`Private`sortedIndices", 
+                    "\[LeftDoubleBracket]", 
                     RowBox[{"{", "1", "}"}], "\[RightDoubleBracket]"}], 
                     "\[RightDoubleBracket]"}], ",", 
                     RowBox[{
@@ -8695,11 +8695,11 @@ Map[Part[l, {#}]&, {i, j, k, ...}] but faster.\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {3., 10.}}], True->
+               ImageSizeCache->{13., {4., 9.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {3., 10.}}]}, Dynamic[
+               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -8711,7 +8711,6 @@ Map[Part[l, {#}]&, {i, j, k, ...}] but faster.\"\>", "InformationUsageText",
              ImageMargins->0,
              ImageSize->Full,
              Method->"Preemptive"],
-            
             EventHandlerTag[{
              "MouseEntered" :> 
               FEPrivate`Set[System`InformationDump`mouseOver$$, True], 
@@ -8997,7 +8996,6 @@ list\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "UpPointerOpener"]], True->
-              
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "UpPointerOpenerHot"]]}, Dynamic[
               System`InformationDump`mouseOver$$]],
@@ -9067,11 +9065,11 @@ list\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {3., 10.}}], True->
+               ImageSizeCache->{13., {4., 9.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {3., 10.}}]}, Dynamic[
+               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -9329,9 +9327,9 @@ FoldList will be automatically applied to the generated lists for efficiency.\
                     RowBox[{"lazyLists`Private`spec", ",", 
                     RowBox[{
                     RowBox[{"{", 
-                    RowBox[{
-                    "lazyLists`Private`m_", ",", "lazyLists`Private`n_", ",", 
-                    "_"}], "}"}], "\[RuleDelayed]", 
+                    RowBox[{"lazyLists`Private`m_", ",", 
+                    "lazyLists`Private`n_", ",", "_"}], "}"}], 
+                    "\[RuleDelayed]", 
                     RowBox[{"{", 
                     RowBox[{
                     "lazyLists`Private`m", ",", "lazyLists`Private`n"}], 
@@ -10882,11 +10880,11 @@ FoldList will be automatically applied to the generated lists for efficiency.\
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {3., 10.}}], True->
+               ImageSizeCache->{13., {4., 9.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {3., 10.}}]}, Dynamic[
+               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -11870,11 +11868,11 @@ natural numbers in chuncks of length partitionLength.\"\>",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {3., 10.}}], True->
+               ImageSizeCache->{13., {4., 9.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {3., 10.}}]}, Dynamic[
+               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -12019,8 +12017,9 @@ with NestList.\"\>", "InformationUsageText",
                     RowBox[{
                     RowBox[{"{", 
                     RowBox[{"lazyLists`Private`last", "=", 
-                    RowBox[{"Last", "[", "lazyLists`Private`nestList", 
-                    "]"}]}], "}"}], ",", 
+                    RowBox[{
+                    "Last", "[", "lazyLists`Private`nestList", "]"}]}], "}"}],
+                     ",", 
                     RowBox[{"partitionedLazyList", "[", 
                     RowBox[{"lazyLists`Private`nestList", ",", 
                     RowBox[{"#0", "[", 
@@ -12154,11 +12153,11 @@ with NestList.\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {3., 10.}}], True->
+               ImageSizeCache->{13., {4., 9.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {3., 10.}}]}, Dynamic[
+               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -12571,11 +12570,11 @@ lazyList into a partitioned lazyList with chunks of length n.\"\>",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {3., 10.}}], True->
+               ImageSizeCache->{13., {4., 9.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {3., 10.}}]}, Dynamic[
+               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -13017,11 +13016,11 @@ partitionedLazyLists.\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {3., 10.}}], True->
+               ImageSizeCache->{13., {4., 9.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {3., 10.}}]}, Dynamic[
+               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -13314,11 +13313,11 @@ elements in a lazy list.\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {3., 10.}}], True->
+               ImageSizeCache->{13., {4., 9.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {3., 10.}}]}, Dynamic[
+               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -13651,11 +13650,10 @@ Tuples[lists]\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {3., 10.}}], True->
-              
+               ImageSizeCache->{13., {4., 9.}}], True->
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {3., 10.}}]}, Dynamic[
+               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -13936,11 +13934,11 @@ CompiledFunction that directly generates elements of Tuples[Range /@ Length \
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {3., 10.}}], True->
+               ImageSizeCache->{13., {4., 9.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {3., 10.}}]}, Dynamic[
+               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -14273,11 +14271,11 @@ next integer tuple in a canonical order.\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {3., 10.}}], True->
+               ImageSizeCache->{13., {4., 9.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {3., 10.}}]}, Dynamic[
+               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -16720,7 +16718,8 @@ Cell[BoxData[
           "SummaryHead"], "[", 
          DynamicModuleBox[{Typeset`open$$ = False, Typeset`embedState$$ = 
           "Ready"}, 
-          TemplateBox[{PaneSelectorBox[{False -> GridBox[{{
+          TemplateBox[{
+            PaneSelectorBox[{False -> GridBox[{{
                   PaneBox[
                    ButtonBox[
                     DynamicBox[
@@ -17684,7 +17683,8 @@ Cell[BoxData[
           "SummaryHead"], "[", 
          DynamicModuleBox[{Typeset`open$$ = False, Typeset`embedState$$ = 
           "Ready"}, 
-          TemplateBox[{PaneSelectorBox[{False -> GridBox[{{
+          TemplateBox[{
+            PaneSelectorBox[{False -> GridBox[{{
                   PaneBox[
                    ButtonBox[
                     DynamicBox[
@@ -18601,7 +18601,8 @@ Cell[BoxData[
    TagBox["CompiledFunction",
     "SummaryHead"], "[", 
    DynamicModuleBox[{Typeset`open$$ = False, Typeset`embedState$$ = "Ready"}, 
-    TemplateBox[{PaneSelectorBox[{False -> GridBox[{{
+    TemplateBox[{
+      PaneSelectorBox[{False -> GridBox[{{
             PaneBox[
              ButtonBox[
               DynamicBox[
@@ -21211,7 +21212,8 @@ PrivateNotebookOptions->{"FileOutlineCache"->False},
 ShowGroupOpener->True,
 TrackCellChangeTimes->False,
 Magnification:>1.3 Inherited,
-FrontEndVersion->"12.0 for Microsoft Windows (64-bit) (April 8, 2019)",
-StyleDefinitions->"Default.nb"
+FrontEndVersion->"12.1 for Microsoft Windows (64-bit) (June 9, 2020)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"51e48de9-5997-45d0-8e87-672898f8f3a2"
 ]
 
