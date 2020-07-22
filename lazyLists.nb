@@ -14427,7 +14427,7 @@ Cell[TextData[{
      RowBox[{"start", ",", " ", "step"}], "]"}],
     FontWeight->"Bold"], TraditionalForm]],ExpressionUUID->
   "995a7677-cbcb-4c20-957f-a733d117f3e4"],
- " are the basic constructor for equally-space infinite lazyLists. Both \
+ " are the basic constructor for equally-spaced infinite lazyLists. Both \
 arguments of lazyRange default to 1 when omitted. Thus,",
  Cell[BoxData[
   FormBox[
