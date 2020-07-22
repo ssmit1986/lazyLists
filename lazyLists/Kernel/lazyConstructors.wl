@@ -232,7 +232,7 @@ lazyMapThread[f_, lists : {validLazyListPattern..}] := lazyList[
 lazyTranspose[list : {(_lazyList | _List)..}] := lazyMapThread[List, list];
 
 lazyTruncate[lz : (validLazyListPattern | validPartitionedLazyListPattern), int_Integer?Positive] := MapIndexed[
-    Function[If[#2 <= int, #1, endOfLazyList]],
+    Function[If[#2 <= int, #1, endOfLazyList, endOfLazyList]],
     lz
 ];
 
