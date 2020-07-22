@@ -440,6 +440,15 @@ partitionedLazyList /: Part[lz : validPartitionedLazyListPattern, indices : {_In
     "part"
 ];
 
+partitionedLazyList /: TakeDrop[lz : validPartitionedLazyListPattern, args__] := With[{
+    newLz = Take[lz, args]
+},
+    {
+        Most[newLz],
+        Last[newLz]
+    } /; MatchQ[newLz, validPartitionedLazyListPattern]
+];
+
 (* 
     The function specification {fun, Listable} signals that fun is listable and should be applied directly to the list. 
     Note that it's up to the user to ensure that fun is actually listable

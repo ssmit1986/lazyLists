@@ -1,6 +1,6 @@
 # lazyLists package for Wolfram Language
 
-Implements Haskell-style lazy lists in Mathematica and adds syntactic sugar to various build-in functions to work with them. Current implementation uses ReplaceRepeated because that was found to be the most computationally efficient.
+Implements Haskell-style lazy lists in Mathematica and adds syntactic sugar to various build-in functions to work with them. Lazylists make it possible to iterate through large amounts of data without holding it all in memory at once and even allow for potentially infinite lists (e.g., the list of all integers) to be used in computations.
 
 ## Installation instructions
 
@@ -70,3 +70,4 @@ See lazyLists.nb for details and examples.
 * 22 July 2020
     * Add function `lazyTruncate` to cut long/infinite lazyLists short (without having to evaluate them fully).
     * Add support for held lists to `lazyMapThread`, `lazyTranspose` and `lazyCatenate`.
+    * Add support for `TakeDrop`.
