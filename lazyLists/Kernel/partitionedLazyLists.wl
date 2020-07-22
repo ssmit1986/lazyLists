@@ -466,7 +466,7 @@ partitionedLazyList /: MapIndexed[fun_, partitionedLazyList[first_, tail_], inde
     length = Length[first]
 },
     partitionedLazyList[
-        MapThread[fun, {first, Range[length] + index - 1}],
+        MapThread[fun, {first, Range[index, index + length - 1]}],
         MapIndexed[fun, tail, index + length]
     ]
 ];

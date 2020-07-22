@@ -1493,17 +1493,17 @@ VerificationTest[(* 176 *)
 ]
 
 VerificationTest[(* 177 *)
-	MapIndexed[Function[List[Slot[1], Slot[2]]], lazyRange[2, 2]]
+	First[Take[MapIndexed[Function[List[Slot[1], Slot[2]]], lazyRange[2, 2]], 10]]
 	,
-	lazyList[List[2, 1], MapIndexed[Function[List[Slot[1], Slot[2]]], Function[lazyList[Slot[1], Slot[0][Plus[Slot[2], Slot[1]], Slot[2]]]][Plus[2, 2], 2], Plus[1, 1]]]	
+	List[List[2, 1], List[4, 2], List[6, 3], List[8, 4], List[10, 5], List[12, 6], List[14, 7], List[16, 8], List[18, 9], List[20, 10]]	
 	,
 	TestID->"c92d00e7-e6d1-47aa-a5f1-df872503201e"
 ]
 
 VerificationTest[(* 178 *)
-	MapIndexed[Function[List[Slot[1], Slot[2]]], partitionedLazyRange[10, 2, 5]]
+	Most[Take[MapIndexed[Function[List[Slot[1], Slot[2]]], partitionedLazyRange[10, 2, 5]], 20]]
 	,
-	partitionedLazyList[List[List[10, 1], List[12, 2], List[14, 3], List[16, 4], List[18, 5]], MapIndexed[Function[List[Slot[1], Slot[2]]], partitionedLazyList[Function[lazyList[Slot[1], Slot[0][Plus[Slot[2], Slot[1]], Slot[2]]]][Plus[10, List[10, 12, 14, 16, 18]], 10]], Plus[1, 5]]]	
+	List[List[10, 1], List[12, 2], List[14, 3], List[16, 4], List[18, 5], List[20, 6], List[22, 7], List[24, 8], List[26, 9], List[28, 10], List[30, 11], List[32, 12], List[34, 13], List[36, 14], List[38, 15], List[40, 16], List[42, 17], List[44, 18], List[46, 19], List[48, 20]]	
 	,
 	TestID->"940191b2-9c52-43c6-80e9-ca109bcf4440"
 ]
