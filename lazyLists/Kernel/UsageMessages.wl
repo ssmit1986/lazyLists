@@ -84,5 +84,7 @@ repartitionAll::usage = "repartitionAll[{lz1, lz2, ...}] returns the list of laz
 
 composeMappedFunctions::usage = "composeMappedFunctions[lzList] will convert mappings of the form f /@ g /@ ... /@ list with a single map f @* g @* ... /@ list";
 
+lazyTruncate::usage = "lazyTruncate[lzList, int] truncates a (possibly infinite) lazyList to finite length.";
+
 EndPackage[]
 

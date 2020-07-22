@@ -23,10 +23,12 @@ lazyFiniteTake[lz : lzPattern, _] := (Message[lazyList::notFinite, Short[lz]]; $
 
 
 lazyCatenate::invrp = "Argument `1` is not a valid list or lazyList";
-lazyCatenate[{___, arg : Except[_List | _lazyList], ___}]  := (Message[lazyCatenate::invrp, Short[arg]]; $Failed);
+lazyCatenate[{___, arg : Except[_List | lzPattern | heldListPattern], ___}]  := (Message[lazyCatenate::invrp, Short[arg]]; $Failed);
 lazyCatenate[lazyList[arg : Except[_List | _lazyList], _]] := (Message[lazyCatenate::invrp, Short[arg]]; $Failed);
 
-
+lazyTruncate::int = "Argument `1` should be a positive integer";
+lazyTruncate[arg : Except[lzPattern], _] := (Message[lazyTruncate::invrp, Short[arg]]; $Failed);
+lazyTruncate[_, i : Except[_Integer?Positive]] := (Message[lazyTruncate::int, Short[i]]; $Failed);
 
 (* Default failure messages for Take and Part *)
 

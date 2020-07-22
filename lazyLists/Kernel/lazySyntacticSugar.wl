@@ -325,7 +325,14 @@ lazyList /: Select[lazyList[first_, tail_], f_] := Select[tail, f];
 
 listOrLazyListPattern = lazyList | List;
 lazyCatenate[listOrLazyListPattern[]] := lazyList[];
+
 (*Cases where the outer list is List *)
+lazyCatenate[list : {___, heldListPattern, ___}] := lazyCatenate @ Replace[
+    list,
+    l : heldListPattern :> lazyList[l],
+    {1}
+];
+
 lazyCatenate[list : {___, listOrLazyListPattern[], ___}] := lazyCatenate[
     DeleteCases[list, listOrLazyListPattern[]]
 ];
