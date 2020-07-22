@@ -245,6 +245,15 @@ lazyList /: Part[lz : validLazyListPattern, {n_Integer?Positive}] := Replace[
     }
 ];
 
+lazyList /: TakeDrop[lz : validLazyListPattern, args__] := With[{
+    newLz = Take[lz, args]
+},
+    {
+        First[newLz],
+        Rest[newLz]
+    } /; MatchQ[newLz, validLazyListPattern]
+];
+
 lazyList /: Map[f_, lazyList[first_, tail_]] := lazyList[
     f[first],
     Map[f, tail]
