@@ -14,6 +14,7 @@ lzHead = lazyList | partitionedLazyList;
 emptyLazyListQ = Function[# === lazyList[]];
 validLazyListPattern = lazyList[_, _];
 validPartitionedLazyListPattern = partitionedLazyList[_List, _];
+heldListPattern = Hold[_Symbol?ListQ];
 
 $lazyIterationLimit = Infinity;
 
@@ -28,8 +29,8 @@ lazyList[endOfLazyList, ___] := lazyList[]
 Attributes[lazyFiniteList] = {HoldFirst};
 lazyList::noList = "Symbol `1` is not a list";
 
-lazyList[Hold[list_Symbol]] /; ListQ[list] := lazyFiniteList[list, 1];
-lazyList[Hold[list_Symbol]] /; !ListQ[list] := (
+lazyList[Hold[list_Symbol?ListQ]] := lazyFiniteList[list, 1];
+lazyList[Hold[list_Symbol]] := (
     Message[lazyList::noList, HoldForm[list]];
     lazyList[]
 );
@@ -193,8 +194,8 @@ lazyPeriodicListInternal[list_, i_, max_] := lazyList[
     lazyPeriodicListInternal[list, Mod[i + 1, max, 1], max]
 ];
 
-lazyPeriodicList[Hold[list_Symbol] | list_List] := lazyPeriodicListInternal[list, 1, Length[list]];
-lazyPeriodicList[Hold[list_Symbol] | list_List, part_Integer?Positive] := lazyPeriodicListInternal[list, 1, Length[list], part];
+lazyPeriodicList[Hold[list_Symbol?ListQ] | list_List] := lazyPeriodicListInternal[list, 1, Length[list]];
+lazyPeriodicList[Hold[list_Symbol?ListQ] | list_List, part_Integer?Positive] := lazyPeriodicListInternal[list, 1, Length[list], part];
 
 lazySetState[lzHead[_, HoldPattern @ lazyPeriodicListInternal[list_, _, max_, rest___]], index_Integer] := 
     lazyPeriodicListInternal[list, Mod[index  + 1 - UnitStep[index], max, 1], max, rest];
