@@ -216,21 +216,31 @@ lazyPartMap[l_lazyList, indices : {__Integer}] := Module[{
     ]
 ];
 
-lazyMapThread[f_, lists : {___, _List, ___}] := lazyMapThread[
+lazyMapThread[f_, lists : {___, _List | heldListPattern, ___}, opts : OptionsPattern[]] := lazyMapThread[
     f,
     Replace[
         lists,
-        l_List :> lazyList[l],
+        l : (_List | heldListPattern) :> lazyList[l],
         {1}
-    ]
-]
-
-lazyMapThread[f_, lists : {validLazyListPattern..}] := lazyList[
-    f @@ lists[[All, 1]],
-    lazyMapThread[f, lists[[All, 2]]]
+    ],
+    opts
 ];
 
-lazyTranspose[list : {(_lazyList | _List)..}] := lazyMapThread[List, list];
+lazyMapThread[f_, lists : {validLazyListPattern..}, opts : OptionsPattern[]] := lazyList[
+    f @@ lists[[All, 1]],
+    lazyMapThread[f, lists[[All, 2]], opts]
+];
+
+lazyTranspose[lists : {___, _List | heldListPattern, ___}, opts : OptionsPattern[]] := lazyTranspose[
+    Replace[
+        lists,
+        l : (_List | heldListPattern) :> lazyList[l],
+        {1}
+    ],
+    opts
+];
+
+lazyTranspose[list : {validLazyListPattern..}, opts : OptionsPattern[]] := lazyMapThread[List, list, opts];
 
 lazyTruncate[lz : (validLazyListPattern | validPartitionedLazyListPattern), int_Integer?Positive] := MapIndexed[
     Function[If[#2 <= int, #1, endOfLazyList, endOfLazyList]],
