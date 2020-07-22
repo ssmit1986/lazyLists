@@ -6,7 +6,7 @@ Implements Haskell-style lazy lists in Mathematica and adds syntactic sugar to v
 
 1. Clone the repository or download the ZIP and unzip in a directory of choice
 2. You can start using the code by opening the file lazyLists.nb and running the intialisation lines at the top
-3. If, instead, you want to use the code from another notebook, just point the Paclet Manager at the right directory (i.e., the directory of lazyLists.nb) with `PacletDirectoryAdd` to and then run:
+3. If, instead, you want to use the code from another notebook, just point the Paclet Manager at the right directory (i.e., the directory of lazyLists.nb) with `PacletDirectoryLoad` (`PacletDirectoryAdd` in versions <= 12.0) to and then run:
 
     << lazyLists`
 
@@ -67,3 +67,6 @@ See lazyLists.nb for details and examples.
 * 03 January 2020
     * Bring `lazyMapThread` in line with normal `MapThread`.
     * The code files have been restructured to match the specifications of a Wolfram Paclet. A Paclet installer has been added to the repository.
+* 22 July 2020
+    * Add function `lazyTruncate` to cut long/infinite lazyLists short (without having to evaluate them fully).
+    * Add support for held lists to `lazyMapThread`, `lazyTranspose` and `lazyCatenate`.
