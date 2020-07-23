@@ -413,6 +413,76 @@ composeMappedFunctions[lz_partitionedLazyList] := ReplaceRepeated[
     }
 ];
 
+lazyList /: AllTrue[lazyList[], _] := True;
+lazyList /: AnyTrue[lazyList[], _] := False;
+lazyList /: NoneTrue[lazyList[], _] := True;
+
+MapThread[
+    Function[{sym, patt},
+        sym /: AllTrue[lz : patt, f_] := Catch[
+            Map[
+                Function[
+                    If[ !TrueQ[f[#]],
+                        Throw[False, "lzAllTrue"],
+                        Null
+                    ]
+                ],
+                lz
+            ][[-1]];
+            True,
+            "lzAllTrue"
+        ]
+    ],
+    {
+        {lazyList, partitionedLazyList},
+        {validLazyListPattern, validPartitionedLazyListPattern}
+    }
+];
+
+MapThread[
+    Function[{sym, patt},
+        sym /: AnyTrue[lz : patt, f_] := Catch[
+            Map[
+                Function[
+                    If[ TrueQ[f[#]],
+                        Throw[True, "lzAnyTrue"],
+                        Null
+                    ]
+                ],
+                lz
+            ][[-1]];
+            False,
+            "lzAnyTrue"
+        ]
+    ],
+    {
+        {lazyList, partitionedLazyList},
+        {validLazyListPattern, validPartitionedLazyListPattern}
+    }
+];
+
+MapThread[
+    Function[{sym, patt},
+        sym /: NoneTrue[lz : patt, f_] := Catch[
+            Map[
+                Function[
+                    If[ TrueQ[f[#]],
+                        Throw[False, "lzNoneTrue"],
+                        Null
+                    ]
+                ],
+                lz
+            ][[-1]];
+            True,
+            "lzNoneTrue"
+        ]
+    ],
+    {
+        {lazyList, partitionedLazyList},
+        {validLazyListPattern, validPartitionedLazyListPattern}
+    }
+];
+
 (*
 (* TODO: Implement *)
 Scan[
