@@ -443,10 +443,19 @@ partitionedLazyList /: Part[lz : validPartitionedLazyListPattern, indices : {_In
 partitionedLazyList /: TakeDrop[lz : validPartitionedLazyListPattern, args__] := With[{
     newLz = Take[lz, args]
 },
-    {
-        Most[newLz],
-        Last[newLz]
-    } /; MatchQ[newLz, validPartitionedLazyListPattern]
+    If[ MatchQ[newLz, validPartitionedLazyListPattern],
+        {Most[newLz], Last[newLz]},
+        $Failed
+    ]
+];
+
+partitionedLazyList /: Drop[lz : validPartitionedLazyListPattern, args__] := With[{
+    newLz = Take[lz, args]
+},
+    If[ MatchQ[newLz, validPartitionedLazyListPattern],
+        Last[newLz],
+        $Failed
+    ]
 ];
 
 (* 

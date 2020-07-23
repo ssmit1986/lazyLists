@@ -20201,8 +20201,7 @@ Cell[TextData[{
  Cell[BoxData[
   FormBox[
    StyleBox["FoldPairList",
-    FontWeight->"Bold"], TraditionalForm]],
-  FormatType->"TraditionalForm",ExpressionUUID->
+    FontWeight->"Bold"], TraditionalForm]],ExpressionUUID->
   "347e3284-d20d-4515-bb8d-388313b8d2f6"],
  " has also been implemented:"
 }], "Text",ExpressionUUID->"a0103168-a445-497b-849b-24cb61f70cc5"],
@@ -20356,8 +20355,7 @@ Cell[TextData[{
  Cell[BoxData[
   FormBox[
    StyleBox["TakeDrop",
-    FontWeight->"Bold"], TraditionalForm]],
-  FormatType->"TraditionalForm",ExpressionUUID->
+    FontWeight->"Bold"], TraditionalForm]],ExpressionUUID->
   "b66ecc20-b624-4b31-93d6-6f8755600250"],
  " with FoldPairList to iteratively take parts of a lazyList:"
 }], "Text",ExpressionUUID->"17b1cae2-f0b2-46a7-9a0d-dac08686a048"],
@@ -20900,8 +20898,7 @@ Cell[TextData[{
  Cell[BoxData[
   FormBox[
    StyleBox["lazyMapThread",
-    FontWeight->"Bold"], TraditionalForm]],
-  FormatType->"TraditionalForm",ExpressionUUID->
+    FontWeight->"Bold"], TraditionalForm]],ExpressionUUID->
   "d6b35845-946e-4b5c-aaa1-be5d411e7567"],
  " is functionally similar to MapThread:"
 }], "Text",ExpressionUUID->"edc0cb50-690c-4cee-b084-17a3472acd11"],
@@ -21023,7 +21020,8 @@ Cell[BoxData[{
         RowBox[{"lazyRange", "[", "]"}], ",", 
         RowBox[{"Hold", "[", "lst", "]"}]}], "}"}]}], "]"}], ",", 
     "\[IndentingNewLine]", "All"}], "\[IndentingNewLine]", "]"}]}]}], "Input",
- CellLabel->"In[31]:=",ExpressionUUID->"10cf7768-7213-482c-a1ab-bda4df19813d"],
+ CellLabel->"In[31]:=",ExpressionUUID->"10cf7768-7213-482c-a1ab-bda4df19813d"]
+,
 
 Cell[BoxData[
  RowBox[{"{", 
@@ -21217,8 +21215,7 @@ Cell[TextData[{
  Cell[BoxData[
   FormBox[
    StyleBox["lazyTranspose",
-    FontWeight->"Bold"], TraditionalForm]],
-  FormatType->"TraditionalForm",ExpressionUUID->
+    FontWeight->"Bold"], TraditionalForm]],ExpressionUUID->
   "0d0e6eef-f773-439a-b28b-6e62f2d9219a"],
  " is essentially ",
  Cell[BoxData[
@@ -21550,20 +21547,17 @@ Cell[TextData[{
  Cell[BoxData[
   FormBox[
    StyleBox["lazyTruncate",
-    FontWeight->"Bold"], TraditionalForm]],
-  FormatType->"TraditionalForm",ExpressionUUID->
+    FontWeight->"Bold"], TraditionalForm]],ExpressionUUID->
   "5c39f962-1a63-439b-ba9e-0064027198b4"],
  " is used to shorten a lazyList without having to traverse it. It uses ",
  Cell[BoxData[
-  FormBox["MapIndexed", TraditionalForm]],
-  FormatType->"TraditionalForm",ExpressionUUID->
+  FormBox["MapIndexed", TraditionalForm]],ExpressionUUID->
   "0d5c6917-a5ac-424c-8b8f-9c27e6d5d89f"],
  " to keep track of the position in the list and ",
  Cell[BoxData[
   FormBox[
    StyleBox["endOfLazyList",
-    FontWeight->"Bold"], TraditionalForm]],
-  FormatType->"TraditionalForm",ExpressionUUID->
+    FontWeight->"Bold"], TraditionalForm]],ExpressionUUID->
   "1b27b6c0-b15c-4d48-9c43-f3afd5b570d9"],
  " to end the list:"
 }], "Text",ExpressionUUID->"48a9245d-5d77-49ce-99e9-1391aac0a853"],
@@ -21948,17 +21942,17 @@ Cell[BoxData[{
   ";"}], "\[IndentingNewLine]", 
  RowBox[{"Length", "/@", 
   RowBox[{"testReport", "[", "\"\<TestResultRules\>\"", "]"}]}]}], "Input",
- CellLabel->"In[12]:=",ExpressionUUID->"d39108b1-440b-4934-83bc-ca7def2926a3"],
+ CellLabel->"In[1]:=",ExpressionUUID->"d39108b1-440b-4934-83bc-ca7def2926a3"],
 
 Cell[BoxData[
  RowBox[{"\[LeftAssociation]", 
   RowBox[{
-   RowBox[{"\<\"TestsSucceeded\"\>", "\[Rule]", "224"}], ",", 
+   RowBox[{"\<\"TestsSucceeded\"\>", "\[Rule]", "234"}], ",", 
    RowBox[{"\<\"TestsFailedWrongResults\"\>", "\[Rule]", "0"}], ",", 
    RowBox[{"\<\"TestsFailedWithMessages\"\>", "\[Rule]", "0"}], ",", 
    RowBox[{"\<\"TestsFailedWithErrors\"\>", "\[Rule]", "0"}]}], 
   "\[RightAssociation]"}]], "Output",
- CellLabel->"Out[13]=",ExpressionUUID->"75b9bc0d-a204-40bd-9104-b2f52c84af8a"]
+ CellLabel->"Out[2]=",ExpressionUUID->"8d36ec4d-4cf8-43ac-a558-6275530ec9c1"]
 }, Open  ]],
 
 Cell["\<\
@@ -21980,17 +21974,17 @@ Cell[BoxData[{
   ";"}], "\[IndentingNewLine]", 
  RowBox[{"Length", "/@", 
   RowBox[{"testReport", "[", "\"\<TestResultRules\>\"", "]"}]}]}], "Input",
- CellLabel->"In[14]:=",ExpressionUUID->"e671f9bb-d62b-46e6-95a8-e4e014fff349"],
+ CellLabel->"In[3]:=",ExpressionUUID->"e671f9bb-d62b-46e6-95a8-e4e014fff349"],
 
 Cell[BoxData[
  RowBox[{"\[LeftAssociation]", 
   RowBox[{
-   RowBox[{"\<\"TestsSucceeded\"\>", "\[Rule]", "224"}], ",", 
+   RowBox[{"\<\"TestsSucceeded\"\>", "\[Rule]", "234"}], ",", 
    RowBox[{"\<\"TestsFailedWrongResults\"\>", "\[Rule]", "0"}], ",", 
    RowBox[{"\<\"TestsFailedWithMessages\"\>", "\[Rule]", "0"}], ",", 
    RowBox[{"\<\"TestsFailedWithErrors\"\>", "\[Rule]", "0"}]}], 
   "\[RightAssociation]"}]], "Output",
- CellLabel->"Out[15]=",ExpressionUUID->"9533c445-d1b4-4813-a494-4623c473bc79"]
+ CellLabel->"Out[4]=",ExpressionUUID->"76836db4-9b60-413e-a4f4-8fb6e65c3611"]
 }, Open  ]]
 }, Closed]],
 
