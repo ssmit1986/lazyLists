@@ -523,8 +523,8 @@ lazyAggregate[
 lazyAggregateInternal[
     {tot_, lz : nonEmptyLzListPattern},
     {agg_, comb_},
-    maxItems: (_Integer?Positive | Infinity) : Infinity,
-    batchSize_Integer?Positive
+    maxItems_,
+    batchSize_Integer
 ] := With[{
     n = Min[batchSize, maxItems]
 },
@@ -543,7 +543,7 @@ lazyAggregateInternal[
 lazyAggregateInternal[
     {tot_, lz : partitionedLazyList[lst_List, _]},
     {agg_, comb_},
-    maxItems: (_Integer?Positive | Infinity) : Infinity,
+    maxItems_,
     Automatic
 ] := With[{
     n = Min[Length[lst], maxItems]
@@ -561,7 +561,7 @@ lazyAggregateInternal[
     ]
 ];
 
-lazyAggregateInternal[{tot_, lz : nonEmptyLzListPattern},_, 0, _] := {tot, lz};
+lazyAggregateInternal[{tot_, lz_},_, 0, _] := {tot, lz};
 
 lazyAggregateInternal[{tot_, lazyList[]}, _, _, _] := {tot, lazyList[]};
 lazyAggregateInternal[$Failed, ___] := $Failed;
