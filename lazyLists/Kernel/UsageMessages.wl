@@ -82,9 +82,11 @@ rangeTuplesAtPositions::usage = "rangeTuplesAtPositions[Length /@ lists] is a Co
 
 repartitionAll::usage = "repartitionAll[{lz1, lz2, ...}] returns the list of lazy lists, but with all partitioned lazylists restructured to be of the same partition length. Ordinary lazyLists will be converted to partitionedLazyLists.";
 
-composeMappedFunctions::usage = "composeMappedFunctions[lzList] will convert mappings of the form f /@ g /@ ... /@ list with a single map f @* g @* ... /@ list";
+composeMappedFunctions::usage = "composeMappedFunctions[lzList] will convert mappings of the form f /@ g /@ ... /@ lzList to a single map of the form (f @* g @* ...) /@ lzList ";
 
 lazyTruncate::usage = "lazyTruncate[lzList, int] truncates a (possibly infinite) lazyList to finite length.";
+
+lazyAggregate::usage = "lazyAggregate[lzList, {aggregator, combiner}, batchSize, maxItems] iteratively extracts batchSize elements from lzList and then aggregates the values with the aggregator. The combiner aggregates results from multiple batches.";
 
 EndPackage[]
 

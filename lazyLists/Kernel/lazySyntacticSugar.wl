@@ -413,6 +413,158 @@ composeMappedFunctions[lz_partitionedLazyList] := ReplaceRepeated[
     }
 ];
 
+lazyList /: AllTrue[lazyList[], _] := True;
+lazyList /: AnyTrue[lazyList[], _] := False;
+lazyList /: NoneTrue[lazyList[], _] := True;
+
+MapThread[
+    Function[{sym, patt},
+        sym /: AllTrue[lz : patt, f_] := Catch[
+            Map[
+                Function[
+                    If[ !TrueQ[f[#]],
+                        Throw[False, "lzAllTrue"],
+                        Null
+                    ]
+                ],
+                lz
+            ][[-1]];
+            True,
+            "lzAllTrue"
+        ]
+    ],
+    {
+        {lazyList, partitionedLazyList},
+        {validLazyListPattern, validPartitionedLazyListPattern}
+    }
+];
+
+MapThread[
+    Function[{sym, patt},
+        sym /: AnyTrue[lz : patt, f_] := Catch[
+            Map[
+                Function[
+                    If[ TrueQ[f[#]],
+                        Throw[True, "lzAnyTrue"],
+                        Null
+                    ]
+                ],
+                lz
+            ][[-1]];
+            False,
+            "lzAnyTrue"
+        ]
+    ],
+    {
+        {lazyList, partitionedLazyList},
+        {validLazyListPattern, validPartitionedLazyListPattern}
+    }
+];
+
+MapThread[
+    Function[{sym, patt},
+        sym /: NoneTrue[lz : patt, f_] := Catch[
+            Map[
+                Function[
+                    If[ TrueQ[f[#]],
+                        Throw[False, "lzNoneTrue"],
+                        Null
+                    ]
+                ],
+                lz
+            ][[-1]];
+            True,
+            "lzNoneTrue"
+        ]
+    ],
+    {
+        {lazyList, partitionedLazyList},
+        {validLazyListPattern, validPartitionedLazyListPattern}
+    }
+];
+
+lazyAggregate[
+    lz : nonEmptyLzListPattern,
+    {agg_, comb_},
+    maxItems: (_Integer?Positive | Infinity) : Infinity,
+    bsize : (_Integer?Positive | Automatic) : Automatic
+] := With[{
+    batchSize = Replace[
+        {bsize, lz},
+        {
+            {i_Integer, _} :> i,
+            {Automatic, partitionedLazyList[l_List, _]} :> Length[l],
+            _ :> Min[100, maxItems]
+        }
+    ]
+},
+    With[{
+        n = Min[batchSize, maxItems]
+    },
+       Block[{$IterationLimit = $lazyIterationLimit},
+           lazyAggregateInternal[
+                Replace[TakeDrop[lz, n],
+                    {
+                        {l_List, lz1_} :> {agg[l], lz1},
+                        _ :> $Failed
+                    }
+                ],
+                {agg, comb},
+                Subtract[maxItems, n],
+                If[ Head[lz] === lazyList,
+                    batchSize,
+                    bsize
+                ]
+            ]
+       ]
+    ]
+];
+
+lazyAggregateInternal[
+    {tot_, lz : nonEmptyLzListPattern},
+    {agg_, comb_},
+    maxItems: (_Integer?Positive | Infinity) : Infinity,
+    batchSize_Integer?Positive
+] := With[{
+    n = Min[batchSize, maxItems]
+},
+   lazyAggregateInternal[
+        Replace[TakeDrop[lz, n],
+            {
+                {l_List, lz1_} :> {comb[{tot, agg[l]}], lz1},
+                _ :> $Failed
+            }
+        ],
+        {agg, comb},
+        Subtract[maxItems, n],
+        batchSize
+    ]
+];
+lazyAggregateInternal[
+    {tot_, lz : partitionedLazyList[lst_List, _]},
+    {agg_, comb_},
+    maxItems: (_Integer?Positive | Infinity) : Infinity,
+    Automatic
+] := With[{
+    n = Min[Length[lst], maxItems]
+},
+   lazyAggregateInternal[
+        Replace[TakeDrop[lz, n],
+            {
+                {l_List, lz1_} :> {comb[{tot, agg[l]}], lz1},
+                _ :> $Failed
+            }
+        ],
+        {agg, comb},
+        Subtract[maxItems, n],
+        Automatic
+    ]
+];
+
+lazyAggregateInternal[{tot_, lz : nonEmptyLzListPattern},_, 0, _] := {tot, lz};
+
+lazyAggregateInternal[{tot_, lazyList[]}, _, _, _] := {tot, lazyList[]};
+lazyAggregateInternal[$Failed, ___] := $Failed;
 (*
 (* TODO: Implement *)
 Scan[
