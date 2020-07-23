@@ -71,3 +71,4 @@ See lazyLists.nb for details and examples.
     * Add function `lazyTruncate` to cut long/infinite lazyLists short (without having to evaluate them fully).
     * Add support for held lists to `lazyMapThread`, `lazyTranspose` and `lazyCatenate`.
     * Add support for `TakeDrop`.
+    * Add support for `Drop`.
