@@ -74,3 +74,4 @@ See lazyLists.nb for details and examples.
     * Add support for `Drop`.
 * 23 July 2020
     * Add function `lazyAggregate` that can be used to do running totals over large lists.
+    * Add support for `AllTrue`, `AnyTrue` and `NoneTrue`.
