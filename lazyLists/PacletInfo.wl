@@ -4,8 +4,8 @@
 
 Paclet[
     Name -> "lazyLists",
-    Version -> "1.0",
-    MathematicaVersion -> "11.3+",
+    Version -> "1.1",
+    MathematicaVersion -> "12.0+",
     Description -> "Mathematica implementation of Haskell-style lazy lists.",
     Creator -> "Sjoerd Smit",
     Extensions -> {
