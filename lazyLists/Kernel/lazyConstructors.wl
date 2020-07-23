@@ -14,6 +14,7 @@ lzHead = lazyList | partitionedLazyList;
 emptyLazyListQ = Function[# === lazyList[]];
 validLazyListPattern = lazyList[_, _];
 validPartitionedLazyListPattern = partitionedLazyList[_List, _];
+nonEmptyLzListPattern = validLazyListPattern | validPartitionedLazyListPattern
 heldListPattern = Hold[_Symbol?ListQ];
 
 $lazyIterationLimit = Infinity;
@@ -242,7 +243,7 @@ lazyTranspose[lists : {___, _List | heldListPattern, ___}, opts : OptionsPattern
 
 lazyTranspose[list : {validLazyListPattern..}, opts : OptionsPattern[]] := lazyMapThread[List, list, opts];
 
-lazyTruncate[lz : (validLazyListPattern | validPartitionedLazyListPattern), int_Integer?Positive] := MapIndexed[
+lazyTruncate[lz : nonEmptyLzListPattern, int_Integer?Positive] := MapIndexed[
     Function[If[#2 <= int, #1, endOfLazyList, endOfLazyList]],
     lz
 ];

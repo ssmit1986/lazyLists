@@ -483,6 +483,61 @@ MapThread[
     }
 ];
 
+lazyAggregate[
+    lz : nonEmptyLzListPattern,
+    {agg_, comb_},
+    batchSize_Integer?Positive,
+    maxItems: (_Integer?Positive | Infinity) : Infinity
+] := With[{
+    n = Min[batchSize, maxItems]
+},
+   Block[{$IterationLimit = $lazyIterationLimit},
+       lazyAggregateInternal[
+            Replace[TakeDrop[lz, n],
+                {
+                    {l_List, lz1_} :> {agg[l], lz1},
+                    _ :> $Failed
+                }
+            ],
+            {agg, comb},
+            batchSize, maxItems - n
+        ]
+   ]
+];
+
+lazyAggregateInternal[
+    {tot_, lz : nonEmptyLzListPattern},
+    {agg_, comb_},
+    batchSize_Integer?Positive,
+    maxItems: (_Integer?Positive | Infinity) : Infinity
+] := With[{
+    n = Min[batchSize, maxItems]
+},
+   lazyAggregateInternal[
+        Replace[TakeDrop[lz, n],
+            {
+                {l_List, lz1_} :> {comb[{tot, agg[l]}], lz1},
+                _ :> $Failed
+            }
+        ],
+        {agg, comb},
+        batchSize, maxItems - n
+    ]
+];
+lazyAggregateInternal[
+    {tot_, lz : nonEmptyLzListPattern},
+    {agg_, comb_},
+    batchSize_Integer?Positive,
+    0
+] := {tot, lz};
+
+lazyAggregateInternal[
+    {tot_, lazyList[]},
+    {agg_, comb_},
+    batchSize_Integer?Positive,
+    maxItems: (_Integer?Positive | Infinity) : Infinity
+] := {tot, lazyList[]};
+lazyAggregateInternal[$Failed, ___] := $Failed;
 (*
 (* TODO: Implement *)
 Scan[

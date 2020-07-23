@@ -86,5 +86,7 @@ composeMappedFunctions::usage = "composeMappedFunctions[lzList] will convert map
 
 lazyTruncate::usage = "lazyTruncate[lzList, int] truncates a (possibly infinite) lazyList to finite length.";
 
+lazyAggregate::usage = "lazyAggregate[lzList, {aggregator, combiner}, batchSize, maxItems] iteratively extracts batchSize elements from lzList and then aggregates the values with the aggregator. The combiner aggregates results from multiple batches.";
+
 EndPackage[]
 
