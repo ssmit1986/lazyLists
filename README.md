@@ -72,3 +72,5 @@ See lazyLists.nb for details and examples.
     * Add support for held lists to `lazyMapThread`, `lazyTranspose` and `lazyCatenate`.
     * Add support for `TakeDrop`.
     * Add support for `Drop`.
+* 23 July 2020
+    * Add function `lazyAggregate` that can be used to do running totals over large lists.

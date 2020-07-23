@@ -486,30 +486,45 @@ MapThread[
 lazyAggregate[
     lz : nonEmptyLzListPattern,
     {agg_, comb_},
-    batchSize_Integer?Positive,
-    maxItems: (_Integer?Positive | Infinity) : Infinity
+    maxItems: (_Integer?Positive | Infinity) : Infinity,
+    bsize : (_Integer?Positive | Automatic) : Automatic
 ] := With[{
-    n = Min[batchSize, maxItems]
+    batchSize = Replace[
+        {bsize, lz},
+        {
+            {i_Integer, _} :> i,
+            {Automatic, partitionedLazyList[l_List, _]} :> Length[l],
+            _ :> Min[100, maxItems]
+        }
+    ]
 },
-   Block[{$IterationLimit = $lazyIterationLimit},
-       lazyAggregateInternal[
-            Replace[TakeDrop[lz, n],
-                {
-                    {l_List, lz1_} :> {agg[l], lz1},
-                    _ :> $Failed
-                }
-            ],
-            {agg, comb},
-            batchSize, maxItems - n
-        ]
-   ]
+    With[{
+        n = Min[batchSize, maxItems]
+    },
+       Block[{$IterationLimit = $lazyIterationLimit},
+           lazyAggregateInternal[
+                Replace[TakeDrop[lz, n],
+                    {
+                        {l_List, lz1_} :> {agg[l], lz1},
+                        _ :> $Failed
+                    }
+                ],
+                {agg, comb},
+                Subtract[maxItems, n],
+                If[ Head[lz] === lazyList,
+                    batchSize,
+                    bsize
+                ]
+            ]
+       ]
+    ]
 ];
 
 lazyAggregateInternal[
     {tot_, lz : nonEmptyLzListPattern},
     {agg_, comb_},
-    batchSize_Integer?Positive,
-    maxItems: (_Integer?Positive | Infinity) : Infinity
+    maxItems: (_Integer?Positive | Infinity) : Infinity,
+    batchSize_Integer?Positive
 ] := With[{
     n = Min[batchSize, maxItems]
 },
@@ -521,22 +536,34 @@ lazyAggregateInternal[
             }
         ],
         {agg, comb},
-        batchSize, maxItems - n
+        Subtract[maxItems, n],
+        batchSize
     ]
 ];
 lazyAggregateInternal[
-    {tot_, lz : nonEmptyLzListPattern},
+    {tot_, lz : partitionedLazyList[lst_List, _]},
     {agg_, comb_},
-    batchSize_Integer?Positive,
-    0
-] := {tot, lz};
+    maxItems: (_Integer?Positive | Infinity) : Infinity,
+    Automatic
+] := With[{
+    n = Min[Length[lst], maxItems]
+},
+   lazyAggregateInternal[
+        Replace[TakeDrop[lz, n],
+            {
+                {l_List, lz1_} :> {comb[{tot, agg[l]}], lz1},
+                _ :> $Failed
+            }
+        ],
+        {agg, comb},
+        Subtract[maxItems, n],
+        Automatic
+    ]
+];
 
-lazyAggregateInternal[
-    {tot_, lazyList[]},
-    {agg_, comb_},
-    batchSize_Integer?Positive,
-    maxItems: (_Integer?Positive | Infinity) : Infinity
-] := {tot, lazyList[]};
+lazyAggregateInternal[{tot_, lz : nonEmptyLzListPattern},_, 0, _] := {tot, lz};
+
+lazyAggregateInternal[{tot_, lazyList[]}, _, _, _] := {tot, lazyList[]};
 lazyAggregateInternal[$Failed, ___] := $Failed;
 (*
 (* TODO: Implement *)
