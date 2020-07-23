@@ -21942,17 +21942,17 @@ Cell[BoxData[{
   ";"}], "\[IndentingNewLine]", 
  RowBox[{"Length", "/@", 
   RowBox[{"testReport", "[", "\"\<TestResultRules\>\"", "]"}]}]}], "Input",
- CellLabel->"In[1]:=",ExpressionUUID->"d39108b1-440b-4934-83bc-ca7def2926a3"],
+ CellLabel->"In[3]:=",ExpressionUUID->"d39108b1-440b-4934-83bc-ca7def2926a3"],
 
 Cell[BoxData[
  RowBox[{"\[LeftAssociation]", 
   RowBox[{
-   RowBox[{"\<\"TestsSucceeded\"\>", "\[Rule]", "234"}], ",", 
+   RowBox[{"\<\"TestsSucceeded\"\>", "\[Rule]", "238"}], ",", 
    RowBox[{"\<\"TestsFailedWrongResults\"\>", "\[Rule]", "0"}], ",", 
    RowBox[{"\<\"TestsFailedWithMessages\"\>", "\[Rule]", "0"}], ",", 
    RowBox[{"\<\"TestsFailedWithErrors\"\>", "\[Rule]", "0"}]}], 
   "\[RightAssociation]"}]], "Output",
- CellLabel->"Out[2]=",ExpressionUUID->"8d36ec4d-4cf8-43ac-a558-6275530ec9c1"]
+ CellLabel->"Out[4]=",ExpressionUUID->"f360fdf1-aa6b-4784-9a00-b4c964ba3e70"]
 }, Open  ]],
 
 Cell["\<\
@@ -21974,17 +21974,17 @@ Cell[BoxData[{
   ";"}], "\[IndentingNewLine]", 
  RowBox[{"Length", "/@", 
   RowBox[{"testReport", "[", "\"\<TestResultRules\>\"", "]"}]}]}], "Input",
- CellLabel->"In[3]:=",ExpressionUUID->"e671f9bb-d62b-46e6-95a8-e4e014fff349"],
+ CellLabel->"In[1]:=",ExpressionUUID->"e671f9bb-d62b-46e6-95a8-e4e014fff349"],
 
 Cell[BoxData[
  RowBox[{"\[LeftAssociation]", 
   RowBox[{
-   RowBox[{"\<\"TestsSucceeded\"\>", "\[Rule]", "234"}], ",", 
+   RowBox[{"\<\"TestsSucceeded\"\>", "\[Rule]", "238"}], ",", 
    RowBox[{"\<\"TestsFailedWrongResults\"\>", "\[Rule]", "0"}], ",", 
    RowBox[{"\<\"TestsFailedWithMessages\"\>", "\[Rule]", "0"}], ",", 
    RowBox[{"\<\"TestsFailedWithErrors\"\>", "\[Rule]", "0"}]}], 
   "\[RightAssociation]"}]], "Output",
- CellLabel->"Out[4]=",ExpressionUUID->"76836db4-9b60-413e-a4f4-8fb6e65c3611"]
+ CellLabel->"Out[2]=",ExpressionUUID->"94d8019f-979e-452f-adfc-b43bc6c97931"]
 }, Open  ]]
 }, Closed]],
 
