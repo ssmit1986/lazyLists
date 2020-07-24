@@ -243,9 +243,19 @@ lazyTranspose[lists : {___, _List | heldListPattern, ___}, opts : OptionsPattern
 
 lazyTranspose[list : {validLazyListPattern..}, opts : OptionsPattern[]] := lazyMapThread[List, list, opts];
 
-lazyTruncate[lz : nonEmptyLzListPattern, int_Integer?Positive] := MapIndexed[
-    Function[If[#2 <= int, #1, endOfLazyList, endOfLazyList]],
-    lz
+lazyTruncate[lzPattern, 0] := lazyList[];
+lazyTruncate[lazyList[], _] := lazyList[];
+lazyTruncate[lz : lazyList[head_, tail_], int_Integer?Positive] := lazyList[
+    head,
+    lazyTruncate[tail, Subtract[int, 1]]
+];
+lazyTruncate[lz : partitionedLazyList[head_List, tail_], int_Integer?Positive] := With[{
+    lHead = Length[head]
+},
+    If[ lHead >= int,
+        partitionedLazyList[Take[head, int], lazyList[]],
+        partitionedLazyList[head, lazyTruncate[tail, Subtract[int, lHead]]]
+    ]
 ];
 
 End[]
