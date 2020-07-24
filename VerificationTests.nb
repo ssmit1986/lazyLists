@@ -30871,9 +30871,10 @@ Cell[BoxData[
    RowBox[{
     RowBox[{
      RowBox[{"partitionedLazyRange", "[", "10", "]"}], "+", 
-     RowBox[{"lazyRange", "[", "]"}]}], ",", "20"}], "]"}], "//", 
-  "Most"}]], "VerificationTest",
- CellLabel->"In[21]:=",
+     RowBox[{"lazyRange", "[", "]"}]}], ",", "20"}], "]"}], "//", "Most", " ", 
+  RowBox[{"(*", " ", 
+   RowBox[{"Fails", ";", " ", 
+    RowBox[{"known", " ", "issue"}]}], " ", "*)"}]}]], "VerificationTest",
  CellID->26310994,ExpressionUUID->"c2b49e3f-cca8-4a01-aec6-71d1f6908a8f"],
 
 Cell[BoxData[
@@ -31020,6 +31021,7 @@ Cell[BoxData[
             "MUnitStrings", "SameTest-Label"]]:>
            Block[{$ContextPath}, Needs["MUnit`"]; 
             MUnit`InsertOptionRule["SameTest"]], 
+           
            DynamicBox[FEPrivate`FrontEndResource[
             "MUnitStrings", "TestID-Label"]]:>
            Block[{$ContextPath}, Needs["MUnit`"]; 
@@ -45483,51 +45485,49 @@ Cell[BoxData[
   Alignment->{Left, Center},
   ImageSize->Full]], "BottomCell",
  CellID->811502076,ExpressionUUID->"180e928b-eb13-4716-8a7b-9eee9bdb821c"]
-}, Open  ]]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
-Cell["lazyAggregate", "Subsection",
- CellID->8034550,ExpressionUUID->"76ab41cf-ca52-4f32-8328-21356d65d4f7"],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[{
- RowBox[{
-  RowBox[{"nmax", "=", 
-   RowBox[{"10", "^", "4"}]}], ";"}], "\[IndentingNewLine]", 
- RowBox[{"lazyAggregate", "[", "\[IndentingNewLine]", 
+Cell[BoxData[
+ RowBox[{"Take", "[", " ", 
+  RowBox[{"(*", " ", 
+   RowBox[{"Fails", ";", " ", 
+    RowBox[{"known", " ", "issue"}]}], " ", "*)"}], "\[IndentingNewLine]", 
   RowBox[{
-   RowBox[{"lazyTruncate", "[", 
+   RowBox[{"composeMappedFunctions", "[", "\[IndentingNewLine]", 
+    RowBox[{"Sin", "/@", 
+     RowBox[{
+      RowBox[{"Function", "[", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"#", "===", "10"}], ",", "endOfLazyList", ",", "#"}], "]"}], 
+       "]"}], "/@", 
+      RowBox[{"lazyRange", "[", "]"}]}]}], "\[IndentingNewLine]", "]"}], ",", 
+   "\[IndentingNewLine]", "20"}], "\[IndentingNewLine]", 
+  "]"}]], "VerificationTest",
+ CellID->190257176,ExpressionUUID->"6c048e2f-1c5e-4425-bf21-c0661c004435"],
+
+Cell[BoxData[
+ RowBox[{"Take", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"Sin", "/@", 
     RowBox[{
-     RowBox[{"partitionedLazyRange", "[", "100", "]"}], ",", "nmax"}], "]"}], 
-   ",", "\[IndentingNewLine]", 
-   RowBox[{"{", 
-    RowBox[{
-     RowBox[{"CountsBy", "[", "PrimeQ", "]"}], ",", 
-     RowBox[{"Merge", "[", "Total", "]"}]}], "}"}]}], "\[IndentingNewLine]", 
-  "]"}]}], "VerificationTest",
- CellLabel->"In[4]:=",
- CellID->498088737,ExpressionUUID->"bb7336aa-4b73-4d52-9215-3b3ea6031768"],
+     RowBox[{"Function", "[", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"#", "===", "10"}], ",", "endOfLazyList", ",", "#"}], "]"}], 
+      "]"}], "/@", 
+     RowBox[{"lazyRange", "[", "]"}]}]}], ",", "\[IndentingNewLine]", "20"}], 
+  "\[IndentingNewLine]", "]"}]], "ExpectedOutput",
+ CellID->129423697,ExpressionUUID->"d247fb31-655e-44c4-82ef-b775559a6a9c"],
 
 Cell[BoxData[
  RowBox[{"{", 
   RowBox[{
-   RowBox[{"\[LeftAssociation]", 
-    RowBox[{
-     RowBox[{"False", "\[Rule]", "8771"}], ",", 
-     RowBox[{"True", "\[Rule]", "1229"}]}], "\[RightAssociation]"}], ",", 
-   RowBox[{"lazyList", "[", "]"}]}], "}"}]], "ExpectedOutput",
- CellLabel->"Out[5]=",
- CellID->5769857,ExpressionUUID->"ad75e35a-f108-406f-b723-b7ccb0f36ae6"],
-
-Cell[BoxData[
- RowBox[{"{", 
-  RowBox[{
-  "TestID", "\[Rule]", "\"\<00720e91-d9ae-4630-894d-b79a77912522\>\""}], 
+  "TestID", "\[Rule]", "\"\<d8075c3e-aa4f-4c8f-b42e-6b89ece12e84\>\""}], 
   "}"}]], "TestOptions",
- CellID->294775055,ExpressionUUID->"46c10d22-891a-4770-8af5-ac4041d3130e"],
+ CellID->516452846,ExpressionUUID->"5da7abe9-4a57-45c6-943d-85a7463b1fed"],
 
 Cell[BoxData[
  PaneBox[
@@ -45594,6 +45594,206 @@ Cell[BoxData[
                   {
                    PaneBox[
                     
+                    DynamicBox[FEPrivate`FrontEndResource[
+                    "MUnitExpressions", "Add"],
+                    ImageSizeCache->{12., {4., 8.}}],
+                    BaselinePosition->(Center -> Scaled[0.5])], 
+                   StyleBox[
+                    
+                    DynamicBox[FEPrivate`FrontEndResource[
+                    "MUnitStrings", "AddOptions-Label"],
+                    ImageSizeCache->{77., {2., 8.}}], "ButtonText",
+                    StripOnInput->False,
+                    FontColor->Dynamic[
+                    If[MUnit`Palette`Private`hover$$, 
+                    RGBColor[0.9059, 0.3451, 0.102], Inherited]]]}
+                 },
+                 AutoDelete->False,
+                 
+                 GridBoxItemSize->{
+                  "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+                 
+                 GridBoxSpacings->{
+                  "Columns" -> {{0.4}}, "Rows" -> {{Automatic}}}],
+                "Grid"],
+               
+               Appearance->FEPrivate`FrontEndResource[
+                "MUnitExpressions", "ButtonAppearances"],
+               
+               ButtonFunction:>
+                Block[{$ContextPath}, Needs["MUnit`"]; MUnit`addOptions[]],
+               Evaluator->Automatic,
+               FrameMargins->{{10, 10}, {0, 0}},
+               ImageSize->Automatic,
+               Method->"Queued"],
+              DynamicBox[
+               FEPrivate`FrontEndResource[
+               "MUnitStrings", "AddOptions-Tooltip"]],
+              TooltipDelay->0.5],
+             Annotation[#, 
+              Dynamic[
+               RawBoxes[
+                FEPrivate`FrontEndResource[
+                "MUnitStrings", "AddOptions-Tooltip"]]], "Tooltip"]& ], 
+            MUnit`Palette`Private`hover$$ = CurrentValue["MouseOver"],
+            ImageSizeCache->{115., {10., 16.}}],
+           DynamicModuleValues:>{}], 
+          ActionMenuBox[
+           ButtonBox["\<\"\"\>",
+            
+            Appearance->FEPrivate`FrontEndResource[
+             "MUnitExpressions", "ButtonAppearancesNoLeftBorder"],
+            ButtonFunction:>{},
+            ContentPadding->False,
+            Evaluator->None,
+            Method->"Preemptive"], {
+           
+           DynamicBox[FEPrivate`FrontEndResource[
+            "MUnitStrings", "MemoryConstraint-Label"]]:>
+           Block[{$ContextPath}, Needs["MUnit`"]; 
+            MUnit`InsertOptionRule["MemoryConstraint"]], 
+           
+           DynamicBox[FEPrivate`FrontEndResource[
+            "MUnitStrings", "SameTest-Label"]]:>
+           Block[{$ContextPath}, Needs["MUnit`"]; 
+            MUnit`InsertOptionRule["SameTest"]], 
+           
+           DynamicBox[FEPrivate`FrontEndResource[
+            "MUnitStrings", "TestID-Label"]]:>
+           Block[{$ContextPath}, Needs["MUnit`"]; 
+            MUnit`InsertOptionRule["TestID"]], 
+           
+           DynamicBox[FEPrivate`FrontEndResource[
+            "MUnitStrings", "TimeConstraint-Label"]]:>
+           Block[{$ContextPath}, Needs["MUnit`"]; 
+            MUnit`InsertOptionRule["TimeConstraint"]]},
+           Appearance->None,
+           Method->"Queued"]}
+        },
+        AutoDelete->False,
+        GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+        GridBoxSpacings->{"Columns" -> {{0}}, "Rows" -> {{Automatic}}}],
+       "Grid"]}
+    },
+    AutoDelete->False,
+    GridBoxAlignment->{"Columns" -> {{Automatic}}, "Rows" -> {{Center}}},
+    GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{2}}},
+    GridBoxSpacings->{
+     "ColumnsIndexed" -> {2 -> 0.5, 3 -> 2, 4 -> 0.5}, 
+      "Rows" -> {{Automatic}}}],
+   "Grid"],
+  Alignment->{Left, Center},
+  ImageSize->Full]], "BottomCell",
+ CellID->69117294,ExpressionUUID->"d3827cfa-283a-4130-bda3-a20cbbc5aace"]
+}, Open  ]]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["lazyAggregate", "Subsection",
+ CellID->8034550,ExpressionUUID->"76ab41cf-ca52-4f32-8328-21356d65d4f7"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"nmax", "=", 
+   RowBox[{"10", "^", "4"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"lazyAggregate", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"lazyTruncate", "[", 
+    RowBox[{
+     RowBox[{"partitionedLazyRange", "[", "100", "]"}], ",", "nmax"}], "]"}], 
+   ",", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"CountsBy", "[", "PrimeQ", "]"}], ",", 
+     RowBox[{"Merge", "[", "Total", "]"}]}], "}"}]}], "\[IndentingNewLine]", 
+  "]"}]}], "VerificationTest",
+ CellLabel->"In[4]:=",
+ CellID->498088737,ExpressionUUID->"bb7336aa-4b73-4d52-9215-3b3ea6031768"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"\[LeftAssociation]", 
+    RowBox[{
+     RowBox[{"False", "\[Rule]", "8771"}], ",", 
+     RowBox[{"True", "\[Rule]", "1229"}]}], "\[RightAssociation]"}], ",", 
+   RowBox[{"lazyList", "[", "]"}]}], "}"}]], "ExpectedOutput",
+ CellLabel->"Out[5]=",
+ CellID->5769857,ExpressionUUID->"ad75e35a-f108-406f-b723-b7ccb0f36ae6"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+  "TestID", "\[Rule]", "\"\<00720e91-d9ae-4630-894d-b79a77912522\>\""}], 
+  "}"}]], "TestOptions",
+ CellID->294775055,ExpressionUUID->"46c10d22-891a-4770-8af5-ac4041d3130e"],
+
+Cell[BoxData[
+ PaneBox[
+  TagBox[GridBox[{
+     {
+      DynamicModuleBox[{MUnit`Palette`Private`hover$$ = False}, 
+       DynamicWrapperBox[
+        TagBox[
+         TooltipBox[
+          ButtonBox[
+           TagBox[GridBox[{
+              {
+               PaneBox[
+                DynamicBox[FEPrivate`FrontEndResource[
+                 "MUnitExpressions", "Add"],
+                 ImageSizeCache->{12., {4., 8.}}],
+                BaselinePosition->(Center -> Scaled[0.5])], 
+               StyleBox[
+                
+                DynamicBox[FEPrivate`FrontEndResource[
+                 "MUnitStrings", "AddMessages-Label"],
+                 ImageSizeCache->{87., {2., 8.}}], "ButtonText",
+                StripOnInput->False,
+                FontColor->Dynamic[
+                  If[MUnit`Palette`Private`hover$$, 
+                   RGBColor[0.9059, 0.3451, 0.102], Inherited]]]}
+             },
+             AutoDelete->False,
+             
+             GridBoxItemSize->{
+              "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+             GridBoxSpacings->{"Columns" -> {{0.4}}, "Rows" -> {{Automatic}}}],
+            "Grid"],
+           
+           Appearance->FEPrivate`FrontEndResource[
+            "MUnitExpressions", "ButtonAppearances"],
+           
+           ButtonFunction:>
+            Block[{$ContextPath}, Needs["MUnit`"]; MUnit`addMessages[]],
+           Evaluator->Automatic,
+           FrameMargins->{{10, 10}, {0, 0}},
+           ImageSize->Automatic,
+           Method->"Queued"],
+          DynamicBox[
+           FEPrivate`FrontEndResource["MUnitStrings", "AddMessages-Tooltip"]],
+          TooltipDelay->0.5],
+         Annotation[#, 
+          Dynamic[
+           RawBoxes[
+            FEPrivate`FrontEndResource[
+            "MUnitStrings", "AddMessages-Tooltip"]]], "Tooltip"]& ], 
+        MUnit`Palette`Private`hover$$ = CurrentValue["MouseOver"],
+        ImageSizeCache->{125., {10., 16.}}],
+       DynamicModuleValues:>{}], 
+      TagBox[GridBox[{
+         {
+          DynamicModuleBox[{MUnit`Palette`Private`hover$$ = False}, 
+           DynamicWrapperBox[
+            TagBox[
+             TooltipBox[
+              ButtonBox[
+               TagBox[GridBox[{
+                  {
+                   PaneBox[
                     DynamicBox[FEPrivate`FrontEndResource[
                     "MUnitExpressions", "Add"],
                     ImageSizeCache->{12., {4., 8.}}],
@@ -46117,6 +46317,7 @@ Cell[BoxData[
            TagBox[GridBox[{
               {
                PaneBox[
+                
                 DynamicBox[FEPrivate`FrontEndResource[
                  "MUnitExpressions", "Add"],
                  ImageSizeCache->{12., {4., 8.}}],
@@ -46168,6 +46369,7 @@ Cell[BoxData[
                TagBox[GridBox[{
                   {
                    PaneBox[
+                    
                     DynamicBox[FEPrivate`FrontEndResource[
                     "MUnitExpressions", "Add"],
                     ImageSizeCache->{12., {4., 8.}}],
@@ -46186,7 +46388,6 @@ Cell[BoxData[
                  
                  GridBoxItemSize->{
                   "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
-                 
                  GridBoxSpacings->{
                   "Columns" -> {{0.4}}, "Rows" -> {{Automatic}}}],
                 "Grid"],
@@ -46380,6 +46581,7 @@ Cell[BoxData[
                  
                  GridBoxItemSize->{
                   "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+                 
                  GridBoxSpacings->{
                   "Columns" -> {{0.4}}, "Rows" -> {{Automatic}}}],
                 "Grid"],
@@ -46817,6 +47019,7 @@ Cell[BoxData[
             "MUnitStrings", "TestID-Label"]]:>
            Block[{$ContextPath}, Needs["MUnit`"]; 
             MUnit`InsertOptionRule["TestID"]], 
+           
            DynamicBox[FEPrivate`FrontEndResource[
             "MUnitStrings", "TimeConstraint-Label"]]:>
            Block[{$ContextPath}, Needs["MUnit`"]; 
@@ -46947,7 +47150,6 @@ Cell[BoxData[
                     ImageSizeCache->{12., {4., 8.}}],
                     BaselinePosition->(Center -> Scaled[0.5])], 
                    StyleBox[
-                    
                     DynamicBox[FEPrivate`FrontEndResource[
                     "MUnitStrings", "AddOptions-Label"],
                     ImageSizeCache->{77., {2., 8.}}], "ButtonText",
@@ -47641,6 +47843,7 @@ Cell[BoxData[
                  ImageSizeCache->{12., {4., 8.}}],
                 BaselinePosition->(Center -> Scaled[0.5])], 
                StyleBox[
+                
                 DynamicBox[FEPrivate`FrontEndResource[
                  "MUnitStrings", "AddMessages-Label"],
                  ImageSizeCache->{87., {2., 8.}}], "ButtonText",
@@ -48125,6 +48328,7 @@ Cell[BoxData[
             "MUnitStrings", "TestID-Label"]]:>
            Block[{$ContextPath}, Needs["MUnit`"]; 
             MUnit`InsertOptionRule["TestID"]], 
+           
            DynamicBox[FEPrivate`FrontEndResource[
             "MUnitStrings", "TimeConstraint-Label"]]:>
            Block[{$ContextPath}, Needs["MUnit`"]; 
@@ -48301,7 +48505,6 @@ Cell[BoxData[
             ContentPadding->False,
             Evaluator->None,
             Method->"Preemptive"], {
-           
            DynamicBox[FEPrivate`FrontEndResource[
             "MUnitStrings", "MemoryConstraint-Label"]]:>
            Block[{$ContextPath}, Needs["MUnit`"]; 
@@ -48505,6 +48708,7 @@ Cell[BoxData[
             "MUnitStrings", "TestID-Label"]]:>
            Block[{$ContextPath}, Needs["MUnit`"]; 
             MUnit`InsertOptionRule["TestID"]], 
+           
            DynamicBox[FEPrivate`FrontEndResource[
             "MUnitStrings", "TimeConstraint-Label"]]:>
            Block[{$ContextPath}, Needs["MUnit`"]; 
