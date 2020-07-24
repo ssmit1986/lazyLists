@@ -520,6 +520,10 @@ lazyAggregate[
     ]
 ];
 
+lazyAggregateInternal[{tot_, lz_}, _, 0, _] := {tot, lz};
+lazyAggregateInternal[{tot_, lazyList[]}, _, _, _] := {tot, lazyList[]};
+lazyAggregateInternal[$Failed, ___] := $Failed;
+
 lazyAggregateInternal[
     {tot_, lz : nonEmptyLzListPattern},
     {agg_, comb_},
@@ -561,10 +565,6 @@ lazyAggregateInternal[
     ]
 ];
 
-lazyAggregateInternal[{tot_, lz_},_, 0, _] := {tot, lz};
-
-lazyAggregateInternal[{tot_, lazyList[]}, _, _, _] := {tot, lazyList[]};
-lazyAggregateInternal[$Failed, ___] := $Failed;
 (*
 (* TODO: Implement *)
 Scan[
