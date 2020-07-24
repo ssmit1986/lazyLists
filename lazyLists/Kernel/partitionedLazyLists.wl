@@ -30,7 +30,34 @@ partitionedLazyList /: Most[partitionedLazyList[list_List, _]] := list;
 partitionedLazyList /: Rest[partitionedLazyList[{_}, tail_]] := tail;
 partitionedLazyList /: Rest[partitionedLazyList[{_, rest__}, tail_]] := partitionedLazyList[{rest}, tail];
 
-partitionedLazyRange[start : _ : 1, step: _ : 1, partition_Integer?Positive] := partitionedLazyList[
+partitionedLazyRange[partition_Integer?Positive] := partitionedLazyRange[1, 1, partition];
+partitionedLazyRange[start_, partition_Integer?Positive] := partitionedLazyRange[start, 1, partition];
+
+partitionedLazyRange[start_, step_ /; TrueQ[step == 0], partition_Integer?Positive] := With[{
+    arr = ConstantArray[start, partition]
+},
+    Function[
+        partitionedLazyList[
+            arr,
+            #0[#1 + 1]
+        ]
+    ][1]
+];
+
+partitionedLazyRange[start_?NumericQ, step_?NumericQ, partition_Integer?Positive] := With[{
+    stepMult = Subtract[partition, 1]
+},
+    Function[
+        With[{next = #1 + step * stepMult},
+            partitionedLazyList[
+                Range[#1, next, step],
+                #0[next + step]
+            ]
+        ]
+    ][start]
+];
+
+partitionedLazyRange[start_, step_, partition_Integer?Positive] := partitionedLazyList[
     lazyRange[
         start + step * Range[0, partition - 1],
         partition * step

@@ -7,7 +7,7 @@ Cell[BoxData[{
    RowBox[{"NotebookDirectory", "[", "]"}], "]"}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{"<<", "lazyLists`"}]}], "Input",
- CellLabel->"In[1]:=",ExpressionUUID->"2d6a87cf-3ef1-4832-b8b9-0995d6d1b646"],
+ CellLabel->"In[18]:=",ExpressionUUID->"2d6a87cf-3ef1-4832-b8b9-0995d6d1b646"],
 
 Cell[CellGroupData[{
 
@@ -15135,6 +15135,11 @@ Cell[CellGroupData[{
 Cell["Creating lazyLists and extracting elements from them", \
 "Subsection",ExpressionUUID->"9cdf5a73-58b8-496b-a090-8a5dfff3450d"],
 
+Cell[CellGroupData[{
+
+Cell["Basic examples", \
+"Subsubsection",ExpressionUUID->"6f1662cc-282e-4277-a496-67b639785c4d"],
+
 Cell[TextData[{
  Cell[BoxData[
   FormBox[
@@ -15961,7 +15966,8 @@ Cell[BoxData[
           RowBox[{"2", " ", "128"}], ",", "2"}], "]"}]}], "]"}]}], "]"}]}]}], 
   "\[RightAssociation]"}]], "Output",
  CellLabel->"Out[400]=",ExpressionUUID->"1f26c048-713d-4ae1-9046-b844aa8cc113"]
-}, Open  ]],
+}, Open  ]]
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -16222,7 +16228,7 @@ Cell[BoxData[
      RowBox[{"1000", "+", "1"}]}], "]"}]}], "]"}]], "Output",
  CellLabel->"Out[415]=",ExpressionUUID->"2010b701-8f6e-421d-8673-6aae0c4d545d"]
 }, Open  ]]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -16393,7 +16399,7 @@ Cell[BoxData[
   "]"}]], "Output",
  CellLabel->"Out[419]=",ExpressionUUID->"7e965064-1e0e-44c5-a00f-06cf78218a8d"]
 }, Open  ]]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -16828,7 +16834,7 @@ Cell[BoxData[
      RowBox[{"2", "+", "1"}]}], "]"}]}], "]"}]], "Output",
  CellLabel->"Out[433]=",ExpressionUUID->"763ea577-3937-472a-870c-ccd1403ae5d3"]
 }, Open  ]]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -17285,7 +17291,7 @@ Cell[BoxData[
    SqrtBox["3"], ",", "2"}], "}"}]], "Output",
  CellLabel->"Out[446]=",ExpressionUUID->"c62a0879-3ea1-44c8-9c41-343e0cae60f8"]
 }, Open  ]]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -20343,74 +20349,29 @@ bf05fd4d2bea"]
 }, Open  ]],
 
 Cell["\<\
-Listability works even if the generated lists are not of equal length and \
-regular lazyLists will be converted to partitionedLazyList with lazyPartition:\
+Listability works even if the generated lists are not of equal length or if \
+lazyLists are mixed with partitionedLazyList:\
 \>", "Text",ExpressionUUID->"7399c32e-5d46-421d-b54d-792b4a69d354"],
 
 Cell[CellGroupData[{
 
 Cell[BoxData[
  RowBox[{
-  RowBox[{"lazyPartition", "[", 
+  RowBox[{"Take", "[", 
    RowBox[{
-    RowBox[{"lazyRange", "[", "]"}], ",", "3"}], "]"}], "+", 
-  RowBox[{"lazyRange", "[", "]"}]}]], "Input",
- CellLabel->
-  "In[499]:=",ExpressionUUID->"27d962e3-eaa6-43be-a306-a0de4fca27c3"],
+    RowBox[{
+     RowBox[{"partitionedLazyRange", "[", "10", "]"}], "+", 
+     RowBox[{"lazyRange", "[", "]"}]}], ",", "15"}], "]"}], "//", 
+  "Most"}]], "Input",
+ CellLabel->"In[21]:=",ExpressionUUID->"27d962e3-eaa6-43be-a306-a0de4fca27c3"],
 
 Cell[BoxData[
- RowBox[{"lazyList", "[", 
+ RowBox[{"{", 
   RowBox[{
-   RowBox[{"partitionedLazyList", "[", 
-    RowBox[{
-     RowBox[{"{", 
-      RowBox[{"2", ",", "3", ",", "4"}], "}"}], ",", 
-     RowBox[{
-      RowBox[{"lazyPartition", "[", 
-       RowBox[{
-        RowBox[{
-         RowBox[{"(", 
-          RowBox[{
-           RowBox[{"lazyList", "[", 
-            RowBox[{"#1", ",", 
-             RowBox[{"#0", "[", 
-              RowBox[{
-               RowBox[{"#2", "+", "#1"}], ",", "#2"}], "]"}]}], "]"}], "&"}], 
-          ")"}], "[", 
-         RowBox[{
-          RowBox[{"1", "+", "3"}], ",", "1"}], "]"}], ",", "3"}], "]"}], "+", 
-      "1"}]}], "]"}], ",", 
-   RowBox[{
-    RowBox[{
-     RowBox[{"(", 
-      RowBox[{
-       RowBox[{"lazyList", "[", 
-        RowBox[{"#1", ",", 
-         RowBox[{"#0", "[", 
-          RowBox[{
-           RowBox[{"#2", "+", "#1"}], ",", "#2"}], "]"}]}], "]"}], "&"}], 
-      ")"}], "[", 
-     RowBox[{
-      RowBox[{"1", "+", "1"}], ",", "1"}], "]"}], "+", 
-    RowBox[{"partitionedLazyList", "[", 
-     RowBox[{
-      RowBox[{"{", 
-       RowBox[{"1", ",", "2", ",", "3"}], "}"}], ",", 
-      RowBox[{"lazyPartition", "[", 
-       RowBox[{
-        RowBox[{
-         RowBox[{"(", 
-          RowBox[{
-           RowBox[{"lazyList", "[", 
-            RowBox[{"#1", ",", 
-             RowBox[{"#0", "[", 
-              RowBox[{
-               RowBox[{"#2", "+", "#1"}], ",", "#2"}], "]"}]}], "]"}], "&"}], 
-          ")"}], "[", 
-         RowBox[{
-          RowBox[{"1", "+", "3"}], ",", "1"}], "]"}], ",", "3"}], "]"}]}], 
-     "]"}]}]}], "]"}]], "Output",
- CellLabel->"Out[499]=",ExpressionUUID->"67e774c9-8a8d-4f43-8523-9680c5b995b5"]
+  "2", ",", "4", ",", "6", ",", "8", ",", "10", ",", "12", ",", "14", ",", 
+   "16", ",", "18", ",", "20", ",", "22", ",", "24", ",", "26", ",", "28", 
+   ",", "30"}], "}"}]], "Output",
+ CellLabel->"Out[21]=",ExpressionUUID->"4b7f17d9-fa07-41cf-8d06-f5d442beb1e1"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -20517,7 +20478,7 @@ Cell[BoxData[
  CellLabel->"Out[503]=",ExpressionUUID->"7853ca82-6f5c-4228-9402-754689db2448"]
 }, Open  ]]
 }, Closed]]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -22936,17 +22897,17 @@ Cell[BoxData[{
   ";"}], "\[IndentingNewLine]", 
  RowBox[{"Length", "/@", 
   RowBox[{"testReport", "[", "\"\<TestResultRules\>\"", "]"}]}]}], "Input",
- CellLabel->"In[23]:=",ExpressionUUID->"d39108b1-440b-4934-83bc-ca7def2926a3"],
+ CellLabel->"In[10]:=",ExpressionUUID->"d39108b1-440b-4934-83bc-ca7def2926a3"],
 
 Cell[BoxData[
  RowBox[{"\[LeftAssociation]", 
   RowBox[{
-   RowBox[{"\<\"TestsSucceeded\"\>", "\[Rule]", "247"}], ",", 
-   RowBox[{"\<\"TestsFailedWrongResults\"\>", "\[Rule]", "0"}], ",", 
+   RowBox[{"\<\"TestsSucceeded\"\>", "\[Rule]", "252"}], ",", 
+   RowBox[{"\<\"TestsFailedWrongResults\"\>", "\[Rule]", "1"}], ",", 
    RowBox[{"\<\"TestsFailedWithMessages\"\>", "\[Rule]", "0"}], ",", 
    RowBox[{"\<\"TestsFailedWithErrors\"\>", "\[Rule]", "0"}]}], 
   "\[RightAssociation]"}]], "Output",
- CellLabel->"Out[24]=",ExpressionUUID->"1fe215a9-8836-43a9-a9b0-576d46a13417"]
+ CellLabel->"Out[11]=",ExpressionUUID->"c375e2fe-b9bd-4cb6-aaba-688016cc73f2"]
 }, Open  ]],
 
 Cell["\<\
@@ -22968,18 +22929,21 @@ Cell[BoxData[{
   ";"}], "\[IndentingNewLine]", 
  RowBox[{"Length", "/@", 
   RowBox[{"testReport", "[", "\"\<TestResultRules\>\"", "]"}]}]}], "Input",
- CellLabel->"In[25]:=",ExpressionUUID->"e671f9bb-d62b-46e6-95a8-e4e014fff349"],
+ CellLabel->"In[16]:=",ExpressionUUID->"e671f9bb-d62b-46e6-95a8-e4e014fff349"],
 
 Cell[BoxData[
  RowBox[{"\[LeftAssociation]", 
   RowBox[{
-   RowBox[{"\<\"TestsSucceeded\"\>", "\[Rule]", "247"}], ",", 
-   RowBox[{"\<\"TestsFailedWrongResults\"\>", "\[Rule]", "0"}], ",", 
+   RowBox[{"\<\"TestsSucceeded\"\>", "\[Rule]", "252"}], ",", 
+   RowBox[{"\<\"TestsFailedWrongResults\"\>", "\[Rule]", "1"}], ",", 
    RowBox[{"\<\"TestsFailedWithMessages\"\>", "\[Rule]", "0"}], ",", 
    RowBox[{"\<\"TestsFailedWithErrors\"\>", "\[Rule]", "0"}]}], 
   "\[RightAssociation]"}]], "Output",
- CellLabel->"Out[26]=",ExpressionUUID->"18950ed0-5e76-4e17-90cb-a3f8c26f3821"]
-}, Open  ]]
+ CellLabel->"Out[17]=",ExpressionUUID->"70d62640-dce1-4848-b640-a00333e24294"]
+}, Open  ]],
+
+Cell["There is currently 1 failing test. This is a known issue", \
+"Text",ExpressionUUID->"0ef2ed30-5b21-4f6e-b4dc-8e64f2279b7a"]
 }, Closed]],
 
 Cell[CellGroupData[{

@@ -135,14 +135,14 @@ With[{ (* pattern needs to be With'ed in because of the HoldRest attribute of la
 
 (* For efficiency reasons, these lazy list generatorss are defined by self-referential anynomous functions. Note that #0 refers to the function itself *)
 lazyRange[start : _ : 1, step : _ : 1] /; !TrueQ[step == 0] := Function[
-    lazyList[#1, #0[#2 + #1, #2]]
-][start, step];
+    lazyList[#1, #0[step + #1]]
+][start];
 
 lazyRange[start_, step_ /; TrueQ[step == 0]] := lazyConstantArray[start];
 
 lazyPowerRange[start_, r_ /; !TrueQ[r == 1]] := Function[
-    lazyList[#1, #0[#2 * #1, #2]]
-][start, r];
+    lazyList[#1, #0[r * #1, r]]
+][start];
 
 lazyPowerRange[min_, r_ /; TrueQ[r == 1]] := lazyConstantArray[min]
 
@@ -162,7 +162,7 @@ lazyFixedPointList[f_, elem_, prev_, sameTest_] := lazyList[
 
 (*lazySetState definition for lazyRange and lazyPowerRange and lazyNestList *)
 lazySetState[
-    lazyList[_, (f : Function[lazyList[#1, #0[_, _]]])[_, step_]],
+    lazyList[_, (f : Function[lazyList[#1, #0[___]]])[_, step___]],
     state_
 ] := f[state, step];
 
