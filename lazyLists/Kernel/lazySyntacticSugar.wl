@@ -1,7 +1,7 @@
 (* ::Package:: *)
 
 BeginPackage["lazyLists`"]
-(* Exported symbols added here with SymbolName::usage *) 
+(* Exported symbols added here with SymbolName::usage *)
 
 Begin["`Private`"]
 
@@ -16,7 +16,7 @@ lazyList /: Append[lazyList[], element_] := lazyList[element, lazyList[]];
 lazyList /: lazyPrependTo[lazyList[first_, lazyFiniteList[list_List, i_]], element_] := With[{
     newList = Prepend[list, element]
 },
-    lazyList[first, lazyFiniteList[newList, i + 1]] 
+    lazyList[first, lazyFiniteList[newList, i + 1]]
 ];
 lazyPrependTo[lazyList[first_, lazyFiniteList[list_Symbol, i_]], element_] := (
     PrependTo[list, element];
@@ -88,7 +88,7 @@ lazyList /: Take[lz : validLazyListPattern, n_Integer?Positive] := ReleaseHold[
                     {ReplaceRepeated::rrlim}
                 ],
                 (* The last element should only be Sown without evaluating the tail *)
-                lazyList[first_, tail_] :> (Sow[first, "take"]; Hold[tail]) 
+                lazyList[first_, tail_] :> (Sow[first, "take"]; Hold[tail])
             ],
             "take"
         ],
@@ -260,7 +260,7 @@ lazyList /: Drop[lz : validLazyListPattern, args__] := With[{
     If[ MatchQ[newLz, validLazyListPattern],
         Rest[newLz],
         $Failed
-    ] 
+    ]
 ];
 
 lazyList /: Map[f_, lazyList[first_, tail_]] := lazyList[
@@ -274,7 +274,7 @@ lazySetState[l : lazyList[_, Map[f_, tail_]], state_] := With[{
     If[ MatchQ[try, validLazyListPattern],
         Map[f, try],
         l
-    ] 
+    ]
 ];
 
 lazyList /: MapIndexed[f_, lazyList[first_, tail_], index : (_Integer?Positive) : 1] := lazyList[
@@ -289,7 +289,7 @@ lazyList /: FoldList[f_, current_, lazyList[first_, tail_]] := lazyList[
 ];
 lazyList /: FoldList[f_, current_, empty : lazyList[]] := lazyList[current, empty];
 
-(* 
+(*
     The True value that passes with FoldPairList is used to see if this is the first call to FoldPairList or if the process in already iterating.
     This is because the starting value in FoldPairList should not end up in the actual list.
 *)
@@ -318,7 +318,7 @@ lazyList /: Cases[lz_lazyList, patt_] := Module[{
     case[lazyList[first : patt, tail_]] := lazyList[first, case[tail]];
     case[lazyList[first_, tail_]] := case[tail];
     case[lazyList[]] := lazyList[];
-    
+
     case[lz]
 ];
 
@@ -334,8 +334,8 @@ lazyList /: Pick[lz_lazyList, select_lazyList, patt_] := Module[{
         pick[tail1, tail2];
     pick[lazyList[], _] := lazyList[];
     pick[_, lazyList[]] := lazyList[];
-    
-    pick[lz, select] 
+
+    pick[lz, select]
 ];
 
 lazyList /: Select[lazyList[first_, tail_], f_] /; f[first] := lazyList[first, Select[tail, f]];
@@ -520,6 +520,10 @@ lazyAggregate[
     ]
 ];
 
+lazyAggregateInternal[{tot_, lz_}, _, 0, _] := {tot, lz};
+lazyAggregateInternal[{tot_, lazyList[]}, _, _, _] := {tot, lazyList[]};
+lazyAggregateInternal[$Failed, ___] := $Failed;
+
 lazyAggregateInternal[
     {tot_, lz : nonEmptyLzListPattern},
     {agg_, comb_},
@@ -561,10 +565,6 @@ lazyAggregateInternal[
     ]
 ];
 
-lazyAggregateInternal[{tot_, lz : nonEmptyLzListPattern},_, 0, _] := {tot, lz};
-
-lazyAggregateInternal[{tot_, lazyList[]}, _, _, _] := {tot, lazyList[]};
-lazyAggregateInternal[$Failed, ___] := $Failed;
 (*
 (* TODO: Implement *)
 Scan[
