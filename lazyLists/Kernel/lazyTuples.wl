@@ -104,7 +104,7 @@ lazyTuples[
 ] /; MatchQ[elementLists, {{__}..}] := With[{
     lengths = Length /@ elementLists
 },
-    Map[
+    composeMappedFunctions @ Map[
         {
             bulkExtractElementsUsingIndexList[Unevaluated[elementLists]],
             Listable
@@ -114,7 +114,7 @@ lazyTuples[
 ];
 
 (* Effectively equal to lazyTuples[Range /@ lengths] *)
-lazyTuples[lengths : {__Integer}, opts : OptionsPattern[]] := Map[
+lazyTuples[lengths : {__Integer}, opts : OptionsPattern[]] := composeMappedFunctions @ Map[
     {
         Transpose[#]&,
         Listable
@@ -130,7 +130,7 @@ lazyTuples[
 ] /; And[
     MatchQ[elementList, {__}],
     UnsameQ[elementList, Range @ Length @ elementList]
-] := Map[
+] := composeMappedFunctions @ Map[
     {
         bulkExtractElementsUsingIndexList[Unevaluated[elementList], tupLength],
         Listable
