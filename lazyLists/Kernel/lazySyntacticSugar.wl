@@ -52,13 +52,16 @@ setLazyListable[sym_Symbol] := (
 );
 setLazyListable[{sym_Symbol, Listable}] := (
     lazyList /: (expr : sym[___, lazyList[], ___]) := lazyList[];
-    partitionedLazyList /: (expr : sym[first___, lz_partitionedLazyList, rest___]) := Thread[
+    partitionedLazyList /: (sym[first___, lz_partitionedLazyList, rest___]) := Thread[
         Unevaluated[sym[##]],
         partitionedLazyList
     ]& @@ repartitionAll[{first, lz, rest}];
-    lazyList /: (expr : sym[___, _lazyList, ___]) := Thread[
-        Unevaluated[expr],
+    lazyList /: (sym[first___, lz_lazyList, rest___]) := Thread[
+        Unevaluated[sym[##]],
         lazyList
+    ]& @@ If[ MemberQ[{first, rest}, _partitionedLazyList],
+        repartitionAll[{first, lz, rest}],
+        {first, lz, rest}
     ];
     sym
 );
