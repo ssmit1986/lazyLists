@@ -19,7 +19,7 @@ heldListPattern = Hold[_Symbol?ListQ];
 
 $lazyIterationLimit = Infinity;
 
-Attributes[lazyList] = {HoldRest};
+Attributes[lazyList] = {HoldRest, ReadProtected};
 
 lazyList[{}] := lazyList[];
 lazyList[Nothing, tail_] := tail;

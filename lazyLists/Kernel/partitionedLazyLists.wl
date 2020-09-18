@@ -10,7 +10,7 @@ Begin["`Private`"]
 
 partitionedLazyList::cannotPartition = "Cannot partition lazyList `1` because not all elements are lists. Empty lazyList was returned";
 
-Attributes[partitionedLazyList] = {HoldRest};
+Attributes[partitionedLazyList] = {HoldRest, ReadProtected};
 partitionedLazyList[] := lazyList[];
 partitionedLazyList[lazyList[], ___] := lazyList[];
 partitionedLazyList[{Shortest[first___], endOfLazyList, ___}, ___] := partitionedLazyList[{first}, lazyList[]];
