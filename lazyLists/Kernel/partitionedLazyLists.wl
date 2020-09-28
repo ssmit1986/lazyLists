@@ -206,8 +206,6 @@ partitionedLazyList /: Take[
                 $IterationLimit = $lazyIterationLimit,
                 count = n,
                 offset = 0,
-                result,
-                take,
                 len
             },
                 ReplaceRepeated[
@@ -289,7 +287,6 @@ partitionedLazyList /: TakeWhile[
             Catch[
                 Block[{
                     $IterationLimit = $lazyIterationLimit,
-                    first,
                     ind
                 },
                     ReplaceRepeated[
