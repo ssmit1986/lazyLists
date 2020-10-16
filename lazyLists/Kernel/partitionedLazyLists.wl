@@ -30,10 +30,11 @@ partitionedLazyList /: Most[partitionedLazyList[list_List, _]] := list;
 partitionedLazyList /: Rest[partitionedLazyList[{_}, tail_]] := tail;
 partitionedLazyList /: Rest[partitionedLazyList[{_, rest__}, tail_]] := partitionedLazyList[{rest}, tail];
 
-partitionedLazyRange[partition_Integer?Positive] := partitionedLazyRange[1, 1, partition];
-partitionedLazyRange[start_, partition_Integer?Positive] := partitionedLazyRange[start, 1, partition];
+partitionedLazyRange[partition_Integer?Positive] := partitionedLazyRange[1, Infinity, 1, partition];
+partitionedLazyRange[start_, partition_Integer?Positive] := partitionedLazyRange[start, Infinity, 1, partition];
+partitionedLazyRange[start_, end_, partition_Integer?Positive] := partitionedLazyRange[start, end, 1, partition];
 
-partitionedLazyRange[start_, step_ /; TrueQ[step == 0], partition_Integer?Positive] := With[{
+partitionedLazyRange[start_, _, step_ /; TrueQ[step == 0], partition_Integer?Positive] := With[{
     arr = ConstantArray[start, partition]
 },
     Function[
@@ -44,7 +45,9 @@ partitionedLazyRange[start_, step_ /; TrueQ[step == 0], partition_Integer?Positi
     ][1]
 ];
 
-partitionedLazyRange[start_?NumericQ, step_?NumericQ, partition_Integer?Positive] := With[{
+partitionedLazyRange[start_?NumericQ, DirectedInfinity[dir : 1 | -1],
+    step_?NumericQ, partition_Integer?Positive
+] /; Sign[step] === Sign[dir] := With[{
     stepMult = Subtract[partition, 1]
 },
     Function[
@@ -57,7 +60,43 @@ partitionedLazyRange[start_?NumericQ, step_?NumericQ, partition_Integer?Positive
     ][start]
 ];
 
-partitionedLazyRange[start_, step_, partition_Integer?Positive] := partitionedLazyList[
+partitionedLazyRange[start_?NumericQ, DirectedInfinity[dir : 1 | -1],
+    step_?NumericQ, partition_Integer?Positive
+] /; Sign[step] =!= Sign[dir] := lazyList[];
+
+partitionedLazyRange[start_?NumericQ, max_?NumericQ,  
+    step_?NumericQ, partition_Integer?Positive
+] /; start <= max && Positive[step] := With[{
+    stepMult = Subtract[partition, 1]
+},
+    Function[
+        With[{next = Min[#1 + step * stepMult, max]},
+            partitionedLazyList[
+                Replace[Range[#1, next, step], {} :> lazyList[]],
+                #0[next + step]
+            ]
+        ]
+    ][start]
+];
+
+partitionedLazyRange[start_?NumericQ, min_?NumericQ,
+    step_?NumericQ, partition_Integer?Positive
+] /; start >= min && Negative[step] := With[{
+    stepMult = Subtract[partition, 1]
+},
+    Function[
+        With[{next = Max[#1 + step * stepMult, min]},
+            partitionedLazyList[
+                Replace[Range[#1, next, step], {} :> lazyList[]],
+                #0[next + step]
+            ]
+        ]
+    ][start, min]
+];
+
+partitionedLazyRange[start_?NumericQ, end_?NumericQ, step_?NumericQ, partition_Integer?Positive] := lazyList[];
+
+partitionedLazyRange[start_, _DirectedInfinity, step_, partition_Integer?Positive] := partitionedLazyList[
     lazyRange[
         start + step * Range[0, partition - 1],
         partition * step

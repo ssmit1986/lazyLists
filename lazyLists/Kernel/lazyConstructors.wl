@@ -133,12 +133,38 @@ With[{ (* pattern needs to be With'ed in because of the HoldRest attribute of la
 ];
 
 
-(* For efficiency reasons, these lazy list generatorss are defined by self-referential anynomous functions. Note that #0 refers to the function itself *)
-lazyRange[start : _ : 1, step : _ : 1] /; !TrueQ[step == 0] := Function[
+(* 
+    For efficiency reasons, these lazy list generators are defined by self-referential anynomous functions. 
+    Note that #0 refers to the function itself
+*)
+lazyRange[] := lazyRange[1, Infinity, 1];
+lazyRange[start_] := lazyRange[start, Infinity, 1];
+lazyRange[start_, end_] := lazyRange[start, end, 1];
+lazyRange[start_, end_, step_ /; TrueQ[step == 0]] := lazyConstantArray[start];
+
+lazyRange[start_?NumericQ, max_?NumericQ, step_?NumericQ] /; start <= max && Positive[step] := Function[
+    If[ TrueQ[#1 > max],
+        lazyList[],
+        lazyList[#1, #0[step + #1]]
+    ]
+][start];
+
+lazyRange[start_?NumericQ, min_?NumericQ, step_?NumericQ] /; start >= min && Negative[step] := Function[
+    If[ TrueQ[#1 < min],
+        lazyList[],
+        lazyList[#1, #0[step + #1]]
+    ]
+][start];
+
+lazyRange[
+    start_,
+    DirectedInfinity[dir_],
+    step_
+] /; !TrueQ[step == 0] && !TrueQ[NumericQ[step] && Sign[dir] =!= Sign[step]]:= Function[
     lazyList[#1, #0[step + #1]]
 ][start];
 
-lazyRange[start_, step_ /; TrueQ[step == 0]] := lazyConstantArray[start];
+lazyRange[_, _, _] := lazyList[];
 
 lazyPowerRange[start_, r_ /; !TrueQ[r == 1]] := Function[
     lazyList[#1, #0[r * #1, r]]
