@@ -73,6 +73,8 @@ Scan[
 ];
 
 (* Elements from lazyLists are extracted by repeatedly evaluating the next element and sowing the results *)
+lazyList /: Take[lazyList[], All] := lazyList[{}, lazyList[]];
+
 lazyList /: Take[lz : validLazyListPattern, n_Integer?Positive] := ReleaseHold[
     lazyList @@ MapAt[
         First[#, {}]&,
