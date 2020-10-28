@@ -76,6 +76,10 @@ lazyTuples::usage = "lazyTuples is a lazy version of Tuples with mostly the same
 lazyTuples[n] is a special case that generates an infinite list of all n-tuples of integers \[GreaterEqual] 1.";
 nextIntegerTuple::usage = "nextIntegerTuple[{int1, int2, ...}] generates the next integer tuple in a canonical order.";
 
+GeneralUtilities`SetUsage[lazyOuter,
+    "lazyOuter[f$, list$1, list$2, $$] effectively computes Flatten[Outer[f$, list$1, list$2, $$]] in a lazy fashion using lazyTuples."
+];
+
 bulkExtractElementsUsingIndexList::usage = "bulkExtractElementsUsingIndexList[lists, indices] converts elements from Tuples[Range /@ Length /@ lists] into elements from Tuples[lists]";
 
 rangeTuplesAtPositions::usage = "rangeTuplesAtPositions[Length /@ lists] is a CompiledFunction that directly generates elements of Tuples[Range /@ Length /@ lists]";
