@@ -28,6 +28,11 @@ Equivalent to lazyMapThread[Identity, {lz1, lz2, ...}]";
 
 lazyPartMap::usage = "lazyPartMap[l, {i, j, k, ...}] is equivalent to Map[Part[l, {#}]&, {i, j, k, ...}] but faster.";
 
+GeneralUtilities`SetUsage[cachedPart,
+    "cachedPart[lz$] generates an object from which parts can be extracted and which automatically caches its values.
+Negative indices can be used to extract from the rear of the cached values."
+];
+
 lazyFinitePart::usage = "lazyFinitePart[lz, i, j, k,...] directly extracts Part from finite and periodic lazyLists without having to traverse the lazyList element-by-element. 
 It is equivalent to Part[list, i, j, k, ...]";
 
