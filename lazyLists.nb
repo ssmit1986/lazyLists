@@ -7,7 +7,7 @@ Cell[BoxData[{
    RowBox[{"NotebookDirectory", "[", "]"}], "]"}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{"<<", "lazyLists`"}]}], "Input",
- CellLabel->"In[57]:=",ExpressionUUID->"2d6a87cf-3ef1-4832-b8b9-0995d6d1b646"],
+ CellLabel->"In[1]:=",ExpressionUUID->"2d6a87cf-3ef1-4832-b8b9-0995d6d1b646"],
 
 Cell[CellGroupData[{
 
@@ -5791,12 +5791,13 @@ Cell[CellGroupData[{
 
 Cell[BoxData[{
  RowBox[{"?", "lazyMapThread"}], "\[IndentingNewLine]", 
+ RowBox[{"?", "lazyOuter"}], "\[IndentingNewLine]", 
  RowBox[{"?", "lazyTranspose"}], "\[IndentingNewLine]", 
  RowBox[{"?", "lazyPartMap"}], "\[IndentingNewLine]", 
  RowBox[{"?", "composeMappedFunctions"}], "\[IndentingNewLine]", 
  RowBox[{"?", "lazyTruncate"}], "\[IndentingNewLine]", 
  RowBox[{"?", "lazyAggregate"}]}], "Input",
- CellLabel->"In[76]:=",ExpressionUUID->"966ecd04-15a3-4c9a-b904-32be5271d7a0"],
+ CellLabel->"In[60]:=",ExpressionUUID->"966ecd04-15a3-4c9a-b904-32be5271d7a0"],
 
 Cell[BoxData[
  InterpretationBox[
@@ -5868,9 +5869,8 @@ equivalent to MapThread. Mixing lazy lists and normal lists is allowed.\"\>",
                     RowBox[{"lazyLists`Private`lists", ",", 
                     RowBox[{
                     RowBox[{"lazyLists`Private`l", ":", 
-                    RowBox[{
-                    "_List", "|", "lazyLists`Private`heldListPattern"}]}], 
-                    "\[RuleDelayed]", 
+                    RowBox[{"_List", "|", 
+                    "lazyLists`Private`heldListPattern"}]}], "\[RuleDelayed]", 
                     RowBox[{"lazyList", "[", "lazyLists`Private`l", "]"}]}], 
                     ",", 
                     RowBox[{"{", "1", "}"}]}], "]"}], ",", 
@@ -6198,7 +6198,297 @@ Mixing lazy lists and normal lists is allowed.", "Documentation" -> None,
     "DefaultValues" -> None, "NValues" -> None, "FormatValues" -> None, 
     "Options" -> {"RepartitionFunction" -> Max}, "Attributes" -> {}, 
     "FullName" -> "lazyLists`lazyMapThread"], False]]], "Output",
- CellLabel->"Out[76]=",ExpressionUUID->"43f54153-a5e8-4301-b3c6-2e23ceb090d2"],
+ CellLabel->"Out[60]=",ExpressionUUID->"a31c7a14-d6c3-4e56-800d-984946ab737c"],
+
+Cell[BoxData[
+ InterpretationBox[
+  StyleBox[
+   FrameBox[
+    DynamicModuleBox[{System`InformationDump`open$$ = False, 
+     System`InformationDump`mouseOver$$ = False}, 
+     PaneSelectorBox[{True->
+      TagBox[GridBox[{
+         {
+          ItemBox[
+           PaneBox[
+            StyleBox["\<\" Symbol\"\>", "InformationTitleText",
+             StripOnInput->False,
+             BaseStyle -> None],
+            FrameMargins->{{4, 0}, {-1, 1}}],
+           BaseStyle->"InformationTitleBackground",
+           StripOnInput->False], 
+          ItemBox["\<\"\"\>",
+           BaseStyle->"InformationTitleBackground",
+           StripOnInput->False]},
+         {
+          ItemBox[
+           PaneBox[
+            
+            StyleBox["\<\"\\!\\(\\*RowBox[{\\\"lazyOuter\\\", \\\"[\\\", \
+RowBox[{StyleBox[\\\"f\\\", \\\"TI\\\"], \\\",\\\",  StyleBox[SubscriptBox[\\\
+\"list\\\", StyleBox[\\\"1\\\", \\\"TR\\\"]], \\\"TI\\\"], \\\",\\\",  \
+StyleBox[SubscriptBox[\\\"list\\\", StyleBox[\\\"2\\\", \\\"TR\\\"]], \
+\\\"TI\\\"], \\\",\\\",  StyleBox[\\\"\[Ellipsis]\\\", \\\"TR\\\"]}], \\\"]\\\
+\"}]\\) effectively computes Flatten[Outer[\\!\\(\\*StyleBox[\\\"f\\\", \
+\\\"TI\\\"]\\), \\!\\(\\*StyleBox[SubscriptBox[\\\"list\\\", StyleBox[\\\"1\\\
+\", \\\"TR\\\"]], \\\"TI\\\"]\\), \
+\\!\\(\\*StyleBox[SubscriptBox[\\\"list\\\", StyleBox[\\\"2\\\", \
+\\\"TR\\\"]], \\\"TI\\\"]\\), \[Ellipsis]]] in a lazy fashion using \
+lazyTuples.\"\>", "InformationUsageText",
+             StripOnInput->False,
+             LineSpacing->{1.5, 1.5, 3.}],
+            FrameMargins->{{10, 10}, {8, 10}}],
+           BaseStyle->"InformationUsageSubtitleBackground",
+           StripOnInput->False], 
+          ItemBox["\<\"\"\>",
+           BaseStyle->"InformationUsageSubtitleBackground",
+           StripOnInput->False]},
+         {
+          PaneBox[GridBox[{
+             {
+              
+              DynamicModuleBox[{System`InformationDump`open$$ = {
+               False, False, False, False, False, False, False, False, False, 
+                False, False, False}}, 
+               StyleBox[GridBox[{
+                  {
+                   TagBox[
+                    TooltipBox[
+                    StyleBox["\<\" Definitions\"\>", "InformationRowLabel",
+                    StripOnInput->False],
+                    "\"Definitions\"",
+                    TooltipStyle->"TextStyling"],
+                    Annotation[#, "Definitions", "Tooltip"]& ], GridBox[{
+                    {
+                    RowBox[{
+                    RowBox[{"lazyOuter", "[", 
+                    RowBox[{
+                    "lazyLists`Private`f_", ",", 
+                    "lazyLists`Private`lists__List", ",", 
+                    RowBox[{"lazyLists`Private`opts", ":", 
+                    RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{"lazyLists`Private`f", "@@", "#1"}], "&"}], "]"}],
+                     ",", "Listable"}], "}"}], "/@", 
+                    RowBox[{"lazyTuples", "[", 
+                    RowBox[{
+                    RowBox[{"{", "lazyLists`Private`lists", "}"}], ",", 
+                    "lazyLists`Private`opts"}], "]"}]}]}]}
+                    },
+                    DefaultBaseStyle->"Column",
+                    GridBoxAlignment->{"Columns" -> {{Left}}},
+                    GridBoxItemSize->{
+                    "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}]},
+                  {
+                   TagBox[
+                    TooltipBox[
+                    StyleBox["\<\" Options\"\>", "InformationRowLabel",
+                    StripOnInput->False],
+                    "\"Options\"",
+                    TooltipStyle->"TextStyling"],
+                    Annotation[#, "Options", "Tooltip"]& ], 
+                   RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"\<\"PartitionSize\"\>", "\[Rule]", "10"}], ",", 
+                    RowBox[{"\<\"Start\"\>", "\[Rule]", "1"}]}], "}"}]},
+                  {
+                   TagBox[
+                    TooltipBox[
+                    StyleBox["\<\" Full Name\"\>", "InformationRowLabel",
+                    StripOnInput->False],
+                    "\"FullName\"",
+                    TooltipStyle->"TextStyling"],
+                    
+                    Annotation[#, "FullName", 
+                    "Tooltip"]& ], "\<\"lazyLists`lazyOuter\"\>"}
+                 },
+                 AutoDelete->False,
+                 GridBoxAlignment->{"Columns" -> {Right, Left}},
+                 GridBoxDividers->None,
+                 GridBoxItemSize->{"Columns" -> {Automatic, Automatic}},
+                 GridBoxSpacings->{"Columns" -> {
+                    Offset[0.27999999999999997`], {
+                    Offset[0.5599999999999999]}, 
+                    Offset[0.27999999999999997`]}, "Rows" -> {
+                    Offset[0.2], {
+                    Offset[0.8]}, 
+                    Offset[0.2]}}], "DialogStyle",
+                StripOnInput->False],
+               DynamicModuleValues:>{}]}
+            },
+            DefaultBaseStyle->"Column",
+            GridBoxAlignment->{"Columns" -> {{Left}}},
+            GridBoxDividers->{"Columns" -> {{False}}, "Rows" -> {{False}}},
+            GridBoxItemSize->{
+             "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+            GridBoxSpacings->{"Columns" -> {
+                Offset[0.27999999999999997`], {
+                 Offset[0.5599999999999999]}, 
+                Offset[0.27999999999999997`]}, "Rows" -> {
+                Offset[0.2], {
+                 Offset[3.6]}, 
+                Offset[0.2]}}],
+           FrameMargins->6], ""},
+         {
+          ItemBox[
+           TagBox[
+            ButtonBox[
+             PaneSelectorBox[{False->
+              
+              DynamicBox[FEPrivate`FrontEndResource[
+               "FEBitmaps", "UpPointerOpener"]], True->
+              
+              DynamicBox[FEPrivate`FrontEndResource[
+               "FEBitmaps", "UpPointerOpenerHot"]]}, Dynamic[
+              System`InformationDump`mouseOver$$]],
+             Alignment->Left,
+             Appearance->{"Default" -> None},
+             
+             ButtonFunction:>FEPrivate`Set[
+              System`InformationDump`open$$, False],
+             Evaluator->Automatic,
+             FrameMargins->{{9, 0}, {0, 0}},
+             ImageMargins->0,
+             ImageSize->Full,
+             Method->"Preemptive"],
+            
+            EventHandlerTag[{
+             "MouseEntered" :> 
+              FEPrivate`Set[System`InformationDump`mouseOver$$, True], 
+              "MouseExited" :> 
+              FEPrivate`Set[System`InformationDump`mouseOver$$, False], 
+              Method -> "Preemptive", PassEventsDown -> Automatic, 
+              PassEventsUp -> True}]],
+           BaseStyle->"InformationTitleBackground",
+           StripOnInput->False], "\[SpanFromLeft]"}
+        },
+        AutoDelete->False,
+        FrameStyle->Directive[
+          GrayLevel[0.8], 
+          Thickness[Tiny]],
+        GridBoxAlignment->{"Columns" -> {Left, Right}, "Rows" -> {{Center}}},
+        GridBoxDividers->{
+         "Columns" -> {{None}}, "Rows" -> {False, {True}, False}},
+        GridBoxItemSize->{
+         "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+       "Grid"], False->
+      TagBox[GridBox[{
+         {
+          ItemBox[
+           PaneBox[
+            StyleBox["\<\" Symbol\"\>", "InformationTitleText",
+             StripOnInput->False],
+            FrameMargins->{{4, 0}, {-1, 1}}],
+           BaseStyle->"InformationTitleBackground",
+           StripOnInput->False], 
+          ItemBox["\<\"\"\>",
+           BaseStyle->"InformationTitleBackground",
+           StripOnInput->False]},
+         {
+          ItemBox[
+           PaneBox[
+            
+            StyleBox["\<\"\\!\\(\\*RowBox[{\\\"lazyOuter\\\", \\\"[\\\", \
+RowBox[{StyleBox[\\\"f\\\", \\\"TI\\\"], \\\",\\\",  StyleBox[SubscriptBox[\\\
+\"list\\\", StyleBox[\\\"1\\\", \\\"TR\\\"]], \\\"TI\\\"], \\\",\\\",  \
+StyleBox[SubscriptBox[\\\"list\\\", StyleBox[\\\"2\\\", \\\"TR\\\"]], \
+\\\"TI\\\"], \\\",\\\",  StyleBox[\\\"\[Ellipsis]\\\", \\\"TR\\\"]}], \\\"]\\\
+\"}]\\) effectively computes Flatten[Outer[\\!\\(\\*StyleBox[\\\"f\\\", \
+\\\"TI\\\"]\\), \\!\\(\\*StyleBox[SubscriptBox[\\\"list\\\", StyleBox[\\\"1\\\
+\", \\\"TR\\\"]], \\\"TI\\\"]\\), \
+\\!\\(\\*StyleBox[SubscriptBox[\\\"list\\\", StyleBox[\\\"2\\\", \
+\\\"TR\\\"]], \\\"TI\\\"]\\), \[Ellipsis]]] in a lazy fashion using \
+lazyTuples.\"\>", "InformationUsageText",
+             StripOnInput->False,
+             LineSpacing->{1.5, 1.5, 3.}],
+            FrameMargins->{{10, 10}, {8, 10}}],
+           BaseStyle->"InformationUsageSubtitleBackground",
+           StripOnInput->False], 
+          ItemBox["\<\"\"\>",
+           BaseStyle->"InformationUsageSubtitleBackground",
+           StripOnInput->False]},
+         {
+          ItemBox[
+           TagBox[
+            ButtonBox[
+             PaneSelectorBox[{False->
+              
+              DynamicBox[FEPrivate`FrontEndResource[
+               "FEBitmaps", "DownPointerOpener"],
+               ImageSizeCache->{13., {4., 9.}}], True->
+              DynamicBox[FEPrivate`FrontEndResource[
+               "FEBitmaps", "DownPointerOpenerHot"],
+               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
+              System`InformationDump`mouseOver$$]],
+             Alignment->Left,
+             Appearance->{"Default" -> None},
+             
+             ButtonFunction:>FEPrivate`Set[
+              System`InformationDump`open$$, True],
+             Evaluator->Automatic,
+             FrameMargins->{{9, 0}, {0, 0}},
+             ImageMargins->0,
+             ImageSize->Full,
+             Method->"Preemptive"],
+            
+            EventHandlerTag[{
+             "MouseEntered" :> 
+              FEPrivate`Set[System`InformationDump`mouseOver$$, True], 
+              "MouseExited" :> 
+              FEPrivate`Set[System`InformationDump`mouseOver$$, False], 
+              Method -> "Preemptive", PassEventsDown -> Automatic, 
+              PassEventsUp -> True}]],
+           BaseStyle->"InformationTitleBackground",
+           StripOnInput->False], "\[SpanFromLeft]"}
+        },
+        AutoDelete->False,
+        FrameStyle->Directive[
+          GrayLevel[0.8], 
+          Thickness[Tiny]],
+        GridBoxAlignment->{"Columns" -> {Left, Right}, "Rows" -> {{Center}}},
+        GridBoxDividers->{
+         "Columns" -> {{None}}, "Rows" -> {False, {True}, False}},
+        GridBoxItemSize->{
+         "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+       "Grid"]}, Dynamic[System`InformationDump`open$$],
+      BaselinePosition->Baseline,
+      FrameMargins->0,
+      ImageSize->Automatic],
+     DynamicModuleValues:>{}],
+    BaseStyle->"InformationGridFrame",
+    StripOnInput->False], "InformationGridPlain",
+   StripOnInput->False],
+  InformationData[
+   Association[
+   "ObjectType" -> "Symbol", "Usage" -> 
+    "\!\(\*RowBox[{\"lazyOuter\", \"[\", RowBox[{StyleBox[\"f\", \"TI\"], \",\
+\",  StyleBox[SubscriptBox[\"list\", StyleBox[\"1\", \"TR\"]], \"TI\"], \
+\",\",  StyleBox[SubscriptBox[\"list\", StyleBox[\"2\", \"TR\"]], \"TI\"], \
+\",\",  StyleBox[\"\[Ellipsis]\", \"TR\"]}], \"]\"}]\) effectively computes \
+Flatten[Outer[\!\(\*StyleBox[\"f\", \"TI\"]\), \
+\!\(\*StyleBox[SubscriptBox[\"list\", StyleBox[\"1\", \"TR\"]], \"TI\"]\), \!\
+\(\*StyleBox[SubscriptBox[\"list\", StyleBox[\"2\", \"TR\"]], \"TI\"]\), \
+\[Ellipsis]]] in a lazy fashion using lazyTuples.", "Documentation" -> None, 
+    "OwnValues" -> None, "UpValues" -> None, "DownValues" -> 
+    Information`InformationValueForm[
+     DownValues, lazyLists`lazyOuter, {lazyLists`lazyOuter[
+         Pattern[lazyLists`Private`f, 
+          Blank[]], 
+         Pattern[lazyLists`Private`lists, 
+          BlankSequence[List]], 
+         Pattern[lazyLists`Private`opts, 
+          OptionsPattern[]]] :> Map[{
+          Map[Apply[lazyLists`Private`f, #]& ], Listable}, 
+         lazyLists`lazyTuples[{lazyLists`Private`lists}, 
+          lazyLists`Private`opts]]}], "SubValues" -> None, "DefaultValues" -> 
+    None, "NValues" -> None, "FormatValues" -> None, 
+    "Options" -> {"PartitionSize" -> 10, "Start" -> 1}, "Attributes" -> {}, 
+    "FullName" -> "lazyLists`lazyOuter"], False]]], "Output",
+ CellLabel->"Out[61]=",ExpressionUUID->"96e0ef47-5532-4477-9637-0ff5346fa070"],
 
 Cell[BoxData[
  InterpretationBox[
@@ -6350,7 +6640,6 @@ lazyMapThread[Identity, {lz1, lz2, ...}]\"\>", "InformationUsageText",
                     StripOnInput->False],
                     "\"FullName\"",
                     TooltipStyle->"TextStyling"],
-                    
                     Annotation[#, "FullName", 
                     "Tooltip"]& ], "\<\"lazyLists`lazyTranspose\"\>"}
                  },
@@ -6371,6 +6660,7 @@ lazyMapThread[Identity, {lz1, lz2, ...}]\"\>", "InformationUsageText",
             DefaultBaseStyle->"Column",
             GridBoxAlignment->{"Columns" -> {{Left}}},
             GridBoxDividers->{"Columns" -> {{False}}, "Rows" -> {{False}}},
+            
             GridBoxItemSize->{
              "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
             GridBoxSpacings->{"Columns" -> {
@@ -6475,6 +6765,7 @@ lazyMapThread[Identity, {lz1, lz2, ...}]\"\>", "InformationUsageText",
              ImageMargins->0,
              ImageSize->Full,
              Method->"Preemptive"],
+            
             EventHandlerTag[{
              "MouseEntered" :> 
               FEPrivate`Set[System`InformationDump`mouseOver$$, True], 
@@ -6558,7 +6849,7 @@ lz2, ...}]", "Documentation" -> None, "OwnValues" -> None, "UpValues" -> None,
     None, "DefaultValues" -> None, "NValues" -> None, "FormatValues" -> None, 
     "Options" -> {"RepartitionFunction" -> Max}, "Attributes" -> {}, 
     "FullName" -> "lazyLists`lazyTranspose"], False]]], "Output",
- CellLabel->"Out[77]=",ExpressionUUID->"bbd0aae6-2769-42cf-9a21-c122dab5662a"],
+ CellLabel->"Out[62]=",ExpressionUUID->"4757b3a4-bfaf-4134-90a0-c67b61d422ef"],
 
 Cell[BoxData[
  InterpretationBox[
@@ -6760,6 +7051,7 @@ Map[Part[l, {#}]&, {i, j, k, ...}] but faster.\"\>", "InformationUsageText",
            TagBox[
             ButtonBox[
              PaneSelectorBox[{False->
+              
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
                ImageSizeCache->{13., {4., 9.}}], True->
@@ -6829,7 +7121,7 @@ j, k, ...}] but faster.", "Documentation" -> None, "OwnValues" -> None,
     "DefaultValues" -> None, "NValues" -> None, "FormatValues" -> None, 
     "Options" -> None, "Attributes" -> {}, "FullName" -> 
     "lazyLists`lazyPartMap"], False]]], "Output",
- CellLabel->"Out[78]=",ExpressionUUID->"4295c5a7-ef22-4235-979a-a6b345570aff"],
+ CellLabel->"Out[63]=",ExpressionUUID->"f54043d3-04f9-4259-b36d-5a6204df7b5c"],
 
 Cell[BoxData[
  InterpretationBox[
@@ -6905,7 +7197,8 @@ mappings of the form f /@ g /@ ... /@ lzList to a single map of the form (f \
                     RowBox[{
                     "lazyLists`Private`gen", ":", "lazyLists`Private`patt"}], 
                     ")"}], "[", 
-                    RowBox[{"lazyLists`Private`fgen_", ",", 
+                    RowBox[{
+                    "lazyLists`Private`fgen_", ",", 
                     "lazyLists`Private`args___"}], "]"}]}], "]"}], 
                     "\[RuleDelayed]", 
                     RowBox[{"With", "[", 
@@ -6931,8 +7224,7 @@ mappings of the form f /@ g /@ ... /@ lzList to a single map of the form (f \
                     RowBox[{
                     RowBox[{"HoldPattern", "[", 
                     RowBox[{"lazyLists`Private`fun_", "/@", 
-                    RowBox[{
-                    "lazyLists`Private`fgen_", "/@", 
+                    RowBox[{"lazyLists`Private`fgen_", "/@", 
                     "lazyLists`Private`tail_"}]}], "]"}], "\[RuleDelayed]", 
                     RowBox[{"With", "[", 
                     RowBox[{
@@ -7022,7 +7314,6 @@ mappings of the form f /@ g /@ ... /@ lzList to a single map of the form (f \
                     StripOnInput->False],
                     "\"FullName\"",
                     TooltipStyle->"TextStyling"],
-                    
                     Annotation[#, "FullName", 
                     "Tooltip"]& ], "\<\"lazyLists`composeMappedFunctions\"\>"}
                  },
@@ -7246,7 +7537,7 @@ mappings of the form f /@ g /@ ... /@ lzList to a single map of the form (f \
     "NValues" -> None, "FormatValues" -> None, "Options" -> None, 
     "Attributes" -> {}, "FullName" -> "lazyLists`composeMappedFunctions"], 
    False]]], "Output",
- CellLabel->"Out[79]=",ExpressionUUID->"72d40e96-c9bc-4f6d-afde-2adc00be9ce1"],
+ CellLabel->"Out[64]=",ExpressionUUID->"84226356-d1c8-4db8-89c3-6ef7213d00b2"],
 
 Cell[BoxData[
  InterpretationBox[
@@ -7302,23 +7593,71 @@ infinite) lazyList to finite length.\"\>", "InformationUsageText",
                     RowBox[{
                     RowBox[{"lazyTruncate", "[", 
                     RowBox[{
-                    RowBox[{"lazyLists`Private`lz", ":", 
+                    RowBox[{"_lazyList", "|", "_partitionedLazyList"}], ",", 
+                    "0"}], "]"}], ":=", 
+                    RowBox[{"lazyList", "[", "]"}]}]},
+                    {
                     RowBox[{
+                    RowBox[{"lazyTruncate", "[", 
+                    RowBox[{
+                    RowBox[{"lazyList", "[", "]"}], ",", "_"}], "]"}], ":=", 
+                    RowBox[{"lazyList", "[", "]"}]}]},
+                    {
+                    RowBox[{
+                    RowBox[{"lazyTruncate", "[", 
+                    RowBox[{
+                    RowBox[{"lazyLists`Private`lz", ":", 
                     RowBox[{"lazyList", "[", 
-                    RowBox[{"_", ",", "_"}], "]"}], "|", 
-                    RowBox[{"partitionedLazyList", "[", 
-                    RowBox[{"_List", ",", "_"}], "]"}]}]}], ",", 
+                    RowBox[{
+                    "lazyLists`Private`head_", ",", 
+                    "lazyLists`Private`tail_"}], "]"}]}], ",", 
                     RowBox[{
                     "lazyLists`Private`int_Integer", "?", "Positive"}]}], 
                     "]"}], ":=", 
-                    RowBox[{"MapIndexed", "[", 
+                    RowBox[{"lazyList", "[", 
+                    RowBox[{"lazyLists`Private`head", ",", 
+                    RowBox[{"lazyTruncate", "[", 
+                    RowBox[{"lazyLists`Private`tail", ",", 
+                    RowBox[{"lazyLists`Private`int", "-", "1"}]}], "]"}]}], 
+                    "]"}]}]},
+                    {
                     RowBox[{
+                    RowBox[{"lazyTruncate", "[", 
                     RowBox[{
+                    RowBox[{"lazyLists`Private`lz", ":", 
+                    RowBox[{"partitionedLazyList", "[", 
+                    RowBox[{
+                    "lazyLists`Private`head_List", ",", 
+                    "lazyLists`Private`tail_"}], "]"}]}], ",", 
+                    RowBox[{
+                    "lazyLists`Private`int_Integer", "?", "Positive"}]}], 
+                    "]"}], ":=", 
+                    RowBox[{"With", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"lazyLists`Private`lHead", "=", 
+                    RowBox[{"Length", "[", "lazyLists`Private`head", "]"}]}], 
+                    "}"}], ",", 
                     RowBox[{"If", "[", 
                     RowBox[{
-                    RowBox[{"#2", "\[LessEqual]", "lazyLists`Private`int"}], 
-                    ",", "#1", ",", "endOfLazyList", ",", "endOfLazyList"}], 
-                    "]"}], "&"}], ",", "lazyLists`Private`lz"}], "]"}]}]},
+                    RowBox[{
+                    "lazyLists`Private`lHead", "\[GreaterEqual]", 
+                    "lazyLists`Private`int"}], ",", 
+                    RowBox[{"partitionedLazyList", "[", 
+                    RowBox[{
+                    RowBox[{"Take", "[", 
+                    RowBox[{
+                    "lazyLists`Private`head", ",", "lazyLists`Private`int"}], 
+                    "]"}], ",", 
+                    RowBox[{"lazyList", "[", "]"}]}], "]"}], ",", 
+                    RowBox[{"partitionedLazyList", "[", 
+                    RowBox[{"lazyLists`Private`head", ",", 
+                    RowBox[{"lazyTruncate", "[", 
+                    RowBox[{"lazyLists`Private`tail", ",", 
+                    RowBox[{
+                    "lazyLists`Private`int", "-", 
+                    "lazyLists`Private`lHead"}]}], "]"}]}], "]"}]}], "]"}]}], 
+                    "]"}]}]},
                     {
                     RowBox[{
                     RowBox[{"lazyTruncate", "[", 
@@ -7526,20 +7865,41 @@ finite length.", "Documentation" -> None, "OwnValues" -> None, "UpValues" ->
     None, "DownValues" -> 
     Information`InformationValueForm[
      DownValues, lazyLists`lazyTruncate, {lazyLists`lazyTruncate[
+         Alternatives[
+          Blank[lazyLists`lazyList], 
+          Blank[lazyLists`partitionedLazyList]], 0] :> lazyLists`lazyList[], 
+       lazyLists`lazyTruncate[
+         lazyLists`lazyList[], 
+         Blank[]] :> lazyLists`lazyList[], lazyLists`lazyTruncate[
          Pattern[lazyLists`Private`lz, 
-          Alternatives[
-           lazyLists`lazyList[
-            Blank[], 
+          lazyLists`lazyList[
+           Pattern[lazyLists`Private`head, 
             Blank[]], 
-           lazyLists`partitionedLazyList[
-            Blank[List], 
+           Pattern[lazyLists`Private`tail, 
             Blank[]]]], 
          PatternTest[
           Pattern[lazyLists`Private`int, 
            Blank[Integer]], Positive]] :> 
-       MapIndexed[
-        If[#2 <= lazyLists`Private`int, #, lazyLists`endOfLazyList, 
-          lazyLists`endOfLazyList]& , lazyLists`Private`lz], 
+       lazyLists`lazyList[lazyLists`Private`head, 
+         lazyLists`lazyTruncate[lazyLists`Private`tail, 
+          Subtract[lazyLists`Private`int, 1]]], lazyLists`lazyTruncate[
+         Pattern[lazyLists`Private`lz, 
+          lazyLists`partitionedLazyList[
+           Pattern[lazyLists`Private`head, 
+            Blank[List]], 
+           Pattern[lazyLists`Private`tail, 
+            Blank[]]]], 
+         PatternTest[
+          Pattern[lazyLists`Private`int, 
+           Blank[Integer]], Positive]] :> 
+       With[{lazyLists`Private`lHead = Length[lazyLists`Private`head]}, 
+         If[lazyLists`Private`lHead >= lazyLists`Private`int, 
+          lazyLists`partitionedLazyList[
+           Take[lazyLists`Private`head, lazyLists`Private`int], 
+           lazyLists`lazyList[]], 
+          lazyLists`partitionedLazyList[lazyLists`Private`head, 
+           lazyLists`lazyTruncate[lazyLists`Private`tail, 
+            Subtract[lazyLists`Private`int, lazyLists`Private`lHead]]]]], 
        lazyLists`lazyTruncate[
          Pattern[lazyLists`Private`arg, 
           Except[
@@ -7559,7 +7919,7 @@ finite length.", "Documentation" -> None, "OwnValues" -> None, "UpValues" ->
     "DefaultValues" -> None, "NValues" -> None, "FormatValues" -> None, 
     "Options" -> None, "Attributes" -> {}, "FullName" -> 
     "lazyLists`lazyTruncate"], False]]], "Output",
- CellLabel->"Out[80]=",ExpressionUUID->"ffe0b5db-6431-4896-b3a5-e617e831758b"],
+ CellLabel->"Out[65]=",ExpressionUUID->"7f63ca56-7237-4160-913f-aed7cdc7c98c"],
 
 Cell[BoxData[
  InterpretationBox[
@@ -7627,13 +7987,42 @@ results from multiple batches.\"\>", "InformationUsageText",
                     RowBox[{
                     "lazyLists`Private`agg_", ",", 
                     "lazyLists`Private`comb_"}], "}"}], ",", 
-                    RowBox[{
-                    "lazyLists`Private`batchSize_Integer", "?", "Positive"}], 
-                    ",", 
                     RowBox[{"lazyLists`Private`maxItems", ":", 
                     RowBox[{
                     RowBox[{"_Integer", "?", "Positive"}], "|", 
-                    "\[Infinity]"}], ":", "\[Infinity]"}]}], "]"}], ":=", 
+                    "\[Infinity]"}], ":", "\[Infinity]"}], ",", 
+                    RowBox[{"lazyLists`Private`bsize", ":", 
+                    RowBox[{
+                    RowBox[{"_Integer", "?", "Positive"}], "|", "Automatic"}],
+                     ":", "Automatic"}]}], "]"}], ":=", 
+                    RowBox[{"With", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"lazyLists`Private`batchSize", "=", 
+                    RowBox[{"Replace", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{
+                    "lazyLists`Private`bsize", ",", "lazyLists`Private`lz"}], 
+                    "}"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"lazyLists`Private`i_Integer", ",", "_"}], "}"}], 
+                    "\[RuleDelayed]", "lazyLists`Private`i"}], ",", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"Automatic", ",", 
+                    RowBox[{"partitionedLazyList", "[", 
+                    RowBox[{"lazyLists`Private`l_List", ",", "_"}], "]"}]}], 
+                    "}"}], "\[RuleDelayed]", 
+                    RowBox[{"Length", "[", "lazyLists`Private`l", "]"}]}], 
+                    ",", 
+                    RowBox[{"_", "\[RuleDelayed]", 
+                    RowBox[{"Min", "[", 
+                    RowBox[{"100", ",", "lazyLists`Private`maxItems"}], 
+                    "]"}]}]}], "}"}]}], "]"}]}], "}"}], ",", 
                     RowBox[{"With", "[", 
                     RowBox[{
                     RowBox[{"{", 
@@ -7670,12 +8059,19 @@ results from multiple batches.\"\>", "InformationUsageText",
                     RowBox[{"_", "\[RuleDelayed]", "$Failed"}]}], "}"}]}], 
                     "]"}], ",", 
                     RowBox[{"{", 
-                    RowBox[{"lazyLists`Private`agg", ",", 
-                    "lazyLists`Private`comb"}], "}"}], ",", 
-                    "lazyLists`Private`batchSize", ",", 
+                    RowBox[{
+                    "lazyLists`Private`agg", ",", "lazyLists`Private`comb"}], 
+                    "}"}], ",", 
                     RowBox[{
                     "lazyLists`Private`maxItems", "-", 
-                    "lazyLists`Private`n"}]}], "]"}]}], "]"}]}], "]"}]}]}
+                    "lazyLists`Private`n"}], ",", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Head", "[", "lazyLists`Private`lz", "]"}], "===",
+                     "lazyList"}], ",", "lazyLists`Private`batchSize", ",", 
+                    "lazyLists`Private`bsize"}], "]"}]}], "]"}]}], "]"}]}], 
+                    "]"}]}], "]"}]}]}
                     },
                     DefaultBaseStyle->"Column",
                     GridBoxAlignment->{"Columns" -> {{Left}}},
@@ -7866,35 +8262,50 @@ batches.", "Documentation" -> None, "OwnValues" -> None, "UpValues" -> None,
            Blank[]], 
           Pattern[lazyLists`Private`comb, 
            Blank[]]}, 
-         PatternTest[
-          Pattern[lazyLists`Private`batchSize, 
-           Blank[Integer]], Positive], 
          Optional[
           Pattern[lazyLists`Private`maxItems, 
            Alternatives[
             PatternTest[
              Blank[Integer], Positive], 
             DirectedInfinity[1]]], 
-          DirectedInfinity[1]]] :> 
-       With[{lazyLists`Private`n = 
-          Min[lazyLists`Private`batchSize, lazyLists`Private`maxItems]}, 
-         Block[{$IterationLimit = lazyLists`$lazyIterationLimit}, 
-          lazyLists`Private`lazyAggregateInternal[
-           Replace[
-            TakeDrop[lazyLists`Private`lz, lazyLists`Private`n], {{
-               Pattern[lazyLists`Private`l, 
-                Blank[List]], 
-               Pattern[lazyLists`Private`lz1, 
-                Blank[]]} :> {
-               lazyLists`Private`agg[lazyLists`Private`l], 
-               lazyLists`Private`lz1}, Blank[] :> $Failed}], {
-           lazyLists`Private`agg, lazyLists`Private`comb}, 
-           lazyLists`Private`batchSize, lazyLists`Private`maxItems - 
-           lazyLists`Private`n]]]}], "SubValues" -> None, "DefaultValues" -> 
-    None, "NValues" -> None, "FormatValues" -> None, "Options" -> None, 
-    "Attributes" -> {}, "FullName" -> "lazyLists`lazyAggregate"], 
-   False]]], "Output",
- CellLabel->"Out[81]=",ExpressionUUID->"e8bf10a0-b3a8-423c-b689-a291955f17bd"]
+          DirectedInfinity[1]], 
+         Optional[
+          Pattern[lazyLists`Private`bsize, 
+           Alternatives[
+            PatternTest[
+             Blank[Integer], Positive], Automatic]], Automatic]] :> 
+       With[{lazyLists`Private`batchSize = 
+          Replace[{lazyLists`Private`bsize, lazyLists`Private`lz}, {{
+               Pattern[lazyLists`Private`i, 
+                Blank[Integer]], 
+               Blank[]} :> lazyLists`Private`i, {Automatic, 
+               lazyLists`partitionedLazyList[
+                Pattern[lazyLists`Private`l, 
+                 Blank[List]], 
+                Blank[]]} :> Length[lazyLists`Private`l], Blank[] :> 
+             Min[100, lazyLists`Private`maxItems]}]}, 
+         With[{
+          lazyLists`Private`n = 
+           Min[lazyLists`Private`batchSize, lazyLists`Private`maxItems]}, 
+          Block[{$IterationLimit = lazyLists`$lazyIterationLimit}, 
+           lazyLists`Private`lazyAggregateInternal[
+            Replace[
+             TakeDrop[lazyLists`Private`lz, lazyLists`Private`n], {{
+                Pattern[lazyLists`Private`l, 
+                 Blank[List]], 
+                Pattern[lazyLists`Private`lz1, 
+                 Blank[]]} :> {
+                lazyLists`Private`agg[lazyLists`Private`l], 
+                lazyLists`Private`lz1}, Blank[] :> $Failed}], {
+            lazyLists`Private`agg, lazyLists`Private`comb}, 
+            Subtract[lazyLists`Private`maxItems, lazyLists`Private`n], 
+            If[
+            Head[lazyLists`Private`lz] === lazyLists`lazyList, 
+             lazyLists`Private`batchSize, lazyLists`Private`bsize]]]]]}], 
+    "SubValues" -> None, "DefaultValues" -> None, "NValues" -> None, 
+    "FormatValues" -> None, "Options" -> None, "Attributes" -> {}, "FullName" -> 
+    "lazyLists`lazyAggregate"], False]]], "Output",
+ CellLabel->"Out[66]=",ExpressionUUID->"796184bc-caf9-4a4b-8958-b9c04df963a5"]
 }, Open  ]]
 }, Closed]],
 
@@ -9857,7 +10268,6 @@ elements in a lazy list.\"\>", "InformationUsageText",
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
-             
              ButtonFunction:>FEPrivate`Set[
               System`InformationDump`open$$, False],
              Evaluator->Automatic,
@@ -10258,6 +10668,7 @@ Tuples[lists]\"\>", "InformationUsageText",
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
                ImageSizeCache->{13., {4., 9.}}], True->
+              
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
                ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
@@ -18788,17 +19199,17 @@ Cell[BoxData[{
   ";"}], "\[IndentingNewLine]", 
  RowBox[{"Length", "/@", 
   RowBox[{"testReport", "[", "\"\<TestResultRules\>\"", "]"}]}]}], "Input",
- CellLabel->"In[10]:=",ExpressionUUID->"d39108b1-440b-4934-83bc-ca7def2926a3"],
+ CellLabel->"In[13]:=",ExpressionUUID->"d39108b1-440b-4934-83bc-ca7def2926a3"],
 
 Cell[BoxData[
  RowBox[{"\[LeftAssociation]", 
   RowBox[{
-   RowBox[{"\<\"TestsSucceeded\"\>", "\[Rule]", "252"}], ",", 
+   RowBox[{"\<\"TestsSucceeded\"\>", "\[Rule]", "255"}], ",", 
    RowBox[{"\<\"TestsFailedWrongResults\"\>", "\[Rule]", "1"}], ",", 
    RowBox[{"\<\"TestsFailedWithMessages\"\>", "\[Rule]", "0"}], ",", 
    RowBox[{"\<\"TestsFailedWithErrors\"\>", "\[Rule]", "0"}]}], 
   "\[RightAssociation]"}]], "Output",
- CellLabel->"Out[11]=",ExpressionUUID->"c375e2fe-b9bd-4cb6-aaba-688016cc73f2"]
+ CellLabel->"Out[14]=",ExpressionUUID->"90ef4902-65c6-4c4b-844b-e4c85e948228"]
 }, Open  ]],
 
 Cell["\<\
@@ -18820,21 +19231,35 @@ Cell[BoxData[{
   ";"}], "\[IndentingNewLine]", 
  RowBox[{"Length", "/@", 
   RowBox[{"testReport", "[", "\"\<TestResultRules\>\"", "]"}]}]}], "Input",
- CellLabel->"In[16]:=",ExpressionUUID->"e671f9bb-d62b-46e6-95a8-e4e014fff349"],
+ CellLabel->"In[8]:=",ExpressionUUID->"e671f9bb-d62b-46e6-95a8-e4e014fff349"],
 
 Cell[BoxData[
  RowBox[{"\[LeftAssociation]", 
   RowBox[{
-   RowBox[{"\<\"TestsSucceeded\"\>", "\[Rule]", "252"}], ",", 
+   RowBox[{"\<\"TestsSucceeded\"\>", "\[Rule]", "255"}], ",", 
    RowBox[{"\<\"TestsFailedWrongResults\"\>", "\[Rule]", "1"}], ",", 
    RowBox[{"\<\"TestsFailedWithMessages\"\>", "\[Rule]", "0"}], ",", 
    RowBox[{"\<\"TestsFailedWithErrors\"\>", "\[Rule]", "0"}]}], 
   "\[RightAssociation]"}]], "Output",
- CellLabel->"Out[17]=",ExpressionUUID->"70d62640-dce1-4848-b640-a00333e24294"]
+ CellLabel->"Out[9]=",ExpressionUUID->"7101ecd9-fdd5-4f17-9937-006e87daf685"]
 }, Open  ]],
 
 Cell["There is currently 1 failing test. This is a known issue", \
-"Text",ExpressionUUID->"0ef2ed30-5b21-4f6e-b4dc-8e64f2279b7a"]
+"Text",ExpressionUUID->"0ef2ed30-5b21-4f6e-b4dc-8e64f2279b7a"],
+
+Cell["\<\
+Delete docked cells (these often slow down the testing notebook):\
+\>", "Text",ExpressionUUID->"2f8451fe-6c7b-4a4d-b597-109a49cdeccc"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"SetOptions", "[", 
+     RowBox[{"#", ",", 
+      RowBox[{"DockedCells", "\[Rule]", "Inherited"}]}], "]"}], "&"}], "/@", 
+   RowBox[{"Notebooks", "[", "]"}]}], ";"}]], "Input",
+ CellLabel->"In[12]:=",ExpressionUUID->"40347195-c599-4c2f-a0fd-1e1b12bd2074"]
 }, Closed]],
 
 Cell[CellGroupData[{
