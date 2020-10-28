@@ -67,7 +67,7 @@ indexLazyList[lengths : {__Integer}, opts : OptionsPattern[]] := With[{
 },
     Map[
         {rangeTuplesAtPositions[lengths], Listable},
-        lazyTruncate[partitionedLazyRange[start, 1, partition], Times @@ lengths]
+        partitionedLazyRange[start, Times @@ lengths, 1, partition]
     ]
 ];
 

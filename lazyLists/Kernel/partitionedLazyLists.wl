@@ -96,9 +96,10 @@ partitionedLazyRange[start_?NumericQ, min_?NumericQ,
 
 partitionedLazyRange[start_?NumericQ, end_?NumericQ, step_?NumericQ, partition_Integer?Positive] := lazyList[];
 
-partitionedLazyRange[start_, _DirectedInfinity, step_, partition_Integer?Positive] := partitionedLazyList[
+partitionedLazyRange[start_, inf_DirectedInfinity, step_, partition_Integer?Positive] := partitionedLazyList[
     lazyRange[
         start + step * Range[0, partition - 1],
+        inf,
         partition * step
     ]
 ];
