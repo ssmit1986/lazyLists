@@ -181,7 +181,7 @@ lazyTuples[tupLength_Integer, staringTuple : ({__} | Automatic) : Automatic, opt
 
 Options[lazyOuter] = Options[lazyTuples];
 lazyOuter[f_, lists__List, opts : OptionsPattern[]] := Map[
-    {Function[f @@@ #], Listable},
+    {Map[Function[f @@ #]], Listable},
     lazyTuples[{lists}, opts]
 ];
 
