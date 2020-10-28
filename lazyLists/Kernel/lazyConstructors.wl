@@ -214,15 +214,24 @@ lazyConstantArray[const_] := Function[
     ]
 ][1];
 
-
-Attributes[lazyPeriodicListInternal] = {HoldFirst};
-lazyPeriodicListInternal[list_, i_, max_] := lazyList[
+lazyPeriodicListInternal[lz_, (head : lzHead)[first_, tail_], n_] := head[
+    first,
+    lazyPeriodicListInternal[lz, tail, n]
+];
+lazyPeriodicListInternal[(head : lzHead)[first_, tail_], lazyList[], n_] := head[
+    first,
+    lazyPeriodicListInternal[head[first, tail], tail, Subtract[1, n]]
+];
+lazyPeriodicListInternal[list_, i_, max_Integer] := lazyList[
     list[[i]],
     lazyPeriodicListInternal[list, Mod[i + 1, max, 1], max]
 ];
+Attributes[lazyPeriodicListInternal] = {HoldFirst};
 
 lazyPeriodicList[Hold[list_Symbol?ListQ] | list_List] := lazyPeriodicListInternal[list, 1, Length[list]];
 lazyPeriodicList[Hold[list_Symbol?ListQ] | list_List, part_Integer?Positive] := lazyPeriodicListInternal[list, 1, Length[list], part];
+lazyPeriodicList[lazyList[]] := lazyList[];
+lazyPeriodicList[lz : lzHead[first_, tail_]] := lazyPeriodicListInternal[lz, lz, 0];
 
 lazySetState[lzHead[_, HoldPattern @ lazyPeriodicListInternal[list_, _, max_, rest___]], index_Integer] := 
     lazyPeriodicListInternal[list, Mod[index  + 1 - UnitStep[index], max, 1], max, rest];
