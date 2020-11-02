@@ -272,7 +272,7 @@ SetAttributes[cachedPart, HoldAll];
 cachedPart[lzList_] /; MatchQ[lzList, lzPattern] := Module[{
     vals = {},
     nmax = 0,
-    tail = Replace[lzList, lz_lazyList :> lazyPartition[lz, 10]]
+    tail = lzList
 },
     cachedPart[vals, nmax, tail]
 ];
@@ -283,9 +283,9 @@ cachedPart[vals_, nmax_, tail_][n : _Integer | {__Integer}] := With[{
 },
     Assert[Positive[nmaxNew]];
     With[{
-        extract = Take[tail, nmaxNew - nmax]
+        extract = TakeDrop[tail, nmaxNew - nmax]
     },
-        vals = Join[vals, Most[extract]];
+        vals = Join[vals, First[extract]];
         nmax = nmaxNew;
         tail = Last[extract];
         vals[[n]]

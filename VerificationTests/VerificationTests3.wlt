@@ -864,4 +864,8 @@ VerificationTest[(* 102 *)
 
 EndTestSection[]
 
+BeginTestSection["End"]
+
+EndTestSection[]
+
 EndTestSection[]

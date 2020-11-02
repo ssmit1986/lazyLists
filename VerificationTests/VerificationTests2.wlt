@@ -517,10 +517,34 @@ VerificationTest[(* 62 *)
 	,
 	List[abc, x, "Hello", "Hello", "Hello", EndOfFile]	
 	,
-	TestID->"3a10c3aa-3bf6-467b-9474-a4f28c714065"
+	TestID->"a781eda4-bab2-4dd5-a39e-3a8a90b2e152"
 ]
 
 EndTestSection[]
+
+EndTestSection[]
+
+BeginTestSection["cachedPart"]
+
+VerificationTest[(* 63 *)
+	CompoundExpression[Set[cp, cachedPart[lazyRange[]]], List[Part[cp, 1], Part[cp, -1], Part[cp, List[2, 3]], Part[cp, -1], Part[cp, 5], Part[cp, List[-1, 1, 2, 10]]]]
+	,
+	List[1, 1, List[2, 3], 3, 5, List[10, 1, 2, 10]]	
+	,
+	TestID->"cd896f4c-aaf9-43d3-bcad-13de6a56d487"
+]
+
+VerificationTest[(* 64 *)
+	CompoundExpression[Set[cp, cachedPart[partitionedLazyRange[10]]], List[Part[cp, 1], Part[cp, -1], Part[cp, List[2, 3]], Part[cp, -1], Part[cp, 5], Part[cp, List[-1, 1, 2, 10]], Part[cp, 11], Part[cp, -1]]]
+	,
+	List[1, 1, List[2, 3], 3, 5, List[10, 1, 2, 10], 11, 11]	
+	,
+	TestID->"5b71576d-7381-43a9-8d74-ab7ac200cac4"
+]
+
+EndTestSection[]
+
+BeginTestSection["End"]
 
 EndTestSection[]
 

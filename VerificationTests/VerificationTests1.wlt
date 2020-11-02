@@ -840,4 +840,8 @@ EndTestSection[]
 
 EndTestSection[]
 
+BeginTestSection["End"]
+
+EndTestSection[]
+
 EndTestSection[]
