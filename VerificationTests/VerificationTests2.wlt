@@ -535,11 +535,63 @@ VerificationTest[(* 63 *)
 ]
 
 VerificationTest[(* 64 *)
+	List[Length[cp], Most[cp], First[Last[cp]]]
+	,
+	List[10, List[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 11]	
+	,
+	TestID->"0344ec83-962a-47a3-8cf5-8021b6badeda"
+]
+
+VerificationTest[(* 65 *)
 	CompoundExpression[Set[cp, cachedPart[partitionedLazyRange[10]]], List[Part[cp, 1], Part[cp, -1], Part[cp, List[2, 3]], Part[cp, -1], Part[cp, 5], Part[cp, List[-1, 1, 2, 10]], Part[cp, 11], Part[cp, -1]]]
 	,
 	List[1, 1, List[2, 3], 3, 5, List[10, 1, 2, 10], 11, 11]	
 	,
 	TestID->"5b71576d-7381-43a9-8d74-ab7ac200cac4"
+]
+
+VerificationTest[(* 66 *)
+	List[Length[cp], Most[cp], First[Last[cp]]]
+	,
+	List[11, List[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 12]	
+	,
+	TestID->"64262380-4bbb-42cd-9168-6a5d69c03b0d"
+]
+
+VerificationTest[(* 67 *)
+	CompoundExpression[Set[cp, cachedPart[lazyRange[1, 5]]], Part[cp, 6]]
+	,
+	Part[List[1, 2, 3, 4, 5], 6]
+	,
+	{Part::partw}
+	,
+	TestID->"50bcce61-a491-4d16-ad40-05ef5347fcaf"
+]
+
+VerificationTest[(* 68 *)
+	List[Length[cp], Part[cp, -1], Most[cp]]
+	,
+	List[5, 5, List[1, 2, 3, 4, 5]]	
+	,
+	TestID->"d0488ba5-6a7c-4090-9af7-0c9f9562cff8"
+]
+
+VerificationTest[(* 69 *)
+	CompoundExpression[Set[cp, cachedPart[partitionedLazyRange[1, 5, 3]]], Part[cp, 6]]
+	,
+	Part[List[1, 2, 3, 4, 5], 6]
+	,
+	{Part::partw}
+	,
+	TestID->"e90181f9-d555-4852-a9ac-3bfe5e17c68c"
+]
+
+VerificationTest[(* 70 *)
+	List[Length[cp], Part[cp, -1], Most[cp]]
+	,
+	List[5, 5, List[1, 2, 3, 4, 5]]	
+	,
+	TestID->"77e8f768-d6ba-4b68-a6c8-df35338dd510"
 ]
 
 EndTestSection[]

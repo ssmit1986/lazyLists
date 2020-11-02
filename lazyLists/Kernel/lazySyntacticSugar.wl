@@ -276,6 +276,7 @@ cachedPart[lzList_] /; MatchQ[lzList, lzPattern] := Module[{
 },
     cachedPart[vals, nmax, tail]
 ];
+cachedPart[vals_, nmax_, tail_][spec_] /; tail === lazyList[] := vals[[spec]];
 cachedPart[vals_, nmax_, tail_][n_Integer] /; n <= nmax := vals[[n]];
 cachedPart[vals_, nmax_, tail_][ints : {__Integer}] /; Max[ints] <= nmax := vals[[ints]];
 cachedPart[vals_, nmax_, tail_][n : _Integer | {__Integer}] := With[{
@@ -283,16 +284,19 @@ cachedPart[vals_, nmax_, tail_][n : _Integer | {__Integer}] := With[{
 },
     Assert[Positive[nmaxNew]];
     With[{
-        extract = TakeDrop[tail, nmaxNew - nmax]
+        extract = TakeDrop[tail, Subtract[nmaxNew, nmax]]
     },
         vals = Join[vals, First[extract]];
-        nmax = nmaxNew;
+        nmax = Length[vals];
         tail = Last[extract];
         vals[[n]]
     ]
 ];
 cachedPart[vals_, nmax_, tail_][s : Span[__Integer]] := cachedPart[vals, nmax, tail][Range @@ s];
 cachedPart /: Part[ch : cachedPart[___], spec_] := ch[spec];
+cachedPart /: Length[cachedPart[vals_, nmax_, tail_]] := nmax;
+cachedPart /: Most[cachedPart[vals_, nmax_, tail_]] := vals;
+cachedPart /: Last[cachedPart[vals_, nmax_, tail_]] := tail;
 
 lazyList /: Map[f_, lazyList[first_, tail_]] := lazyList[
     f[first],
