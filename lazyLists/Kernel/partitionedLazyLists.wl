@@ -573,12 +573,12 @@ partitionedLazyList /: FoldList[fun_, current_, partitionedLazyList[first_List, 
 ];
 
 partitionedLazyList /: FoldPairList[fun_, current_, partitionedLazyList[first_List, tail_], g : _ : First] := Block[{
-    state,
+    foldPairListState,
     fold
 },
-    fold = FoldPairList[fun, current, first, Function[state = Last[#]; g[#]]];
+    fold = FoldPairList[fun, current, first, Function[foldPairListState = Last[#]; g[#]]];
     With[{
-        st = state
+        st = foldPairListState
     },
         partitionedLazyList[
             fold,
