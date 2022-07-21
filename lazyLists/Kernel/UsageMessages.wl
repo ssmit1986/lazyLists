@@ -29,7 +29,7 @@ Equivalent to lazyMapThread[Identity, {lz1, lz2, ...}]";
 lazyPartMap::usage = "lazyPartMap[l, {i, j, k, ...}] is equivalent to Map[Part[l, {#}]&, {i, j, k, ...}] but faster.";
 
 GeneralUtilities`SetUsage[cachedPart,
-    "cachedPart[lz$] generates an object from which parts can be extracted and which automatically caches its values.
+	"cachedPart[lz$] generates an object from which parts can be extracted and which automatically caches its values.
 Negative indices can be used to extract from the rear of the cached values."
 ];
 
@@ -82,7 +82,7 @@ lazyTuples[n] is a special case that generates an infinite list of all n-tuples 
 nextIntegerTuple::usage = "nextIntegerTuple[{int1, int2, ...}] generates the next integer tuple in a canonical order.";
 
 GeneralUtilities`SetUsage[lazyOuter,
-    "lazyOuter[f$, list$1, list$2, $$] effectively computes Flatten[Outer[f$, list$1, list$2, $$]] in a lazy fashion using lazyTuples."
+	"lazyOuter[f$, list$1, list$2, $$] effectively computes Flatten[Outer[f$, list$1, list$2, $$]] in a lazy fashion using lazyTuples."
 ];
 
 bulkExtractElementsUsingIndexList::usage = "bulkExtractElementsUsingIndexList[lists, indices] converts elements from Tuples[Range /@ Length /@ lists] into elements from Tuples[lists]";

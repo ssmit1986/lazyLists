@@ -33,19 +33,19 @@ lazyTruncate[_, i : Except[_Integer?Positive]] := (Message[lazyTruncate::int, Sh
 (* Default failure messages for Take and Part *)
 
 Scan[
-    Function[{
-        head
-    },
-        head::illDefined = "lazyList `1` is not well-defined";
-        Scan[
-            Function[
-                head /: Alternatives[Part, Take, TakeWhile, LengthWhile][lz : #, ___] :=
-                    (Message[head::illDefined, Short[lz]]; $Failed) 
-            ],
-            {head[_], head[_, _, __]}
-        ]
-    ],
-    {lazyList, partitionedLazyList}
+	Function[{
+		head
+	},
+		head::illDefined = "lazyList `1` is not well-defined";
+		Scan[
+			Function[
+				head /: Alternatives[Part, Take, TakeWhile, LengthWhile][lz : #, ___] :=
+					(Message[head::illDefined, Short[lz]]; $Failed) 
+			],
+			{head[_], head[_, _, __]}
+		]
+	],
+	{lazyList, partitionedLazyList}
 ];
 
 
