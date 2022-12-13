@@ -58,7 +58,7 @@ The elements of the inner Lists are treated as if they're seperate elements of t
 List operations on partitionedLazyList such as Map and FoldList will be automatically applied to the generated lists for efficiency.";
 
 partitionedLazyRange::usage = "partitionedLazyRange[start, end, step, partitionLength] works like lazyRange, but yields a partitionedLazyList.
-partitionedLazyRange[partitionLength] generates the natural numbers in chuncks of length partitionLength.";
+partitionedLazyRange[partitionLength] generates the natural numbers in chunks of length partitionLength.";
 
 partitionedLazyNestList::usage = "partitionedLazyNestList[fun, elem, partitionLength] is a partitioned version of lazyNestList.
 Each new partition is generated with NestList.";
