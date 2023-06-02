@@ -185,6 +185,36 @@ lazyOuter[f_, lists__List, opts : OptionsPattern[]] := Map[
 	lazyTuples[{lists}, opts]
 ];
 
+(* ================ lazySubsets Start ================ *)
+
+Options[lazySubsets] = {"PartitionSize" -> 10, "Start" -> 1};
+lazySubsets[list_List, opts : OptionsPattern[]] := lazySubsets[list, All, opts];
+lazySubsets[list_List, arg_, OptionsPattern[]] := With[{
+	partitionSize = OptionValue["PartitionSize"],
+	n = Length[list],
+	start = OptionValue["Start"]
+},
+	Map[
+	{
+		Function[
+			With[{res = Quiet @ Subsets[list, arg, MinMax[#]]},
+				If[res === {},
+					Append[res, endOfLazyList],
+					res
+				]
+			]
+		],
+		Listable
+	},
+		partitionedLazyRange[start, partitionSize]
+	]
+];
+
+
+(* ================ lazySubsets End ================ *)
+
+
+
 End[]
 
 EndPackage[]

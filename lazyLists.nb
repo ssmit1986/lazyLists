@@ -7,7 +7,7 @@ Cell[BoxData[{
    RowBox[{"NotebookDirectory", "[", "]"}], "]"}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{"<<", "lazyLists`"}]}], "Input",
- CellLabel->"In[4]:=",ExpressionUUID->"2d6a87cf-3ef1-4832-b8b9-0995d6d1b646"],
+ CellLabel->"In[41]:=",ExpressionUUID->"2d6a87cf-3ef1-4832-b8b9-0995d6d1b646"],
 
 Cell[CellGroupData[{
 
@@ -216,11 +216,11 @@ that generates a lazyList from an ordinary list.\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {4., 9.}}], True->
+               ImageSizeCache->{10., {3., 7.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
+               ImageSizeCache->{10., {3., 7.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -260,8 +260,7 @@ that generates a lazyList from an ordinary list.\"\>", "InformationUsageText",
     BaseStyle->"InformationGridFrame",
     StripOnInput->False], "InformationGridPlain",
    StripOnInput->False],
-  InformationData[
-   Association[
+  InformationData[<|
    "ObjectType" -> "Symbol", "Usage" -> 
     "lazyList is a linked-list data structure that should contain 2 elements: \
 the first is the first element, the second a held expression that will \
@@ -274,7 +273,7 @@ an ordinary list.", "Documentation" -> None, "OwnValues" -> None, "UpValues" ->
     None, "DownValues" -> None, "SubValues" -> None, "DefaultValues" -> None, 
     "NValues" -> None, "FormatValues" -> None, "Options" -> None, 
     "Attributes" -> {HoldRest, ReadProtected}, "FullName" -> 
-    "lazyLists`lazyList"], False]]], "Output",
+    "lazyLists`lazyList"|>, False]]], "Output",
  CellLabel->"Out[60]=",ExpressionUUID->"6088c411-7122-4df3-ad82-b505e9d0e7e1"],
 
 Cell[BoxData[
@@ -539,11 +538,11 @@ allowed.\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {4., 9.}}], True->
+               ImageSizeCache->{10., {3., 7.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
+               ImageSizeCache->{10., {3., 7.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -583,8 +582,7 @@ allowed.\"\>", "InformationUsageText",
     BaseStyle->"InformationGridFrame",
     StripOnInput->False], "InformationGridPlain",
    StripOnInput->False],
-  InformationData[
-   Association[
+  InformationData[<|
    "ObjectType" -> "Symbol", "Usage" -> 
     "lazyGenerator[f, start, min, max, step] generates a lazyList that \
 applies f to values {start, start + step, start + 2 step, ...} for values \
@@ -659,7 +657,7 @@ both infinite, symbolic values for start and step are allowed.",
                lazyLists`Private`start, lazyLists`Private`step}]]; 
            lazyLists`lazyList[])}]}], "SubValues" -> None, "DefaultValues" -> 
     None, "NValues" -> None, "FormatValues" -> None, "Options" -> None, 
-    "Attributes" -> {}, "FullName" -> "lazyLists`lazyGenerator"], 
+    "Attributes" -> {}, "FullName" -> "lazyLists`lazyGenerator"|>, 
    False]]], "Output",
  CellLabel->"Out[61]=",ExpressionUUID->"73d9c4d1-22e1-41d5-9269-17df750f71c8"],
 
@@ -749,6 +747,7 @@ is generally slightly faster than lazyGenerator.\"\>", "InformationUsageText",
                     },
                     DefaultBaseStyle->"Column",
                     GridBoxAlignment->{"Columns" -> {{Left}}},
+                    
                     GridBoxItemSize->{
                     "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}]},
                   {
@@ -795,6 +794,7 @@ is generally slightly faster than lazyGenerator.\"\>", "InformationUsageText",
            TagBox[
             ButtonBox[
              PaneSelectorBox[{False->
+              
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "UpPointerOpener"]], True->
               
@@ -868,11 +868,11 @@ is generally slightly faster than lazyGenerator.\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {4., 9.}}], True->
+               ImageSizeCache->{10., {3., 7.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
+               ImageSizeCache->{10., {3., 7.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -912,8 +912,7 @@ is generally slightly faster than lazyGenerator.\"\>", "InformationUsageText",
     BaseStyle->"InformationGridFrame",
     StripOnInput->False], "InformationGridPlain",
    StripOnInput->False],
-  InformationData[
-   Association[
+  InformationData[<|
    "ObjectType" -> "Symbol", "Usage" -> 
     "lazyRange[] is a lazy representation of the Integers from 1 to \
 \[Infinity]. lazyRange[min, delta] represents values values from min onwards \
@@ -942,7 +941,7 @@ faster than lazyGenerator.", "Documentation" -> None, "OwnValues" -> None,
        lazyLists`lazyConstantArray[lazyLists`Private`start]}], "SubValues" -> 
     None, "DefaultValues" -> None, "NValues" -> None, "FormatValues" -> None, 
     "Options" -> None, "Attributes" -> {}, "FullName" -> 
-    "lazyLists`lazyRange"], False]]], "Output",
+    "lazyLists`lazyRange"|>, False]]], "Output",
  CellLabel->"Out[62]=",ExpressionUUID->"1025bccf-bfb1-4b82-810c-7dd4acc64415"],
 
 Cell[BoxData[
@@ -1146,11 +1145,11 @@ Cell[BoxData[
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {4., 9.}}], True->
+               ImageSizeCache->{10., {3., 7.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
+               ImageSizeCache->{10., {3., 7.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -1190,8 +1189,7 @@ Cell[BoxData[
     BaseStyle->"InformationGridFrame",
     StripOnInput->False], "InformationGridPlain",
    StripOnInput->False],
-  InformationData[
-   Association[
+  InformationData[<|
    "ObjectType" -> "Symbol", "Usage" -> 
     "lazyPowerRange[min, r] is the infinite list {min, r \[Times] min, r^2 \
 \[Times] min, ...}", "Documentation" -> None, "OwnValues" -> None, "UpValues" -> 
@@ -1216,7 +1214,7 @@ Cell[BoxData[
        lazyLists`lazyConstantArray[lazyLists`Private`min]}], "SubValues" -> 
     None, "DefaultValues" -> None, "NValues" -> None, "FormatValues" -> None, 
     "Options" -> None, "Attributes" -> {}, "FullName" -> 
-    "lazyLists`lazyPowerRange"], False]]], "Output",
+    "lazyLists`lazyPowerRange"|>, False]]], "Output",
  CellLabel->"Out[63]=",ExpressionUUID->"d064b041-06ce-4e25-971b-f8783eab0dea"],
 
 Cell[BoxData[
@@ -1410,11 +1408,11 @@ repeatedly.\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {4., 9.}}], True->
+               ImageSizeCache->{10., {3., 7.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
+               ImageSizeCache->{10., {3., 7.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -1454,8 +1452,7 @@ repeatedly.\"\>", "InformationUsageText",
     BaseStyle->"InformationGridFrame",
     StripOnInput->False], "InformationGridPlain",
    StripOnInput->False],
-  InformationData[
-   Association[
+  InformationData[<|
    "ObjectType" -> "Symbol", "Usage" -> 
     "lazyNestList[f, elem] is the infinite list {elem, f[elem], f[f[elem]], \
 ...} starting with elem and generated by iterating f repeatedly.", 
@@ -1471,7 +1468,7 @@ repeatedly.\"\>", "InformationUsageText",
           lazyLists`Private`f[#], #2 + 1]]& )[lazyLists`Private`elem, 1]}], 
     "SubValues" -> None, "DefaultValues" -> None, "NValues" -> None, 
     "FormatValues" -> None, "Options" -> None, "Attributes" -> {}, "FullName" -> 
-    "lazyLists`lazyNestList"], False]]], "Output",
+    "lazyLists`lazyNestList"|>, False]]], "Output",
  CellLabel->"Out[64]=",ExpressionUUID->"787d12ce-a144-409f-ae5f-ce629216b10e"],
 
 Cell[BoxData[
@@ -1692,11 +1689,11 @@ elem until the result not longer changes according to sameTest.\"\>",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {4., 9.}}], True->
+               ImageSizeCache->{10., {3., 7.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
+               ImageSizeCache->{10., {3., 7.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -1736,8 +1733,7 @@ elem until the result not longer changes according to sameTest.\"\>",
     BaseStyle->"InformationGridFrame",
     StripOnInput->False], "InformationGridPlain",
    StripOnInput->False],
-  InformationData[
-   Association[
+  InformationData[<|
    "ObjectType" -> "Symbol", "Usage" -> 
     "lazyFixedPointList[f, elem, sameTest] nests f to elem until the result \
 not longer changes according to sameTest.", "Documentation" -> None, 
@@ -1780,7 +1776,7 @@ not longer changes according to sameTest.", "Documentation" -> None,
            lazyLists`Private`sameTest]]}], "SubValues" -> None, 
     "DefaultValues" -> None, "NValues" -> None, "FormatValues" -> None, 
     "Options" -> None, "Attributes" -> {}, "FullName" -> 
-    "lazyLists`lazyFixedPointList"], False]]], "Output",
+    "lazyLists`lazyFixedPointList"|>, False]]], "Output",
  CellLabel->"Out[65]=",ExpressionUUID->"96567c63-23f4-43ec-8a0d-e39e299a270d"],
 
 Cell[BoxData[
@@ -1978,14 +1974,13 @@ cycles through the values in list periodically.\"\>", "InformationUsageText",
            TagBox[
             ButtonBox[
              PaneSelectorBox[{False->
-              
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {4., 9.}}], True->
+               ImageSizeCache->{10., {3., 7.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
+               ImageSizeCache->{10., {3., 7.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -2025,8 +2020,7 @@ cycles through the values in list periodically.\"\>", "InformationUsageText",
     BaseStyle->"InformationGridFrame",
     StripOnInput->False], "InformationGridPlain",
    StripOnInput->False],
-  InformationData[
-   Association[
+  InformationData[<|
    "ObjectType" -> "Symbol", "Usage" -> 
     "lazyPeriodicList[list] is an infinite lazyList that cycles through the \
 values in list periodically.", "Documentation" -> None, "OwnValues" -> None, 
@@ -2056,7 +2050,7 @@ values in list periodically.", "Documentation" -> None, "OwnValues" -> None,
          Length[lazyLists`Private`list], lazyLists`Private`part]}], 
     "SubValues" -> None, "DefaultValues" -> None, "NValues" -> None, 
     "FormatValues" -> None, "Options" -> None, "Attributes" -> {}, "FullName" -> 
-    "lazyLists`lazyPeriodicList"], False]]], "Output",
+    "lazyLists`lazyPeriodicList"|>, False]]], "Output",
  CellLabel->"Out[66]=",ExpressionUUID->"7890768a-23fc-4d60-b79c-ac02fe65cbe3"],
 
 Cell[BoxData[
@@ -2258,11 +2252,11 @@ EndOfFile is reached.\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {4., 9.}}], True->
+               ImageSizeCache->{10., {3., 7.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
+               ImageSizeCache->{10., {3., 7.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -2302,8 +2296,7 @@ EndOfFile is reached.\"\>", "InformationUsageText",
     BaseStyle->"InformationGridFrame",
     StripOnInput->False], "InformationGridPlain",
    StripOnInput->False],
-  InformationData[
-   Association[
+  InformationData[<|
    "ObjectType" -> "Symbol", "Usage" -> 
     "lazyStream[streamObject] creates a lazyList that streams from \
 streamObject. These streams will stop automatically when EndOfFile is \
@@ -2319,7 +2312,7 @@ reached.", "Documentation" -> None, "OwnValues" -> None, "UpValues" -> None,
            lazyLists`lazyList[]]]]& )[lazyLists`Private`stream, 1]}], 
     "SubValues" -> None, "DefaultValues" -> None, "NValues" -> None, 
     "FormatValues" -> None, "Options" -> None, "Attributes" -> {}, "FullName" -> 
-    "lazyLists`lazyStream"], False]]], "Output",
+    "lazyLists`lazyStream"|>, False]]], "Output",
  CellLabel->"Out[67]=",ExpressionUUID->"56dd4c5f-d7b0-4a97-b0b6-72111ce44fb8"],
 
 Cell[BoxData[
@@ -2402,9 +2395,9 @@ list of all n-tuples of integers \[GreaterEqual] 1.\"\>",
                     RowBox[{"{", 
                     RowBox[{
                     RowBox[{"bulkExtractElementsUsingIndexList", "[", 
-                    RowBox[{"Unevaluated", "[", 
-                    "lazyLists`Private`elementLists", "]"}], "]"}], ",", 
-                    "Listable"}], "}"}], "/@", 
+                    RowBox[{
+                    "Unevaluated", "[", "lazyLists`Private`elementLists", 
+                    "]"}], "]"}], ",", "Listable"}], "}"}], "/@", 
                     RowBox[{"lazyLists`Private`indexLazyList", "[", 
                     RowBox[{
                     "lazyLists`Private`lengths", ",", 
@@ -2654,11 +2647,11 @@ list of all n-tuples of integers \[GreaterEqual] 1.\"\>",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {4., 9.}}], True->
+               ImageSizeCache->{10., {3., 7.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
+               ImageSizeCache->{10., {3., 7.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -2698,8 +2691,7 @@ list of all n-tuples of integers \[GreaterEqual] 1.\"\>",
     BaseStyle->"InformationGridFrame",
     StripOnInput->False], "InformationGridPlain",
    StripOnInput->False],
-  InformationData[
-   Association[
+  InformationData[<|
    "ObjectType" -> "Symbol", "Usage" -> 
     "lazyTuples is a lazy version of Tuples with mostly the same syntax.\n\
 lazyTuples[n] is a special case that generates an infinite list of all \
@@ -2793,7 +2785,7 @@ n-tuples of integers \[GreaterEqual] 1.", "Documentation" -> None,
          OptionValue["PartitionSize"]]}], "SubValues" -> None, 
     "DefaultValues" -> None, "NValues" -> None, "FormatValues" -> None, 
     "Options" -> {"PartitionSize" -> 10, "Start" -> 1}, "Attributes" -> {}, 
-    "FullName" -> "lazyLists`lazyTuples"], False]]], "Output",
+    "FullName" -> "lazyLists`lazyTuples"|>, False]]], "Output",
  CellLabel->"Out[68]=",ExpressionUUID->"998ffb24-c848-4c28-9758-5f92a2f162cd"],
 
 Cell[BoxData[
@@ -2912,6 +2904,7 @@ of copies of elem.\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "UpPointerOpener"]], True->
+              
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "UpPointerOpenerHot"]]}, Dynamic[
               System`InformationDump`mouseOver$$]],
@@ -2980,11 +2973,11 @@ of copies of elem.\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {4., 9.}}], True->
+               ImageSizeCache->{10., {3., 7.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
+               ImageSizeCache->{10., {3., 7.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -3024,8 +3017,7 @@ of copies of elem.\"\>", "InformationUsageText",
     BaseStyle->"InformationGridFrame",
     StripOnInput->False], "InformationGridPlain",
    StripOnInput->False],
-  InformationData[
-   Association[
+  InformationData[<|
    "ObjectType" -> "Symbol", "Usage" -> 
     "lazyConstantArray[elem] produces an infinite list of copies of elem.", 
     "Documentation" -> None, "OwnValues" -> None, "UpValues" -> None, 
@@ -3036,7 +3028,7 @@ of copies of elem.\"\>", "InformationUsageText",
           Blank[]]] :> (lazyLists`lazyList[lazyLists`Private`const, 
          #0[# + 1]]& )[1]}], "SubValues" -> None, "DefaultValues" -> None, 
     "NValues" -> None, "FormatValues" -> None, "Options" -> None, 
-    "Attributes" -> {}, "FullName" -> "lazyLists`lazyConstantArray"], 
+    "Attributes" -> {}, "FullName" -> "lazyLists`lazyConstantArray"|>, 
    False]]], "Output",
  CellLabel->"Out[69]=",ExpressionUUID->"ef6fbebc-d705-40f6-8025-b66abfe78ff4"]
 }, Open  ]]
@@ -3274,11 +3266,11 @@ lazyList element-by-element. \\nIt is equivalent to Take[list, spec]\"\>",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {4., 9.}}], True->
+               ImageSizeCache->{10., {3., 7.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
+               ImageSizeCache->{10., {3., 7.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -3318,8 +3310,7 @@ lazyList element-by-element. \\nIt is equivalent to Take[list, spec]\"\>",
     BaseStyle->"InformationGridFrame",
     StripOnInput->False], "InformationGridPlain",
    StripOnInput->False],
-  InformationData[
-   Association[
+  InformationData[<|
    "ObjectType" -> "Symbol", "Usage" -> 
     "lazyFiniteTake[lz, spec] directly applies Take to finite lazyLists and \
 periodic lazyLists without having to traverse the lazyList \
@@ -3348,7 +3339,7 @@ element-by-element. \nIt is equivalent to Take[list, spec]", "Documentation" ->
           Short[lazyLists`Private`lz]]; $Failed)}], "SubValues" -> None, 
     "DefaultValues" -> None, "NValues" -> None, "FormatValues" -> None, 
     "Options" -> None, "Attributes" -> {}, "FullName" -> 
-    "lazyLists`lazyFiniteTake"], False]]], "Output",
+    "lazyLists`lazyFiniteTake"|>, False]]], "Output",
  CellLabel->
   "Out[347]=",ExpressionUUID->"4e3738a7-a6f2-4f23-8395-504262924dc9"],
 
@@ -3501,6 +3492,7 @@ lazyList element-by-element. \\nIt is equivalent to Part[list, i, j, k, \
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
+             
              ButtonFunction:>FEPrivate`Set[
               System`InformationDump`open$$, False],
              Evaluator->Automatic,
@@ -3565,11 +3557,11 @@ lazyList element-by-element. \\nIt is equivalent to Part[list, i, j, k, \
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {4., 9.}}], True->
+               ImageSizeCache->{10., {3., 7.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
+               ImageSizeCache->{10., {3., 7.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -3609,8 +3601,7 @@ lazyList element-by-element. \\nIt is equivalent to Part[list, i, j, k, \
     BaseStyle->"InformationGridFrame",
     StripOnInput->False], "InformationGridPlain",
    StripOnInput->False],
-  InformationData[
-   Association[
+  InformationData[<|
    "ObjectType" -> "Symbol", "Usage" -> 
     "lazyFinitePart[lz, i, j, k,...] directly extracts Part from finite and \
 periodic lazyLists without having to traverse the lazyList \
@@ -3641,7 +3632,7 @@ element-by-element. \nIt is equivalent to Part[list, i, j, k, ...]",
           Short[lazyLists`Private`lz]]; $Failed)}], "SubValues" -> None, 
     "DefaultValues" -> None, "NValues" -> None, "FormatValues" -> None, 
     "Options" -> None, "Attributes" -> {}, "FullName" -> 
-    "lazyLists`lazyFinitePart"], False]]], "Output",
+    "lazyLists`lazyFinitePart"|>, False]]], "Output",
  CellLabel->
   "Out[348]=",ExpressionUUID->"b628b837-a01e-49b4-ac44-91ed6f31a0f8"],
 
@@ -3847,8 +3838,7 @@ lazyNestList are supported.\\nMaps over supported lists are also supported.\"\
                     RowBox[{"_", ",", 
                     RowBox[{"HoldPattern", "[", 
                     RowBox[{"lazyLists`Private`lazyPeriodicListInternal", "[", 
-                    RowBox[{
-                    "lazyLists`Private`list_", ",", "_", ",", 
+                    RowBox[{"lazyLists`Private`list_", ",", "_", ",", 
                     "lazyLists`Private`max_", ",", 
                     "lazyLists`Private`rest___"}], "]"}], "]"}]}], "]"}], ",",
                      "lazyLists`Private`index_Integer"}], "]"}], ":=", 
@@ -4032,11 +4022,11 @@ lazyNestList are supported.\\nMaps over supported lists are also supported.\"\
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {4., 9.}}], True->
+               ImageSizeCache->{10., {3., 7.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
+               ImageSizeCache->{10., {3., 7.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -4076,8 +4066,7 @@ lazyNestList are supported.\\nMaps over supported lists are also supported.\"\
     BaseStyle->"InformationGridFrame",
     StripOnInput->False], "InformationGridPlain",
    StripOnInput->False],
-  InformationData[
-   Association[
+  InformationData[<|
    "ObjectType" -> "Symbol", "Usage" -> 
     "lazySetState[lz, state] with lz a supported lazyList returns a lazyList \
 at the specified state. \nFinite lists, lazyPeriodicList, lists generated \
@@ -4215,7 +4204,7 @@ over supported lists are also supported.", "Documentation" -> None,
           Short[lazyLists`Private`l]]; lazyLists`Private`l)}], "SubValues" -> 
     None, "DefaultValues" -> None, "NValues" -> None, "FormatValues" -> None, 
     "Options" -> None, "Attributes" -> {}, "FullName" -> 
-    "lazyLists`lazySetState"], False]]], "Output",
+    "lazyLists`lazySetState"|>, False]]], "Output",
  CellLabel->
   "Out[349]=",ExpressionUUID->"84990fc7-aab5-40fa-9c09-db67ea3d527a"],
 
@@ -4613,11 +4602,11 @@ lazyLists of lists and lazyLists of lazyLists into one lazyList.\"\>",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {4., 9.}}], True->
+               ImageSizeCache->{10., {3., 7.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
+               ImageSizeCache->{10., {3., 7.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -4629,7 +4618,6 @@ lazyLists of lists and lazyLists of lazyLists into one lazyList.\"\>",
              ImageMargins->0,
              ImageSize->Full,
              Method->"Preemptive"],
-            
             EventHandlerTag[{
              "MouseEntered" :> 
               FEPrivate`Set[System`InformationDump`mouseOver$$, True], 
@@ -4657,8 +4645,7 @@ lazyLists of lists and lazyLists of lazyLists into one lazyList.\"\>",
     BaseStyle->"InformationGridFrame",
     StripOnInput->False], "InformationGridPlain",
    StripOnInput->False],
-  InformationData[
-   Association[
+  InformationData[<|
    "ObjectType" -> "Symbol", "Usage" -> 
     "lazyCatenate catenates lists of lazyLists, lazyLists of lists and \
 lazyLists of lazyLists into one lazyList.", "Documentation" -> None, 
@@ -4789,7 +4776,7 @@ lazyLists of lazyLists into one lazyList.", "Documentation" -> None,
           Short[lazyLists`Private`arg]]; $Failed)}], "SubValues" -> None, 
     "DefaultValues" -> None, "NValues" -> None, "FormatValues" -> None, 
     "Options" -> None, "Attributes" -> {}, "FullName" -> 
-    "lazyLists`lazyCatenate"], False]]], "Output",
+    "lazyLists`lazyCatenate"|>, False]]], "Output",
  CellLabel->
   "Out[350]=",ExpressionUUID->"dc2ad628-9377-4db4-acfd-5c3ffb66142c"],
 
@@ -4992,11 +4979,11 @@ lz was originally.\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {4., 9.}}], True->
+               ImageSizeCache->{10., {3., 7.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
+               ImageSizeCache->{10., {3., 7.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -5036,8 +5023,7 @@ lz was originally.\"\>", "InformationUsageText",
     BaseStyle->"InformationGridFrame",
     StripOnInput->False], "InformationGridPlain",
    StripOnInput->False],
-  InformationData[
-   Association[
+  InformationData[<|
    "ObjectType" -> "Symbol", "Usage" -> 
     "lazyPrependTo[lz, element] can be used on lazyLists generated by \
 lazyList[Hold[var]] or lazyList[list] to modify the underlying list.\nIt \
@@ -5062,7 +5048,7 @@ originally.", "Documentation" -> None, "OwnValues" -> None, "UpValues" ->
           lazyLists`Private`list, lazyLists`Private`i + 1]])}], "SubValues" -> 
     None, "DefaultValues" -> None, "NValues" -> None, "FormatValues" -> None, 
     "Options" -> None, "Attributes" -> {}, "FullName" -> 
-    "lazyLists`lazyPrependTo"], False]]], "Output",
+    "lazyLists`lazyPrependTo"|>, False]]], "Output",
  CellLabel->
   "Out[351]=",ExpressionUUID->"4712cb4c-9447-4918-aace-54f10a1cc406"],
 
@@ -5154,6 +5140,7 @@ lz was originally.\"\>", "InformationUsageText",
                     StripOnInput->False],
                     "\"FullName\"",
                     TooltipStyle->"TextStyling"],
+                    
                     Annotation[#, "FullName", 
                     "Tooltip"]& ], "\<\"lazyLists`lazyAppendTo\"\>"}
                  },
@@ -5264,11 +5251,11 @@ lz was originally.\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {4., 9.}}], True->
+               ImageSizeCache->{10., {3., 7.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
+               ImageSizeCache->{10., {3., 7.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -5308,8 +5295,7 @@ lz was originally.\"\>", "InformationUsageText",
     BaseStyle->"InformationGridFrame",
     StripOnInput->False], "InformationGridPlain",
    StripOnInput->False],
-  InformationData[
-   Association[
+  InformationData[<|
    "ObjectType" -> "Symbol", "Usage" -> 
     "lazyAppendTo[lz, element] can be used on lazyLists generated by \
 lazyList[Hold[var]] or lazyList[list] to modify the underlying list.\nIt \
@@ -5334,7 +5320,7 @@ originally.", "Documentation" -> None, "OwnValues" -> None, "UpValues" ->
           lazyLists`Private`list, lazyLists`Private`i]])}], "SubValues" -> 
     None, "DefaultValues" -> None, "NValues" -> None, "FormatValues" -> None, 
     "Options" -> None, "Attributes" -> {}, "FullName" -> 
-    "lazyLists`lazyAppendTo"], False]]], "Output",
+    "lazyLists`lazyAppendTo"|>, False]]], "Output",
  CellLabel->
   "Out[352]=",ExpressionUUID->"624169a5-9c87-4dd9-a1df-6986e5d42f8f"],
 
@@ -5615,11 +5601,11 @@ act first.\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {4., 9.}}], True->
+               ImageSizeCache->{10., {3., 7.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
+               ImageSizeCache->{10., {3., 7.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -5659,8 +5645,7 @@ act first.\"\>", "InformationUsageText",
     BaseStyle->"InformationGridFrame",
     StripOnInput->False], "InformationGridPlain",
    StripOnInput->False],
-  InformationData[
-   Association[
+  InformationData[<|
    "ObjectType" -> "Symbol", "Usage" -> 
     "setLazyListable[sym] sets UpValues to lazyList that ensure that sym \
 threads over lazyLists. \nBe aware that the attributes have priority over \
@@ -5736,15 +5721,13 @@ UpValues, so if sym has the Listable attribute it will always act first.",
            Unevaluated[lazyLists`Private`expr], lazyLists`lazyList]]; 
         lazyLists`Private`sym)}], "SubValues" -> None, "DefaultValues" -> 
     None, "NValues" -> None, "FormatValues" -> None, "Options" -> None, 
-    "Attributes" -> {HoldFirst}, "FullName" -> "lazyLists`setLazyListable"], 
+    "Attributes" -> {HoldFirst}, "FullName" -> "lazyLists`setLazyListable"|>, 
    False]]], "Output",
  CellLabel->"Out[353]=",ExpressionUUID->"23d4d8b5-231c-4916-a383-d70e25963a98"]
 }, Open  ]],
 
 Cell["System symbols that work with lazyLists:", \
 "Text",ExpressionUUID->"587da714-8a8f-4437-8b8c-f88a92b7ff4e"],
-
-Cell[CellGroupData[{
 
 Cell[TextData[StyleBox["Part, Take",
  FontWeight->
@@ -5779,7 +5762,6 @@ Cell[TextData[StyleBox["FoldList, FoldPairList",
 Cell[TextData[StyleBox["Plus, Times, Divide, Subtract, Power",
  FontWeight->
   "Bold"]], "Item",ExpressionUUID->"7185f435-bdb8-4348-94ca-13bed28fae34"]
-}, Open  ]]
 }, Closed]],
 
 Cell[CellGroupData[{
@@ -5978,7 +5960,6 @@ equivalent to MapThread. Mixing lazy lists and normal lists is allowed.\"\>",
                     StripOnInput->False],
                     "\"FullName\"",
                     TooltipStyle->"TextStyling"],
-                    
                     Annotation[#, "FullName", 
                     "Tooltip"]& ], "\<\"lazyLists`lazyMapThread\"\>"}
                  },
@@ -6088,11 +6069,11 @@ equivalent to MapThread. Mixing lazy lists and normal lists is allowed.\"\>",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {4., 9.}}], True->
+               ImageSizeCache->{10., {3., 7.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
+               ImageSizeCache->{10., {3., 7.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -6132,8 +6113,7 @@ equivalent to MapThread. Mixing lazy lists and normal lists is allowed.\"\>",
     BaseStyle->"InformationGridFrame",
     StripOnInput->False], "InformationGridPlain",
    StripOnInput->False],
-  InformationData[
-   Association[
+  InformationData[<|
    "ObjectType" -> "Symbol", "Usage" -> 
     "lazyMapThread[f, {lz1, lz2, ...}] is the lazy equivalent to MapThread. \
 Mixing lazy lists and normal lists is allowed.", "Documentation" -> None, 
@@ -6199,7 +6179,7 @@ Mixing lazy lists and normal lists is allowed.", "Documentation" -> None,
          BlankNullSequence[]] :> lazyLists`lazyList[]}], "SubValues" -> None, 
     "DefaultValues" -> None, "NValues" -> None, "FormatValues" -> None, 
     "Options" -> {"RepartitionFunction" -> Max}, "Attributes" -> {}, 
-    "FullName" -> "lazyLists`lazyMapThread"], False]]], "Output",
+    "FullName" -> "lazyLists`lazyMapThread"|>, False]]], "Output",
  CellLabel->"Out[98]=",ExpressionUUID->"301843fa-8221-4867-9b40-fa7c6c52e42d"],
 
 Cell[BoxData[
@@ -6420,13 +6400,14 @@ lazyTuples.\"\>", "InformationUsageText",
            TagBox[
             ButtonBox[
              PaneSelectorBox[{False->
+              
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {4., 9.}}], True->
+               ImageSizeCache->{10., {3., 7.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
+               ImageSizeCache->{10., {3., 7.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -6466,8 +6447,7 @@ lazyTuples.\"\>", "InformationUsageText",
     BaseStyle->"InformationGridFrame",
     StripOnInput->False], "InformationGridPlain",
    StripOnInput->False],
-  InformationData[
-   Association[
+  InformationData[<|
    "ObjectType" -> "Symbol", "Usage" -> 
     "\!\(\*RowBox[{\"lazyOuter\", \"[\", RowBox[{StyleBox[\"f\", \"TI\"], \",\
 \",  StyleBox[SubscriptBox[\"list\", StyleBox[\"1\", \"TR\"]], \"TI\"], \
@@ -6491,7 +6471,7 @@ Flatten[Outer[\!\(\*StyleBox[\"f\", \"TI\"]\), \
           lazyLists`Private`opts]]}], "SubValues" -> None, "DefaultValues" -> 
     None, "NValues" -> None, "FormatValues" -> None, 
     "Options" -> {"PartitionSize" -> 10, "Start" -> 1}, "Attributes" -> {}, 
-    "FullName" -> "lazyLists`lazyOuter"], False]]], "Output",
+    "FullName" -> "lazyLists`lazyOuter"|>, False]]], "Output",
  CellLabel->"Out[99]=",ExpressionUUID->"401cb73b-667b-4047-90d1-415102e41c0f"],
 
 Cell[BoxData[
@@ -6754,11 +6734,11 @@ lazyMapThread[Identity, {lz1, lz2, ...}]\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {4., 9.}}], True->
+               ImageSizeCache->{10., {3., 7.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
+               ImageSizeCache->{10., {3., 7.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -6798,8 +6778,7 @@ lazyMapThread[Identity, {lz1, lz2, ...}]\"\>", "InformationUsageText",
     BaseStyle->"InformationGridFrame",
     StripOnInput->False], "InformationGridPlain",
    StripOnInput->False],
-  InformationData[
-   Association[
+  InformationData[<|
    "ObjectType" -> "Symbol", "Usage" -> 
     "lazyTranspose[{lz1, lz2, ...}] creates a lazyList with tuples of \
 elements from lz1, lz2, etc. \nEquivalent to lazyMapThread[Identity, {lz1, \
@@ -6853,7 +6832,7 @@ lz2, ...}]", "Documentation" -> None, "OwnValues" -> None, "UpValues" -> None,
        Map[{Transpose, Listable}, lazyLists`Private`lz]}], "SubValues" -> 
     None, "DefaultValues" -> None, "NValues" -> None, "FormatValues" -> None, 
     "Options" -> {"RepartitionFunction" -> Max}, "Attributes" -> {}, 
-    "FullName" -> "lazyLists`lazyTranspose"], False]]], "Output",
+    "FullName" -> "lazyLists`lazyTranspose"|>, False]]], "Output",
  CellLabel->
   "Out[100]=",ExpressionUUID->"3fffdcd8-194b-4195-b3bb-fc8bbf6dcc3c"],
 
@@ -7060,11 +7039,11 @@ Map[Part[l, {#}]&, {i, j, k, ...}] but faster.\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {4., 9.}}], True->
+               ImageSizeCache->{10., {3., 7.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
+               ImageSizeCache->{10., {3., 7.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -7104,8 +7083,7 @@ Map[Part[l, {#}]&, {i, j, k, ...}] but faster.\"\>", "InformationUsageText",
     BaseStyle->"InformationGridFrame",
     StripOnInput->False], "InformationGridPlain",
    StripOnInput->False],
-  InformationData[
-   Association[
+  InformationData[<|
    "ObjectType" -> "Symbol", "Usage" -> 
     "lazyPartMap[l, {i, j, k, ...}] is equivalent to Map[Part[l, {#}]&, {i, \
 j, k, ...}] but faster.", "Documentation" -> None, "OwnValues" -> None, 
@@ -7126,7 +7104,7 @@ j, k, ...}] but faster.", "Documentation" -> None, "OwnValues" -> None,
           Ordering[lazyLists`Private`indices]]]}], "SubValues" -> None, 
     "DefaultValues" -> None, "NValues" -> None, "FormatValues" -> None, 
     "Options" -> None, "Attributes" -> {}, "FullName" -> 
-    "lazyLists`lazyPartMap"], False]]], "Output",
+    "lazyLists`lazyPartMap"|>, False]]], "Output",
  CellLabel->
   "Out[101]=",ExpressionUUID->"900f65d5-15ea-4f6f-975f-0272ba04c2ff"],
 
@@ -7178,6 +7156,7 @@ values.\"\>", "InformationUsageText",
                   {
                    TagBox[
                     TooltipBox[
+                    
                     StyleBox["\<\" UpValue Definitions\"\>", 
                     "InformationRowLabel",
                     StripOnInput->False],
@@ -7484,11 +7463,11 @@ values.\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {4., 9.}}], True->
+               ImageSizeCache->{10., {3., 7.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
+               ImageSizeCache->{10., {3., 7.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -7528,8 +7507,7 @@ values.\"\>", "InformationUsageText",
     BaseStyle->"InformationGridFrame",
     StripOnInput->False], "InformationGridPlain",
    StripOnInput->False],
-  InformationData[
-   Association[
+  InformationData[<|
    "ObjectType" -> "Symbol", "Usage" -> 
     "\!\(\*RowBox[{\"cachedPart\", \"[\", RowBox[{StyleBox[\"lz\", \"TI\"]}], \
 \"]\"}]\) generates an object from which parts can be extracted and which \
@@ -7617,7 +7595,7 @@ from the rear of the cached values.", "Documentation" -> None, "OwnValues" ->
          lazyLists`Private`tail][
          Apply[Range, lazyLists`Private`s]]}], "DefaultValues" -> None, 
     "NValues" -> None, "FormatValues" -> None, "Options" -> None, 
-    "Attributes" -> {HoldAll}, "FullName" -> "lazyLists`cachedPart"], 
+    "Attributes" -> {HoldAll}, "FullName" -> "lazyLists`cachedPart"|>, 
    False]]], "Output",
  CellLabel->
   "Out[102]=",ExpressionUUID->"742525d0-7bd7-45fc-9eac-7da30a34d028"],
@@ -7924,11 +7902,11 @@ mappings of the form f /@ g /@ ... /@ lzList to a single map of the form (f \
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {4., 9.}}], True->
+               ImageSizeCache->{10., {3., 7.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
+               ImageSizeCache->{10., {3., 7.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -7968,8 +7946,7 @@ mappings of the form f /@ g /@ ... /@ lzList to a single map of the form (f \
     BaseStyle->"InformationGridFrame",
     StripOnInput->False], "InformationGridPlain",
    StripOnInput->False],
-  InformationData[
-   Association[
+  InformationData[<|
    "ObjectType" -> "Symbol", "Usage" -> 
     "composeMappedFunctions[lzList] will convert mappings of the form f /@ g \
 /@ ... /@ lzList to a single map of the form (f @* g @* ...) /@ lzList ", 
@@ -8036,7 +8013,7 @@ mappings of the form f /@ g /@ ... /@ lzList to a single map of the form (f \
              Map[lazyLists`Private`composition, lazyLists`Private`tail], 
              True]]}]}], "SubValues" -> None, "DefaultValues" -> None, 
     "NValues" -> None, "FormatValues" -> None, "Options" -> None, 
-    "Attributes" -> {}, "FullName" -> "lazyLists`composeMappedFunctions"], 
+    "Attributes" -> {}, "FullName" -> "lazyLists`composeMappedFunctions"|>, 
    False]]], "Output",
  CellLabel->
   "Out[103]=",ExpressionUUID->"7dc0370d-c5cb-441c-88da-24419e49abb5"],
@@ -8315,11 +8292,11 @@ infinite) lazyList to finite length.\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {4., 9.}}], True->
+               ImageSizeCache->{10., {3., 7.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
+               ImageSizeCache->{10., {3., 7.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -8359,8 +8336,7 @@ infinite) lazyList to finite length.\"\>", "InformationUsageText",
     BaseStyle->"InformationGridFrame",
     StripOnInput->False], "InformationGridPlain",
    StripOnInput->False],
-  InformationData[
-   Association[
+  InformationData[<|
    "ObjectType" -> "Symbol", "Usage" -> 
     "lazyTruncate[lzList, int] truncates a (possibly infinite) lazyList to \
 finite length.", "Documentation" -> None, "OwnValues" -> None, "UpValues" -> 
@@ -8420,7 +8396,7 @@ finite length.", "Documentation" -> None, "OwnValues" -> None, "UpValues" ->
           Short[lazyLists`Private`i]]; $Failed)}], "SubValues" -> None, 
     "DefaultValues" -> None, "NValues" -> None, "FormatValues" -> None, 
     "Options" -> None, "Attributes" -> {}, "FullName" -> 
-    "lazyLists`lazyTruncate"], False]]], "Output",
+    "lazyLists`lazyTruncate"|>, False]]], "Output",
  CellLabel->
   "Out[104]=",ExpressionUUID->"4afed1b6-bf8a-4c3c-9b3f-95c4d76d59c7"],
 
@@ -8699,11 +8675,11 @@ results from multiple batches.\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {4., 9.}}], True->
+               ImageSizeCache->{10., {3., 7.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
+               ImageSizeCache->{10., {3., 7.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -8743,8 +8719,7 @@ results from multiple batches.\"\>", "InformationUsageText",
     BaseStyle->"InformationGridFrame",
     StripOnInput->False], "InformationGridPlain",
    StripOnInput->False],
-  InformationData[
-   Association[
+  InformationData[<|
    "ObjectType" -> "Symbol", "Usage" -> 
     "lazyAggregate[lzList, {aggregator, combiner}, batchSize, maxItems] \
 iteratively extracts batchSize elements from lzList and then aggregates the \
@@ -8807,7 +8782,7 @@ batches.", "Documentation" -> None, "OwnValues" -> None, "UpValues" -> None,
              lazyLists`Private`batchSize, lazyLists`Private`bsize]]]]]}], 
     "SubValues" -> None, "DefaultValues" -> None, "NValues" -> None, 
     "FormatValues" -> None, "Options" -> None, "Attributes" -> {}, "FullName" -> 
-    "lazyLists`lazyAggregate"], False]]], "Output",
+    "lazyLists`lazyAggregate"|>, False]]], "Output",
  CellLabel->"Out[105]=",ExpressionUUID->"8b7e0411-1cf9-47ce-9f81-7967e01ab3eb"]
 }, Open  ]]
 }, Closed]],
@@ -8911,7 +8886,6 @@ FoldList will be automatically applied to the generated lists for efficiency.\
             DefaultBaseStyle->"Column",
             GridBoxAlignment->{"Columns" -> {{Left}}},
             GridBoxDividers->{"Columns" -> {{False}}, "Rows" -> {{False}}},
-            
             GridBoxItemSize->{
              "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
             GridBoxSpacings->{"Columns" -> {
@@ -9005,11 +8979,11 @@ FoldList will be automatically applied to the generated lists for efficiency.\
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {4., 9.}}], True->
+               ImageSizeCache->{10., {3., 7.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
+               ImageSizeCache->{10., {3., 7.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -9049,8 +9023,7 @@ FoldList will be automatically applied to the generated lists for efficiency.\
     BaseStyle->"InformationGridFrame",
     StripOnInput->False], "InformationGridPlain",
    StripOnInput->False],
-  InformationData[
-   Association[
+  InformationData[<|
    "ObjectType" -> "Symbol", "Usage" -> 
     "Is a special wrapper for lazyLists that generate ordinary Lists.\nThe \
 elements of the inner Lists are treated as if they're seperate elements of \
@@ -9061,7 +9034,7 @@ automatically applied to the generated lists for efficiency.",
     "DownValues" -> None, "SubValues" -> None, "DefaultValues" -> None, 
     "NValues" -> None, "FormatValues" -> None, "Options" -> None, 
     "Attributes" -> {HoldRest, ReadProtected}, "FullName" -> 
-    "lazyLists`partitionedLazyList"], False]]], "Output",
+    "lazyLists`partitionedLazyList"|>, False]]], "Output",
  CellLabel->"Out[70]=",ExpressionUUID->"659ac66c-3e97-4a47-9ee3-a84ee9d2049b"],
 
 Cell[BoxData[
@@ -9349,11 +9322,11 @@ natural numbers in chuncks of length partitionLength.\"\>",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {4., 9.}}], True->
+               ImageSizeCache->{10., {3., 7.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
+               ImageSizeCache->{10., {3., 7.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -9393,8 +9366,7 @@ natural numbers in chuncks of length partitionLength.\"\>",
     BaseStyle->"InformationGridFrame",
     StripOnInput->False], "InformationGridPlain",
    StripOnInput->False],
-  InformationData[
-   Association[
+  InformationData[<|
    "ObjectType" -> "Symbol", "Usage" -> 
     "partitionedLazyRange[start, step, partitionLength] works like lazyRange, \
 but yields a partitionedLazyList.\npartitionedLazyRange[partitionLength] \
@@ -9462,7 +9434,7 @@ generates the natural numbers in chuncks of length partitionLength.",
           lazyLists`Private`partition lazyLists`Private`step]]}], "SubValues" -> 
     None, "DefaultValues" -> None, "NValues" -> None, "FormatValues" -> None, 
     "Options" -> None, "Attributes" -> {}, "FullName" -> 
-    "lazyLists`partitionedLazyRange"], False]]], "Output",
+    "lazyLists`partitionedLazyRange"|>, False]]], "Output",
  CellLabel->"Out[71]=",ExpressionUUID->"f5b15be7-ca02-49f4-baab-ff57def8db0f"],
 
 Cell[BoxData[
@@ -9606,7 +9578,6 @@ with NestList.\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "UpPointerOpener"]], True->
-              
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "UpPointerOpenerHot"]]}, Dynamic[
               System`InformationDump`mouseOver$$]],
@@ -9676,11 +9647,11 @@ with NestList.\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {4., 9.}}], True->
+               ImageSizeCache->{10., {3., 7.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
+               ImageSizeCache->{10., {3., 7.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -9720,8 +9691,7 @@ with NestList.\"\>", "InformationUsageText",
     BaseStyle->"InformationGridFrame",
     StripOnInput->False], "InformationGridPlain",
    StripOnInput->False],
-  InformationData[
-   Association[
+  InformationData[<|
    "ObjectType" -> "Symbol", "Usage" -> 
     "partitionedLazyNestList[fun, elem, partitionLength] is a partitioned \
 version of lazyNestList.\nEach new partition is generated with NestList.", 
@@ -9746,7 +9716,7 @@ version of lazyNestList.\nEach new partition is generated with NestList.",
             lazyLists`Private`fun[lazyLists`Private`last], #2 + 1]]]]& )[
         lazyLists`Private`elem, 1]}], "SubValues" -> None, "DefaultValues" -> 
     None, "NValues" -> None, "FormatValues" -> None, "Options" -> None, 
-    "Attributes" -> {}, "FullName" -> "lazyLists`partitionedLazyNestList"], 
+    "Attributes" -> {}, "FullName" -> "lazyLists`partitionedLazyNestList"|>, 
    False]]], "Output",
  CellLabel->"Out[72]=",ExpressionUUID->"4b4d61c5-147b-4112-acfe-969467d13cbc"],
 
@@ -10022,6 +9992,7 @@ lazyList into a partitioned lazyList with chunks of length n.\"\>",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "UpPointerOpener"]], True->
+              
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "UpPointerOpenerHot"]]}, Dynamic[
               System`InformationDump`mouseOver$$]],
@@ -10091,11 +10062,11 @@ lazyList into a partitioned lazyList with chunks of length n.\"\>",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {4., 9.}}], True->
+               ImageSizeCache->{10., {3., 7.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
+               ImageSizeCache->{10., {3., 7.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -10135,8 +10106,7 @@ lazyList into a partitioned lazyList with chunks of length n.\"\>",
     BaseStyle->"InformationGridFrame",
     StripOnInput->False], "InformationGridPlain",
    StripOnInput->False],
-  InformationData[
-   Association[
+  InformationData[<|
    "ObjectType" -> "Symbol", "Usage" -> 
     "lazyPartition[l, n] turns an ordinary list or lazyList into a \
 partitioned lazyList with chunks of length n.", "Documentation" -> None, 
@@ -10253,7 +10223,7 @@ partitioned lazyList with chunks of length n.", "Documentation" -> None,
         lazyLists`Private`list, 1, lazyLists`Private`n]}], "SubValues" -> 
     None, "DefaultValues" -> None, "NValues" -> None, "FormatValues" -> None, 
     "Options" -> None, "Attributes" -> {}, "FullName" -> 
-    "lazyLists`lazyPartition"], False]]], "Output",
+    "lazyLists`lazyPartition"|>, False]]], "Output",
  CellLabel->"Out[73]=",ExpressionUUID->"20266aab-4938-421f-8672-3852fe1021ae"],
 
 Cell[BoxData[
@@ -10395,6 +10365,7 @@ partitionedLazyLists.\"\>", "InformationUsageText",
                     "lazyLists`Private`partLz", ",", 
                     "lazyLists`Private`newLength"}], "]"}]}]}], "}"}], ",", 
                     RowBox[{"{", "1", "}"}]}], "]"}], ",", 
+                    
                     RowBox[{"\<\"RepartitionFunction\"\>", "\[Rule]", 
                     "Min"}]}], "]"}]}]},
                     {
@@ -10535,11 +10506,11 @@ partitionedLazyLists.\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {4., 9.}}], True->
+               ImageSizeCache->{10., {3., 7.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
+               ImageSizeCache->{10., {3., 7.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -10579,8 +10550,7 @@ partitionedLazyLists.\"\>", "InformationUsageText",
     BaseStyle->"InformationGridFrame",
     StripOnInput->False], "InformationGridPlain",
    StripOnInput->False],
-  InformationData[
-   Association[
+  InformationData[<|
    "ObjectType" -> "Symbol", "Usage" -> 
     "repartitionAll[{lz1, lz2, ...}] returns the list of lazy lists, but with \
 all partitioned lazylists restructured to be of the same partition length. \
@@ -10639,7 +10609,7 @@ Ordinary lazyLists will be converted to partitionedLazyLists.",
          BlankNullSequence[]] :> lazyLists`Private`other}], "SubValues" -> 
     None, "DefaultValues" -> None, "NValues" -> None, "FormatValues" -> None, 
     "Options" -> {"RepartitionFunction" -> Max}, "Attributes" -> {}, 
-    "FullName" -> "lazyLists`repartitionAll"], False]]], "Output",
+    "FullName" -> "lazyLists`repartitionAll"|>, False]]], "Output",
  CellLabel->"Out[74]=",ExpressionUUID->"63e1242f-5a4d-43fd-b9e4-7ba2655ff56d"]
 }, Open  ]]
 }, Closed]],
@@ -10832,11 +10802,11 @@ elements in a lazy list.\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {4., 9.}}], True->
+               ImageSizeCache->{10., {3., 7.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
+               ImageSizeCache->{10., {3., 7.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -10876,8 +10846,7 @@ elements in a lazy list.\"\>", "InformationUsageText",
     BaseStyle->"InformationGridFrame",
     StripOnInput->False], "InformationGridPlain",
    StripOnInput->False],
-  InformationData[
-   Association[
+  InformationData[<|
    "ObjectType" -> "Symbol", "Usage" -> 
     "Iteration limit used for finding successive elements in a lazy list.", 
     "Documentation" -> None, "OwnValues" -> 
@@ -10886,7 +10855,7 @@ elements in a lazy list.\"\>", "InformationUsageText",
       lazyLists`$lazyIterationLimit -> DirectedInfinity[1]}], "UpValues" -> 
     None, "DownValues" -> None, "SubValues" -> None, "DefaultValues" -> None, 
     "NValues" -> None, "FormatValues" -> None, "Options" -> None, 
-    "Attributes" -> {}, "FullName" -> "lazyLists`$lazyIterationLimit"], 
+    "Attributes" -> {}, "FullName" -> "lazyLists`$lazyIterationLimit"|>, 
    False]]], "Output",
  CellLabel->
   "Out[363]=",ExpressionUUID->"f4ae0bd7-099a-4bfb-a120-68e1152308fe"],
@@ -11169,11 +11138,11 @@ Tuples[lists]\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {4., 9.}}], True->
+               ImageSizeCache->{10., {3., 7.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
+               ImageSizeCache->{10., {3., 7.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -11213,8 +11182,7 @@ Tuples[lists]\"\>", "InformationUsageText",
     BaseStyle->"InformationGridFrame",
     StripOnInput->False], "InformationGridPlain",
    StripOnInput->False],
-  InformationData[
-   Association[
+  InformationData[<|
    "ObjectType" -> "Symbol", "Usage" -> 
     "bulkExtractElementsUsingIndexList[lists, indices] converts elements from \
 Tuples[Range /@ Length /@ lists] into elements from Tuples[lists]", 
@@ -11267,7 +11235,7 @@ Tuples[Range /@ Length /@ lists] into elements from Tuples[lists]",
            Map[Part[lazyLists`Private`elementList, #]& , #]]]& ]}], 
     "SubValues" -> None, "DefaultValues" -> None, "NValues" -> None, 
     "FormatValues" -> None, "Options" -> None, "Attributes" -> {}, "FullName" -> 
-    "lazyLists`bulkExtractElementsUsingIndexList"], False]]], "Output",
+    "lazyLists`bulkExtractElementsUsingIndexList"|>, False]]], "Output",
  CellLabel->
   "Out[365]=",ExpressionUUID->"937856d8-b987-4862-b901-31a2c1685be5"],
 
@@ -11365,6 +11333,7 @@ CompiledFunction that directly generates elements of Tuples[Range /@ Length \
             DefaultBaseStyle->"Column",
             GridBoxAlignment->{"Columns" -> {{Left}}},
             GridBoxDividers->{"Columns" -> {{False}}, "Rows" -> {{False}}},
+            
             GridBoxItemSize->{
              "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
             GridBoxSpacings->{"Columns" -> {
@@ -11380,7 +11349,6 @@ CompiledFunction that directly generates elements of Tuples[Range /@ Length \
            TagBox[
             ButtonBox[
              PaneSelectorBox[{False->
-              
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "UpPointerOpener"]], True->
               
@@ -11453,11 +11421,11 @@ CompiledFunction that directly generates elements of Tuples[Range /@ Length \
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {4., 9.}}], True->
+               ImageSizeCache->{10., {3., 7.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
+               ImageSizeCache->{10., {3., 7.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -11497,8 +11465,7 @@ CompiledFunction that directly generates elements of Tuples[Range /@ Length \
     BaseStyle->"InformationGridFrame",
     StripOnInput->False], "InformationGridPlain",
    StripOnInput->False],
-  InformationData[
-   Association[
+  InformationData[<|
    "ObjectType" -> "Symbol", "Usage" -> 
     "rangeTuplesAtPositions[Length /@ lists] is a CompiledFunction that \
 directly generates elements of Tuples[Range /@ Length /@ lists]", 
@@ -11512,7 +11479,7 @@ directly generates elements of Tuples[Range /@ Length /@ lists]",
          lazyLists`Private`basis[lazyLists`Private`lengths]]}], "SubValues" -> 
     None, "DefaultValues" -> None, "NValues" -> None, "FormatValues" -> None, 
     "Options" -> None, "Attributes" -> {}, "FullName" -> 
-    "lazyLists`rangeTuplesAtPositions"], False]]], "Output",
+    "lazyLists`rangeTuplesAtPositions"|>, False]]], "Output",
  CellLabel->
   "Out[366]=",ExpressionUUID->"a7a67361-c074-4ece-9881-74cd4c93c0a6"],
 
@@ -11610,7 +11577,8 @@ next integer tuple in a canonical order.\"\>", "InformationUsageText",
                     RowBox[{
                     RowBox[{"Combinatorica`Private`n", "=", 
                     RowBox[{"Plus", "@@", "Combinatorica`Private`l"}]}], ",", 
-                    RowBox[{"Combinatorica`Private`nl", "=", 
+                    RowBox[{
+                    "Combinatorica`Private`nl", "=", 
                     "Combinatorica`Private`l"}], ",", 
                     RowBox[{"Combinatorica`Private`t", "=", 
                     RowBox[{"Length", "[", "Combinatorica`Private`l", "]"}]}],
@@ -11789,11 +11757,11 @@ next integer tuple in a canonical order.\"\>", "InformationUsageText",
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpener"],
-               ImageSizeCache->{13., {4., 9.}}], True->
+               ImageSizeCache->{10., {3., 7.}}], True->
               
               DynamicBox[FEPrivate`FrontEndResource[
                "FEBitmaps", "DownPointerOpenerHot"],
-               ImageSizeCache->{13., {4., 9.}}]}, Dynamic[
+               ImageSizeCache->{10., {3., 7.}}]}, Dynamic[
               System`InformationDump`mouseOver$$]],
              Alignment->Left,
              Appearance->{"Default" -> None},
@@ -11833,8 +11801,7 @@ next integer tuple in a canonical order.\"\>", "InformationUsageText",
     BaseStyle->"InformationGridFrame",
     StripOnInput->False], "InformationGridPlain",
    StripOnInput->False],
-  InformationData[
-   Association[
+  InformationData[<|
    "ObjectType" -> "Symbol", "Usage" -> 
     "nextIntegerTuple[{int1, int2, ...}] generates the next integer tuple in \
 a canonical order.", "Documentation" -> None, "OwnValues" -> 
@@ -11920,7 +11887,7 @@ a canonical order.", "Documentation" -> None, "OwnValues" ->
               lazyLists`Private`list]]]], Evaluate]}], "UpValues" -> None, 
     "DownValues" -> None, "SubValues" -> None, "DefaultValues" -> None, 
     "NValues" -> None, "FormatValues" -> None, "Options" -> None, 
-    "Attributes" -> {}, "FullName" -> "lazyLists`nextIntegerTuple"], 
+    "Attributes" -> {}, "FullName" -> "lazyLists`nextIntegerTuple"|>, 
    False]]], "Output",
  CellLabel->"Out[367]=",ExpressionUUID->"b822b97e-9e75-4708-9de1-1f34bcff2a9e"]
 }, Open  ]]
@@ -13222,8 +13189,6 @@ way as Table. It has 5 arguments: ",
   "4d0fa8ac-3001-48d3-90e0-697b8ca3e5a3"]
 }], "Text",ExpressionUUID->"091a7650-9a36-4c83-987b-e4b754a39857"],
 
-Cell[CellGroupData[{
-
 Cell[TextData[{
  Cell[BoxData[
   FormBox["fun", TraditionalForm]],ExpressionUUID->
@@ -13261,8 +13226,7 @@ Cell[TextData[{
   "dc5325ce-8947-4333-9383-014dd4cbe392"],
  " the step size with which to increase the iterator of the table after each \
 step. Defaults to 1"
-}], "Item",ExpressionUUID->"a64d6517-5c3f-4592-88c7-50f1c70777c8"]
-}, Open  ]],
+}], "Item",ExpressionUUID->"a64d6517-5c3f-4592-88c7-50f1c70777c8"],
 
 Cell["\<\
 The simplest form of lazyGenerator just specifies the function:\
@@ -14933,7 +14897,7 @@ Cell[BoxData[
                DynamicBox[ToBoxes[
                  FEPrivate`FrontEndResource[
                  "FEStrings", "sizeBriefExplanation"], StandardForm],
-                ImageSizeCache->{85., {4., 12.}}],
+                ImageSizeCache->{49.2099609375, {2., 7.}}],
                StripOnInput->False,
                DynamicUpdating->True,
                LineSpacing->{1, 2},
@@ -14964,7 +14928,7 @@ Cell[BoxData[
               DynamicBox[ToBoxes[
                 FEPrivate`FrontEndResource["FEStrings", "sizeShowLess"], 
                 StandardForm],
-               ImageSizeCache->{72., {1., 12.}}],
+               ImageSizeCache->{39.884765625, {0., 7.}}],
               StripOnInput->False,
               DynamicUpdating->True,
               LineSpacing->{1, 2},
@@ -15001,7 +14965,7 @@ Cell[BoxData[
               DynamicBox[ToBoxes[
                 FEPrivate`FrontEndResource["FEStrings", "sizeShowMore"], 
                 StandardForm],
-               ImageSizeCache->{84., {1., 12.}}],
+               ImageSizeCache->{46.73583984375, {0., 7.}}],
               StripOnInput->False,
               DynamicUpdating->True,
               LineSpacing->{1, 2},
@@ -15038,7 +15002,7 @@ Cell[BoxData[
               DynamicBox[ToBoxes[
                 FEPrivate`FrontEndResource["FEStrings", "sizeShowAll"], 
                 StandardForm],
-               ImageSizeCache->{63., {1., 12.}}],
+               ImageSizeCache->{34.4970703125, {0., 7.}}],
               StripOnInput->False,
               DynamicUpdating->True,
               LineSpacing->{1, 2},
@@ -15075,7 +15039,7 @@ Cell[BoxData[
               DynamicBox[ToBoxes[
                 FEPrivate`FrontEndResource["FEStrings", "sizeChangeLimit"], 
                 StandardForm],
-               ImageSizeCache->{107., {1., 12.}}],
+               ImageSizeCache->{59.73046875, {0., 7.}}],
               StripOnInput->False,
               DynamicUpdating->True,
               LineSpacing->{1, 2},
@@ -19385,8 +19349,7 @@ Cell[BoxData[{
      RowBox[{"lazyRange", "[", "]"}], ",", "99"}], "]"}], ",", 
    RowBox[{
     RowBox[{"#", ">", "100"}], "&"}]}], "]"}]}], "Input",
- CellLabel->"In[23]:=",ExpressionUUID->"85ed224d-0c3c-419a-b7db-7be38a58b714"]
-,
+ CellLabel->"In[23]:=",ExpressionUUID->"85ed224d-0c3c-419a-b7db-7be38a58b714"],
 
 Cell[BoxData["True"], "Output",
  CellLabel->"Out[23]=",ExpressionUUID->"eba63817-0287-42d6-afbf-0f67501039dc"],
@@ -19424,6 +19387,8 @@ Cell[CellGroupData[{
 
 Cell["Known issues and caveats", \
 "Subsection",ExpressionUUID->"913456ae-86bc-474d-90bb-1fe719afec8e"],
+
+Cell[CellGroupData[{
 
 Cell[TextData[StyleBox["When defining your own lazyLists, make sure the last \
 part of the list does not evaluate to itself. Take etc. will not work \
@@ -19469,6 +19434,7 @@ Cell[BoxData[
  RowBox[{"{", 
   RowBox[{"1", ",", "1"}], "}"}]], "Output",
  CellLabel->"Out[535]=",ExpressionUUID->"cdd21b26-77e2-4b76-a0af-ced05a3d9b3d"]
+}, Open  ]]
 }, Open  ]],
 
 Cell["\<\
@@ -19716,40 +19682,34 @@ Cell[BoxData[{
 Cell[BoxData[
  TagBox[
   TagBox[
-   DynamicModuleBox[{TypeSystem`NestedGrid`PackagePrivate`$state$$ = 
-    Association[
-    "InitialData" -> 
-     Association[
-      "VerificationTests1.wlt" -> 
-       Association[
+   DynamicModuleBox[{TypeSystem`NestedGrid`PackagePrivate`$state$$ = <|
+    "InitialData" -> <|
+      "VerificationTests1.wlt" -> <|
         "TestsSucceeded" -> 98, "TestsFailedWrongResults" -> 0, 
-         "TestsFailedWithMessages" -> 0, "TestsFailedWithErrors" -> 0], 
-       "VerificationTests2.wlt" -> 
-       Association[
+         "TestsFailedWithMessages" -> 0, "TestsFailedWithErrors" -> 0|>, 
+       "VerificationTests2.wlt" -> <|
         "TestsSucceeded" -> 70, "TestsFailedWrongResults" -> 0, 
-         "TestsFailedWithMessages" -> 0, "TestsFailedWithErrors" -> 0], 
-       "VerificationTests3.wlt" -> 
-       Association[
+         "TestsFailedWithMessages" -> 0, "TestsFailedWithErrors" -> 0|>, 
+       "VerificationTests3.wlt" -> <|
         "TestsSucceeded" -> 101, "TestsFailedWrongResults" -> 1, 
-         "TestsFailedWithMessages" -> 0, "TestsFailedWithErrors" -> 0]], 
-     "InitialShape" -> TypeSystem`PackageScope`HeaderShape[
-       Association[{All, 
+         "TestsFailedWithMessages" -> 0, "TestsFailedWithErrors" -> 0|>|>, 
+     "InitialShape" -> TypeSystem`PackageScope`HeaderShape[<|{All, 
           TypeSystem`PackageScope`KeyDummy[0]} -> 1, {All, "TestsSucceeded"} -> 
         1, {All, "TestsFailedWrongResults"} -> 
         1, {All, "TestsFailedWithMessages"} -> 
-        1, {All, "TestsFailedWithErrors"} -> 1], 
+        1, {All, "TestsFailedWithErrors"} -> 1|>, 
        TypeSystem`PackageScope`Limited[
         TypeSystem`PackageScope`ColumnShape[
          TypeSystem`PackageScope`KeyValueShape[
           TypeSystem`PackageScope`AtomShape[211.20000000000005`], 
           TypeSystem`PackageScope`Limited[
-           TypeSystem`PackageScope`RowShape[
-            Association[
+           
+           TypeSystem`PackageScope`RowShape[<|
             "TestsSucceeded" -> TypeSystem`PackageScope`AtomShape[34], 
              "TestsFailedWrongResults" -> 
              TypeSystem`PackageScope`AtomShape[34], "TestsFailedWithMessages" -> 
              TypeSystem`PackageScope`AtomShape[34], "TestsFailedWithErrors" -> 
-             TypeSystem`PackageScope`AtomShape[34]]], 
+             TypeSystem`PackageScope`AtomShape[34]|>], 
            DirectedInfinity[1], 4, {All}]]], 3, 
         DirectedInfinity[1], {}]], "InitialType" -> TypeSystem`Assoc[
        TypeSystem`Atom[String], 
@@ -19759,26 +19719,25 @@ Cell[BoxData[
          TypeSystem`Atom[Integer], 
          TypeSystem`Atom[Integer], 
          TypeSystem`Atom[Integer], 
-         TypeSystem`Atom[Integer]}], 3], "Meta" -> 
-     Association["ID" -> 73083379307681], "RowTarget" -> 20, "ColumnTarget" -> 
-     10, "Shape" -> TypeSystem`PackageScope`HeaderShape[
-       Association[{All, 
+         TypeSystem`Atom[Integer]}], 3], "Meta" -> <|"ID" -> 73083379307681|>,
+      "RowTarget" -> 20, "ColumnTarget" -> 10, "Shape" -> 
+     TypeSystem`PackageScope`HeaderShape[<|{All, 
           TypeSystem`PackageScope`KeyDummy[0]} -> 1, {All, "TestsSucceeded"} -> 
         1, {All, "TestsFailedWrongResults"} -> 
         1, {All, "TestsFailedWithMessages"} -> 
-        1, {All, "TestsFailedWithErrors"} -> 1], 
+        1, {All, "TestsFailedWithErrors"} -> 1|>, 
        TypeSystem`PackageScope`Limited[
         TypeSystem`PackageScope`ColumnShape[
          TypeSystem`PackageScope`KeyValueShape[
           TypeSystem`PackageScope`AtomShape[211.20000000000005`], 
           TypeSystem`PackageScope`Limited[
-           TypeSystem`PackageScope`RowShape[
-            Association[
+           
+           TypeSystem`PackageScope`RowShape[<|
             "TestsSucceeded" -> TypeSystem`PackageScope`AtomShape[34], 
              "TestsFailedWrongResults" -> 
              TypeSystem`PackageScope`AtomShape[34], "TestsFailedWithMessages" -> 
              TypeSystem`PackageScope`AtomShape[34], "TestsFailedWithErrors" -> 
-             TypeSystem`PackageScope`AtomShape[34]]], 
+             TypeSystem`PackageScope`AtomShape[34]|>], 
            DirectedInfinity[1], 4, {All}]]], 3, 
         DirectedInfinity[1], {}]], "Type" -> TypeSystem`Assoc[
        TypeSystem`Atom[String], 
@@ -19791,7 +19750,7 @@ Cell[BoxData[
          TypeSystem`Atom[Integer]}], 3], "Path" -> {}, "BaseIndices" -> {}, 
      "DisplayedRowCount" -> 3, "DisplayedColumnCount" -> 4, "DataRowCount" -> 
      3, "DataColumnCount" -> 4, "SortPaths" -> {}, "SortDirections" -> {}, 
-     "HiddenItemsMap" -> Null, "UpdateType" -> 1], 
+     "HiddenItemsMap" -> Null, "UpdateType" -> 1|>, 
     TypeSystem`NestedGrid`PackagePrivate`$outputID$$, 
     TypeSystem`NestedGrid`PackagePrivate`$path$$ = {}, 
     TypeSystem`NestedGrid`PackagePrivate`$vPos$$ = 1, 
@@ -20224,14 +20183,13 @@ lastPathIsLeafHeader, TypeSystem`NestedGrid`PackagePrivate`headerHidden$ = And[
                     TypeSystem`NestedGrid`PackagePrivate`isKeyDummy$], 
                     Nothing, 
                     MenuItem[
-                    StringJoin["Show ", 
-                    Which[
-                    TypeSystem`NestedGrid`PackagePrivate`lastPathType$ == 
+                    "Show " <> 
+                    Which[TypeSystem`NestedGrid`PackagePrivate`lastPathType$ == 
                     "Item", "", 
                     TypeSystem`NestedGrid`PackagePrivate`lastPathType$ == 
                     "RowHeader", "Row", 
                     TypeSystem`NestedGrid`PackagePrivate`lastPathType$ == 
-                    "ColumnHeader", "Column", True, ""]], 
+                    "ColumnHeader", "Column", True, ""], 
                     KernelExecute[
                     TypeSystem`NestedGrid`PackagePrivate`updateHiddenItems[
                     TypeSystem`NestedGrid`PackagePrivate`$state$$, 
@@ -20256,14 +20214,13 @@ lastPathIsLeafHeader, TypeSystem`NestedGrid`PackagePrivate`headerHidden$ = And[
                     TypeSystem`NestedGrid`PackagePrivate`headerHidden$]], 
                     Nothing, 
                     MenuItem[
-                    StringJoin["Hide ", 
-                    Which[
-                    TypeSystem`NestedGrid`PackagePrivate`lastPathType$ == 
+                    "Hide " <> 
+                    Which[TypeSystem`NestedGrid`PackagePrivate`lastPathType$ == 
                     "Item", "", 
                     TypeSystem`NestedGrid`PackagePrivate`lastPathType$ == 
                     "RowHeader", "Row", 
                     TypeSystem`NestedGrid`PackagePrivate`lastPathType$ == 
-                    "ColumnHeader", "Column", True, ""]], 
+                    "ColumnHeader", "Column", True, ""], 
                     KernelExecute[
                     TypeSystem`NestedGrid`PackagePrivate`updateHiddenItems[
                     TypeSystem`NestedGrid`PackagePrivate`$state$$, 
@@ -20460,13 +20417,13 @@ lastPathIsLeafHeader, TypeSystem`NestedGrid`PackagePrivate`headerHidden$ = And[
         Hold[
           TypeSystem`NestedGrid`PackagePrivate`localHold[
           TypeSystem`NestedGrid`PackagePrivate`$outputID$$]]], StandardForm],
-      ImageSizeCache->{1024., {78.5, 86.5}},
+      ImageSizeCache->{786., {55.634033098001964`, 61.365966901998036`}},
       TrackedSymbols:>{
        TypeSystem`NestedGrid`PackagePrivate`$state$$, 
         TypeSystem`NestedGrid`PackagePrivate`$grid$$}], 
      TypeSystem`NestedGrid`PackagePrivate`mouseAnnotation$$ = 
      MouseAnnotation[],
-     ImageSizeCache->{1024., {78.5, 86.5}}],
+     ImageSizeCache->{786., {55.634033098001964`, 61.365966901998036`}}],
     BaseStyle->{LineBreakWithin -> False},
     DynamicModuleValues:>{},
     Initialization:>
@@ -20517,14 +20474,14 @@ Cell[BoxData[
   "]"}]], "Input",ExpressionUUID->"55db7a2d-4d4a-413f-ae5a-bc32c25ae622"]
 }, Closed]]
 },
-WindowSize->{1181, 839},
-WindowMargins->{{349, Automatic}, {Automatic, 40}},
+WindowSize->{1181.25, 735.75},
+WindowMargins->{{Automatic, 0}, {Automatic, 0}},
 PrivateNotebookOptions->{"FileOutlineCache"->False},
 ShowGroupOpener->True,
 TaggingRules->{"SaveDialogDataSavesBlog" -> False, "TryRealOnly" -> False},
 TrackCellChangeTimes->False,
-Magnification:>1.3 Inherited,
-FrontEndVersion->"12.1 for Microsoft Windows (64-bit) (June 9, 2020)",
+Magnification:>1. Inherited,
+FrontEndVersion->"13.2 for Microsoft Windows (64-bit) (November 18, 2022)",
 StyleDefinitions->"Default.nb",
 ExpressionUUID->"51e48de9-5997-45d0-8e87-672898f8f3a2"
 ]
