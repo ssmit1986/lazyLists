@@ -1,31 +1,25 @@
-BeginTestSection["VerificationTests2"]
-
-BeginTestSection["Initialisation"]
-
-VerificationTest[
-	$HistoryLength = 10; With[{
-			dir =
-				ParentDirectory[
-					If[Quiet[TrueQ[FileExistsQ[$TestFileName]]],
-						DirectoryName[$TestFileName]
-						,
-						NotebookDirectory[]
-					]
+$HistoryLength = 10;
+With[{
+		dir =
+			ParentDirectory[
+				If[Quiet[TrueQ[FileExistsQ[$TestFileName]]],
+					DirectoryName[$TestFileName]
+					,
+					NotebookDirectory[]
 				]
-		},
-		PacletDirectoryLoad[dir]
-]; Quiet[Get["lazyLists`"]]; ClearAll["Global`*"]; "Done"
-	,
-	"Done"
-	,
-	TestID -> "429d6b44-7f18-408a-a11b-af3070fbdc57"
-]
+			]
+	},
+	PacletDirectoryLoad[dir];
+	Quiet[Get["lazyLists`"]]
+];
 
-EndTestSection[]
+BeginTestSection["TestCreates2"]
+
+
 
 BeginTestSection["lazyPeriodicList"]
 
-VerificationTest[
+TestCreate[
 	First[Take[lazyPeriodicList[Range[5]], 10]]
 	,
 	{1, 2, 3, 4, 5, 1, 2, 3, 4, 5}
@@ -33,7 +27,7 @@ VerificationTest[
 	TestID -> "559d78de-10c5-49f7-98d5-c893792ccd08"
 ]
 
-VerificationTest[
+TestCreate[
 	First[Take[lazyPeriodicList[lazyRange[1, 5]], 10]]
 	,
 	{1, 2, 3, 4, 5, 1, 2, 3, 4, 5}
@@ -41,7 +35,7 @@ VerificationTest[
 	TestID -> "7b97cea7-d9d3-433a-ad17-556fb3613643"
 ]
 
-VerificationTest[
+TestCreate[
 	Most[Take[lazyPeriodicList[Range[5], 3], 10]]
 	,
 	{1, 2, 3, 4, 5, 1, 2, 3, 4, 5}
@@ -49,7 +43,7 @@ VerificationTest[
 	TestID -> "69dee00f-638d-4753-b4b3-342b4400b94f"
 ]
 
-VerificationTest[
+TestCreate[
 	{Most[Take[lazyPeriodicList[partitionedLazyRange[1, 5, 3]], 10]], Most[
 		Take[lazyPeriodicList[partitionedLazyRange[1, 5, 5]], 10]]}
 	,
@@ -64,7 +58,7 @@ BeginTestSection["partitionedLazyList"]
 
 BeginTestSection["Construction"]
 
-VerificationTest[
+TestCreate[
 	lazyPartition[lazyList[Fibonacci[Range[10]]], 5]
 	,
 	partitionedLazyList[{1, 1, 2, 3, 5}, lazyPartition[{8, 13, 21, 34, 55
@@ -73,7 +67,7 @@ VerificationTest[
 	TestID -> "01bf8674-8020-456c-b246-5e53b2c6a0d1"
 ]
 
-VerificationTest[
+TestCreate[
 	Take[lazyPartition[lazyList[Fibonacci[Range[10]]], 5], All]
 	,
 	partitionedLazyList[{1, 1, 2, 3, 5, 8, 13, 21, 34, 55}, lazyList[]]
@@ -81,7 +75,7 @@ VerificationTest[
 	TestID -> "c787722b-c06f-492e-ba9e-a6761bdb6ebc"
 ]
 
-VerificationTest[
+TestCreate[
 	Take[lazyPartition[Fibonacci[Range[10]], 5], All]
 	,
 	partitionedLazyList[{1, 1, 2, 3, 5, 8, 13, 21, 34, 55}, lazyList[]]
@@ -89,7 +83,7 @@ VerificationTest[
 	TestID -> "732c1566-7183-4c6c-a41f-f2ac3016d1b6"
 ]
 
-VerificationTest[
+TestCreate[
 	lz = partitionedLazyList[lazyGenerator[Range]]
 	,
 	partitionedLazyList[{1}, partitionedLazyList[lazyLists`Private`twoSidedGenerator[
@@ -98,7 +92,7 @@ VerificationTest[
 	TestID -> "fe027550-a112-47ea-b5c6-c8fb3ab25ab3"
 ]
 
-VerificationTest[
+TestCreate[
 	Take[lz, 20]
 	,
 	partitionedLazyList[{1, 1, 2, 1, 2, 3, 1, 2, 3, 4, 1, 2, 3, 4, 5, 1, 
@@ -108,7 +102,7 @@ VerificationTest[
 	TestID -> "74ee957c-35b9-4288-b87d-a44a6461a75a"
 ]
 
-VerificationTest[
+TestCreate[
 	First[Take[lz, 10]]
 	,
 	1
@@ -116,7 +110,7 @@ VerificationTest[
 	TestID -> "1530a19f-7b3b-4fa6-801e-235cb5df2ec0"
 ]
 
-VerificationTest[
+TestCreate[
 	Rest[Take[lz, 10]]
 	,
 	partitionedLazyList[{1, 2, 1, 2, 3, 1, 2, 3, 4}, partitionedLazyList[
@@ -126,7 +120,7 @@ VerificationTest[
 	TestID -> "7414b466-3025-448c-8c06-5576951b0a84"
 ]
 
-VerificationTest[
+TestCreate[
 	Most[Take[lz, 10]]
 	,
 	{1, 1, 2, 1, 2, 3, 1, 2, 3, 4}
@@ -134,7 +128,7 @@ VerificationTest[
 	TestID -> "fa132159-8a8f-4beb-86df-e2bba144c4ef"
 ]
 
-VerificationTest[
+TestCreate[
 	Last[Take[lz, 10]]
 	,
 	partitionedLazyList[{1, 2, 3, 4, 5}, partitionedLazyList[lazyLists`Private`twoSidedGenerator[
@@ -143,7 +137,7 @@ VerificationTest[
 	TestID -> "5a9e1259-745c-4927-997b-aa932934f6e2"
 ]
 
-VerificationTest[
+TestCreate[
 	lz = lazyPartition[lazyGenerator[ConstantArray[#1, 5]&], 3]
 	,
 	partitionedLazyList[{{1, 1, 1, 1, 1}, {2, 2, 2, 2, 2}, {3, 3, 3, 3, 3
@@ -153,7 +147,7 @@ VerificationTest[
 	TestID -> "5d38a3ac-f6bd-4521-8938-63627ebbfbdb"
 ]
 
-VerificationTest[
+TestCreate[
 	lazyTranspose[lz]
 	,
 	partitionedLazyList[{{1, 2, 3}, {1, 2, 3}, {1, 2, 3}, {1, 2, 3}, {1, 
@@ -163,7 +157,7 @@ VerificationTest[
 	TestID -> "29795b28-319d-4474-b894-5b87a8044998"
 ]
 
-VerificationTest[
+TestCreate[
 	(Most[Take[#1, 10]]&) /@ {partitionedLazyRange[5], partitionedLazyRange[
 		3, 5], partitionedLazyRange[3, 7, 5], partitionedLazyRange[3, 23, 5],
 		partitionedLazyRange[3, 9, 4, 5], partitionedLazyRange[3, 23, 2, 5]}
@@ -179,7 +173,7 @@ EndTestSection[]
 
 BeginTestSection["Part and Take"]
 
-VerificationTest[
+TestCreate[
 	lz = partitionedLazyRange[start, Infinity, step, 5]
 	,
 	partitionedLazyList[{start, start + step, start + 2 * step, start + 3
@@ -190,7 +184,7 @@ VerificationTest[
 	SameTest -> MatchQ
 ]
 
-VerificationTest[
+TestCreate[
 	First[Take[lz, 20]]
 	,
 	start
@@ -198,7 +192,7 @@ VerificationTest[
 	TestID -> "d1633934-c1bb-4947-a9ac-4f90c3f3a7da"
 ]
 
-VerificationTest[
+TestCreate[
 	Most[Take[lz, 20]]
 	,
 	{start, start + step, start + 2 * step, start + 3 * step, start + 4 *
@@ -211,7 +205,7 @@ VerificationTest[
 	TestID -> "e3c13e65-15f5-40ab-a369-a0739f6ce9cd"
 ]
 
-VerificationTest[
+TestCreate[
 	rangeRange = partitionedLazyList[lazyGenerator[Range, 1, 1, 8]]
 	,
 	partitionedLazyList[{1}, partitionedLazyList[__]]
@@ -221,7 +215,7 @@ VerificationTest[
 	SameTest -> MatchQ
 ]
 
-VerificationTest[
+TestCreate[
 	Most[Take[rangeRange, 20]]
 	,
 	{1, 1, 2, 1, 2, 3, 1, 2, 3, 4, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5}
@@ -229,7 +223,7 @@ VerificationTest[
 	TestID -> "51609d85-e54a-44ed-91d9-4b64c4990fe4"
 ]
 
-VerificationTest[
+TestCreate[
 	Most[Take[rangeRange, {18, 5, -3}]]
 	,
 	{3, 5, 2, 3, 3}
@@ -237,7 +231,7 @@ VerificationTest[
 	TestID -> "820df117-1d98-44c2-a62a-edec62a21a0a"
 ]
 
-VerificationTest[
+TestCreate[
 	Most[Take[rangeRange, {5, 18, 3}]]
 	,
 	{2, 2, 1, 4, 2}
@@ -245,7 +239,7 @@ VerificationTest[
 	TestID -> "6dcf221b-d910-4a2e-b4e3-86711adeb89f"
 ]
 
-VerificationTest[
+TestCreate[
 	Most[lazyPartition[lazyRange[], 5]]
 	,
 	{1, 2, 3, 4, 5}
@@ -253,7 +247,7 @@ VerificationTest[
 	TestID -> "9a72acee-8279-49cc-b52e-428f405cc087"
 ]
 
-VerificationTest[
+TestCreate[
 	Most[lazyPartition[rangeRange, 5]]
 	,
 	{1, 1, 2, 1, 2}
@@ -261,7 +255,7 @@ VerificationTest[
 	TestID -> "e007465e-1e97-47b0-be7c-b8aac867396c"
 ]
 
-VerificationTest[
+TestCreate[
 	Most[lazyPartition[lazyPartition[lazyRange[], 5], 10]]
 	,
 	{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
@@ -269,7 +263,7 @@ VerificationTest[
 	TestID -> "82525b95-d50e-41ef-b3f4-c8dc4e471c7e"
 ]
 
-VerificationTest[
+TestCreate[
 	Most[Take[lazyTruncate[partitionedLazyRange[10], 25], 5]]
 	,
 	{1, 2, 3, 4, 5}
@@ -277,7 +271,7 @@ VerificationTest[
 	TestID -> "f14281d3-eaf3-4020-a824-62abf93dba28"
 ]
 
-VerificationTest[
+TestCreate[
 	Most[Take[lazyTruncate[partitionedLazyRange[10], 25], 15]]
 	,
 	{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}
@@ -285,7 +279,7 @@ VerificationTest[
 	TestID -> "d3cf0a29-083f-45c8-b7cd-e0dd05f8f838"
 ]
 
-VerificationTest[
+TestCreate[
 	Most[Take[lazyTruncate[Log /@ partitionedLazyRange[10], 25], 15]]
 	,
 	{0, Log[2], Log[3], Log[4], Log[5], Log[6], Log[7], Log[8], Log[9], Log[
@@ -294,7 +288,7 @@ VerificationTest[
 	TestID -> "8426109a-6af3-4499-919c-dcd996f6167e"
 ]
 
-VerificationTest[
+TestCreate[
 	Most[Take[Log /@ lazyTruncate[partitionedLazyRange[10], 25], 15]]
 	,
 	{0, Log[2], Log[3], Log[4], Log[5], Log[6], Log[7], Log[8], Log[9], Log[
@@ -303,7 +297,7 @@ VerificationTest[
 	TestID -> "ac33716d-80d5-489b-899b-5c8a4e62fd8d"
 ]
 
-VerificationTest[
+TestCreate[
 	Most[Take[lazyTruncate[partitionedLazyRange[10], 25], 50]]
 	,
 	{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
@@ -312,7 +306,7 @@ VerificationTest[
 	TestID -> "8ebdf7c2-55e9-4b2f-8c3a-8feae18c691f"
 ]
 
-VerificationTest[
+TestCreate[
 	Most[Take[lazyTruncate[Log /@ partitionedLazyRange[10], 25], 50]]
 	,
 	{0, Log[2], Log[3], Log[4], Log[5], Log[6], Log[7], Log[8], Log[9], Log[
@@ -322,7 +316,7 @@ VerificationTest[
 	TestID -> "700bbfe1-4326-45e1-a89f-23332ffb1b64"
 ]
 
-VerificationTest[
+TestCreate[
 	Most[Take[Log /@ lazyTruncate[partitionedLazyRange[10], 25], 50]]
 	,
 	{0, Log[2], Log[3], Log[4], Log[5], Log[6], Log[7], Log[8], Log[9], Log[
@@ -332,7 +326,7 @@ VerificationTest[
 	TestID -> "62d9d377-d23d-433c-a4f8-4c088693c998"
 ]
 
-VerificationTest[
+TestCreate[
 	TakeDrop[partitionedLazyRange[10], 5]
 	,
 	{{1, 2, 3, 4, 5}, _partitionedLazyList}
@@ -342,7 +336,7 @@ VerificationTest[
 	SameTest -> MatchQ
 ]
 
-VerificationTest[
+TestCreate[
 	TakeDrop[partitionedLazyRange[10], 15]
 	,
 	{{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}, _partitionedLazyList
@@ -353,7 +347,7 @@ VerificationTest[
 	SameTest -> MatchQ
 ]
 
-VerificationTest[
+TestCreate[
 	AssociationMap[TakeDrop[partitionedLazyList[Range[3]], #1]&, Range[5]
 		]
 	,
@@ -364,7 +358,7 @@ VerificationTest[
 	TestID -> "9c71a79c-082e-453e-82ce-bf530ecbfb54"
 ]
 
-VerificationTest[
+TestCreate[
 	(Drop[partitionedLazyRange[10], #1]&) /@ {5, 15}
 	,
 	(Last[Take[partitionedLazyRange[10], #1]]&) /@ {5, 15}
@@ -372,7 +366,7 @@ VerificationTest[
 	TestID -> "6c7a81da-7f2d-48f7-a8fd-02a660066d84"
 ]
 
-VerificationTest[
+TestCreate[
 	(Drop[lazyPartition[Range[20], 10], #1]&) /@ {5, 15, 25}
 	,
 	(Last[Take[lazyPartition[Range[20], 10], #1]]&) /@ {5, 15, 25}
@@ -384,9 +378,11 @@ EndTestSection[]
 
 BeginTestSection["lazyTuples"]
 
-VerificationTest[
-	lists = {{a, b, c}, {1, 2}, {u, v, w, x, y, z}}; lzTup = lazyTuples[lists,
-		"PartitionSize" -> 10]; MatchQ[lzTup, partitionedLazyList[{{a, 1, u},
+lists = {{a, b, c}, {1, 2}, {u, v, w, x, y, z}};
+lzTup = lazyTuples[lists, "PartitionSize" -> 10];
+
+TestCreate[
+	MatchQ[lzTup, partitionedLazyList[{{a, 1, u},
 		{a, 1, v}, {a, 1, w}, {a, 1, x}, {a, 1, y}, {a, 1, z}, {a, 2, u}, {a,
 		2, v}, {a, 2, w}, {a, 2, x}}, _Map]]
 	,
@@ -395,7 +391,7 @@ VerificationTest[
 	TestID -> "24b2d102-74b8-448e-b98e-e96436dc4582"
 ]
 
-VerificationTest[
+TestCreate[
 	Most[Take[lzTup, All]]
 	,
 	Tuples[lists]
@@ -403,7 +399,7 @@ VerificationTest[
 	TestID -> "7e1cd504-6344-4ea6-945b-c5c473fce372"
 ]
 
-VerificationTest[
+TestCreate[
 	Most[Take[lazyTuples[{a, b, c}, 5], 10]]
 	,
 	Take[Tuples[{a, b, c}, 5], 10]
@@ -411,7 +407,7 @@ VerificationTest[
 	TestID -> "2504436e-333c-4451-8e5c-5008d03ff2e1"
 ]
 
-VerificationTest[
+TestCreate[
 	largeLists = Range /@ {50, 40, 60, 80}; Most[Take[lazyTuples[Hold[largeLists
 		]], 10]]
 	,
@@ -422,7 +418,7 @@ VerificationTest[
 	TestID -> "049881ce-6fad-454f-b4d5-405e0871d698"
 ]
 
-VerificationTest[
+TestCreate[
 	Most[Take[lazyTuples[Hold[largeLists], "PartitionSize" -> 1000], 100]
 		]
 	,
@@ -452,8 +448,11 @@ VerificationTest[
 	TestID -> "0a6ccfa4-19db-450c-91fe-c3131cfa38b5"
 ]
 
-VerificationTest[
-	integers = Length /@ lists; integerLzTup = lazyTuples[integers]; MatchQ[
+integers = Length /@ lists;
+integerLzTup = lazyTuples[integers];
+
+TestCreate[
+	MatchQ[
 		integerLzTup, partitionedLazyList[{{1, 1, 1}, {1, 1, 2}, {1, 1, 3}, {
 		1, 1, 4}, {1, 1, 5}, {1, 1, 6}, {1, 2, 1}, {1, 2, 2}, {1, 2, 3}, {1, 
 		2, 4}}, _Map]]
@@ -463,7 +462,7 @@ VerificationTest[
 	TestID -> "abe8de04-193c-434c-9de1-f0e74ad365d8"
 ]
 
-VerificationTest[
+TestCreate[
 	indices = Most[Take[integerLzTup, 10]]
 	,
 	{{1, 1, 1}, {1, 1, 2}, {1, 1, 3}, {1, 1, 4}, {1, 1, 5}, {1, 1, 6}, {1,
@@ -472,7 +471,7 @@ VerificationTest[
 	TestID -> "1dc8febd-3448-49d6-be28-1ccd6ec9c3a9"
 ]
 
-VerificationTest[
+TestCreate[
 	Take[Tuples[Range /@ integers], 10]
 	,
 	{{1, 1, 1}, {1, 1, 2}, {1, 1, 3}, {1, 1, 4}, {1, 1, 5}, {1, 1, 6}, {1,
@@ -481,7 +480,7 @@ VerificationTest[
 	TestID -> "4d3ad108-8eda-4b86-b437-4ae9f711021e"
 ]
 
-VerificationTest[
+TestCreate[
 	bulkExtractElementsUsingIndexList[lists][Transpose[indices]]
 	,
 	Take[Tuples[lists], 10]
@@ -489,7 +488,7 @@ VerificationTest[
 	TestID -> "aba8a778-a2ca-4ee0-b9cd-836bd89bf9f2"
 ]
 
-VerificationTest[
+TestCreate[
 	bulkExtractElementsUsingIndexList[Hold[lists]][Transpose[indices]]
 	,
 	Take[Tuples[lists], 10]
@@ -497,7 +496,7 @@ VerificationTest[
 	TestID -> "cddc03cf-2e55-41ff-8f12-cfaf4b33ac36"
 ]
 
-VerificationTest[
+TestCreate[
 	Module[{list = {a, b, c, d, e}, tupLength = 3, indices},
 		indices = Most[Take[lazyTuples[Range[Length[list]], tupLength], 10
 			]];
@@ -510,7 +509,7 @@ VerificationTest[
 	TestID -> "2cfc8d44-a522-49e1-a6d3-b57badf7858e"
 ]
 
-VerificationTest[
+TestCreate[
 	Most[Take[lazyTuples[integers, "Start" -> 10], 11]]
 	,
 	{{1, 2, 4}, {1, 2, 5}, {1, 2, 6}, {2, 1, 1}, {2, 1, 2}, {2, 1, 3}, {2,
@@ -519,7 +518,7 @@ VerificationTest[
 	TestID -> "6d6b52ee-9463-4ee8-be50-d35a81016de8"
 ]
 
-VerificationTest[
+TestCreate[
 	Take[Tuples[Range /@ integers], {10, 20}]
 	,
 	{{1, 2, 4}, {1, 2, 5}, {1, 2, 6}, {2, 1, 1}, {2, 1, 2}, {2, 1, 3}, {2,
@@ -528,7 +527,7 @@ VerificationTest[
 	TestID -> "265a55bb-649d-416f-9440-2683e88bd339"
 ]
 
-VerificationTest[
+TestCreate[
 	tuplesGenerator = rangeTuplesAtPositions[integers]; Head[tuplesGenerator
 		] === CompiledFunction
 	,
@@ -537,7 +536,7 @@ VerificationTest[
 	TestID -> "6039388a-a7fb-41f9-af49-0a1d7879ba7a"
 ]
 
-VerificationTest[
+TestCreate[
 	randomPositions = RandomInteger[{1, Times @@ integers}, 10]; MatchQ[randomPositions,
 		{__Integer}]
 	,
@@ -546,7 +545,7 @@ VerificationTest[
 	TestID -> "89cad6c5-e497-4ab9-90a4-68a3e04af6ea"
 ]
 
-VerificationTest[
+TestCreate[
 	tuplesGenerator[randomPositions]
 	,
 	Transpose[Tuples[Range /@ integers][[randomPositions]]]
@@ -554,7 +553,7 @@ VerificationTest[
 	TestID -> "84552981-9693-4342-93a1-48f1974e46dc"
 ]
 
-VerificationTest[
+TestCreate[
 	infTuples = lazyTuples[4]; MatchQ[infTuples, partitionedLazyList[{{1,
 		1, 1, 1}, {1, 1, 1, 2}, {1, 1, 2, 1}, {1, 2, 1, 1}, {2, 1, 1, 1}, {1,
 		1, 1, 3}, {1, 1, 2, 2}, {1, 1, 3, 1}, {1, 2, 1, 2}, {1, 2, 2, 1}}, _
@@ -565,7 +564,7 @@ VerificationTest[
 	TestID -> "78889fbc-8259-4d38-97ef-1b93bd574df7"
 ]
 
-VerificationTest[
+TestCreate[
 	Most[Take[infTuples, 75]]
 	,
 	{{1, 1, 1, 1}, {1, 1, 1, 2}, {1, 1, 2, 1}, {1, 2, 1, 1}, {2, 1, 1, 1},
@@ -588,7 +587,7 @@ VerificationTest[
 	TestID -> "c70e9cab-91be-484e-883e-2f0f1f811260"
 ]
 
-VerificationTest[
+TestCreate[
 	Sort[Select[Most[Take[infTuples, 75]], Total[#1] < 9&]]
 	,
 	Sort[Select[Tuples[Range[10], 4], Total[#1] < 9&]]
@@ -596,7 +595,7 @@ VerificationTest[
 	TestID -> "aa1b845f-e3c7-4baa-85ae-d14d3a58ac3e"
 ]
 
-VerificationTest[
+TestCreate[
 	Most[Take[lazyTuples[4, {1, 4, 10, 2}], 20]]
 	,
 	{{1, 4, 10, 2}, {1, 4, 11, 1}, {1, 5, 1, 10}, {1, 5, 2, 9}, {1, 5, 3,
@@ -612,7 +611,7 @@ EndTestSection[]
 
 BeginTestSection["lazyStream"]
 
-VerificationTest[
+TestCreate[
 	stmp = OpenWrite["tmp"]; Write[stmp, a, b, c]; Write[stmp, x]; Write[
 		stmp, "Hello"]; Write[stmp, "Hello"]; Write[stmp, "Hello"]; Close[stmp
 		]
@@ -622,7 +621,7 @@ VerificationTest[
 	TestID -> "0f990c29-bc3b-4212-b56f-dd4fc18990e6"
 ]
 
-VerificationTest[
+TestCreate[
 	Module[{stream = OpenRead["tmp"], result},
 		result = First[Take[lazyStream[stream], 3]];
 		Close[stream];
@@ -634,7 +633,7 @@ VerificationTest[
 	TestID -> "52120357-4e6a-4818-9638-c55b4ec44945"
 ]
 
-VerificationTest[
+TestCreate[
 	Module[{stream = OpenRead["tmp"], result},
 		result = First[TakeWhile[lazyStream[stream], True&]];
 		Close[stream];
@@ -653,7 +652,7 @@ EndTestSection[]
 
 BeginTestSection["cachedPart"]
 
-VerificationTest[
+TestCreate[
 	cp = cachedPart[lazyRange[]]; {cp[[1]], cp[[-1]], cp[[{2, 3}]], cp[[-
 		1]], cp[[5]], cp[[{-1, 1, 2, 10}]]}
 	,
@@ -662,7 +661,7 @@ VerificationTest[
 	TestID -> "cd896f4c-aaf9-43d3-bcad-13de6a56d487"
 ]
 
-VerificationTest[
+TestCreate[
 	{Length[cp], Most[cp], First[Last[cp]]}
 	,
 	{10, {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, 11}
@@ -670,7 +669,7 @@ VerificationTest[
 	TestID -> "0344ec83-962a-47a3-8cf5-8021b6badeda"
 ]
 
-VerificationTest[
+TestCreate[
 	cp = cachedPart[partitionedLazyRange[10]]; {cp[[1]], cp[[-1]], cp[[{2,
 		3}]], cp[[-1]], cp[[5]], cp[[{-1, 1, 2, 10}]], cp[[11]], cp[[-1]]}
 	,
@@ -679,7 +678,7 @@ VerificationTest[
 	TestID -> "5b71576d-7381-43a9-8d74-ab7ac200cac4"
 ]
 
-VerificationTest[
+TestCreate[
 	{Length[cp], Most[cp], First[Last[cp]]}
 	,
 	{11, {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}, 12}
@@ -687,17 +686,18 @@ VerificationTest[
 	TestID -> "64262380-4bbb-42cd-9168-6a5d69c03b0d"
 ]
 
-VerificationTest[
+TestCreate[
 	cp = cachedPart[lazyRange[1, 5]]; cp[[6]]
 	,
-	{1, 2, 3, 4, 5}[[6]]
+	HoldPattern[{1, 2, 3, 4, 5}[[6]]]
 	,
 	{Part::partw}
 	,
-	TestID -> "50bcce61-a491-4d16-ad40-05ef5347fcaf"
+	TestID -> "50bcce61-a491-4d16-ad40-05ef5347fcaf",
+	SameTest -> MatchQ
 ]
 
-VerificationTest[
+TestCreate[
 	{Length[cp], cp[[-1]], Most[cp]}
 	,
 	{5, 5, {1, 2, 3, 4, 5}}
@@ -705,17 +705,18 @@ VerificationTest[
 	TestID -> "d0488ba5-6a7c-4090-9af7-0c9f9562cff8"
 ]
 
-VerificationTest[
+TestCreate[
 	cp = cachedPart[partitionedLazyRange[1, 5, 3]]; cp[[6]]
 	,
-	{1, 2, 3, 4, 5}[[6]]
+	HoldPattern[{1, 2, 3, 4, 5}[[6]]]
 	,
 	{Part::partw}
 	,
-	TestID -> "e90181f9-d555-4852-a9ac-3bfe5e17c68c"
+	TestID -> "e90181f9-d555-4852-a9ac-3bfe5e17c68c",
+	SameTest -> MatchQ
 ]
 
-VerificationTest[
+TestCreate[
 	{Length[cp], cp[[-1]], Most[cp]}
 	,
 	{5, 5, {1, 2, 3, 4, 5}}

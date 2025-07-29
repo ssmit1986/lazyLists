@@ -1,33 +1,28 @@
-BeginTestSection["VerificationTests1"]
-
-BeginTestSection["Initialisation"]
-
-VerificationTest[
-	$HistoryLength = 10; With[{
-			dir =
-				ParentDirectory[
-					If[Quiet[TrueQ[FileExistsQ[$TestFileName]]],
-						DirectoryName[$TestFileName]
-						,
-						NotebookDirectory[]
-					]
+$HistoryLength = 10;
+With[{
+		dir =
+			ParentDirectory[
+				If[Quiet[TrueQ[FileExistsQ[$TestFileName]]],
+					DirectoryName[$TestFileName]
+					,
+					NotebookDirectory[]
 				]
-		},
-		PacletDirectoryLoad[dir]
-]; Quiet[Get["lazyLists`"]]; ClearAll["Global`*"]; "Done"
-	,
-	"Done"
-	,
-	TestID -> "429d6b44-7f18-408a-a11b-af3070fbdc57"
-]
+			]
+	},
+	PacletDirectoryLoad[dir];
+	Quiet[Get["lazyLists`"]]
+];
 
-EndTestSection[]
+
+
+BeginTestSection["TestCreates1"]
+
 
 BeginTestSection["Normal lazy lists"]
 
 BeginTestSection["Elementary tests"]
 
-VerificationTest[
+TestCreate[
 	lazyList[{}]
 	,
 	lazyList[]
@@ -35,7 +30,7 @@ VerificationTest[
 	TestID -> "0aa677fe-81d8-4776-8b22-218127c5e3f3"
 ]
 
-VerificationTest[
+TestCreate[
 	lazyList[Nothing, "stuff"]
 	,
 	"stuff"
@@ -43,7 +38,7 @@ VerificationTest[
 	TestID -> "aab229e7-6fe6-4877-b94d-e6384e43ffe5"
 ]
 
-VerificationTest[
+TestCreate[
 	lazyList[Range[10]]
 	,
 	lazyList[1, lazyList[{2, 3, 4, 5, 6, 7, 8, 9, 10}]]
@@ -55,7 +50,7 @@ EndTestSection[]
 
 BeginTestSection["lazyGenerator"]
 
-VerificationTest[
+TestCreate[
 	lazyGenerator[f]
 	,
 	lazyList[f[1], lazyLists`Private`twoSidedGenerator[f, 1 + 1, 1]]
@@ -63,7 +58,7 @@ VerificationTest[
 	TestID -> "85cf9838-9b39-4011-816a-fcca14ff538a"
 ]
 
-VerificationTest[
+TestCreate[
 	lazyGenerator[f, 2]
 	,
 	lazyList[f[2], lazyLists`Private`twoSidedGenerator[f, 2 + 1, 1]]
@@ -71,7 +66,7 @@ VerificationTest[
 	TestID -> "3327cab0-d7aa-4997-8b45-21e81e4fe2c8"
 ]
 
-VerificationTest[
+TestCreate[
 	lazyGenerator[f, 2, -1]
 	,
 	lazyList[f[2], lazyLists`Private`rightSidedGenerator[f, 2 + 1, -1, 1]
@@ -80,7 +75,7 @@ VerificationTest[
 	TestID -> "cc912d94-a5c6-499e-baf8-0d31abd12bc0"
 ]
 
-VerificationTest[
+TestCreate[
 	lazyGenerator[f, 2, 3]
 	,
 	lazyList[]
@@ -90,7 +85,7 @@ VerificationTest[
 	TestID -> "8d8a181a-232e-4002-832a-84251bae6c14"
 ]
 
-VerificationTest[
+TestCreate[
 	lazySetState[lazyGenerator[f, 2, -1], -1]
 	,
 	lazyList[f[-1], lazyLists`Private`rightSidedGenerator[f, -1 + 1, -1, 
@@ -99,7 +94,7 @@ VerificationTest[
 	TestID -> "f984074f-5977-48f6-90ee-804563196302"
 ]
 
-VerificationTest[
+TestCreate[
 	lazySetState[lazyGenerator[f, 2, -1], -2]
 	,
 	lazyList[f[2], lazyLists`Private`rightSidedGenerator[f, 2 + 1, -1, 1]
@@ -110,7 +105,7 @@ VerificationTest[
 	TestID -> "e5c1e524-3ba2-43b0-b8f1-f27ba41461ce"
 ]
 
-VerificationTest[
+TestCreate[
 	lazyGenerator[f, 2, -Infinity]
 	,
 	lazyList[f[2], lazyLists`Private`twoSidedGenerator[f, 2 + 1, 1]]
@@ -118,7 +113,7 @@ VerificationTest[
 	TestID -> "97b46cdb-8023-415c-8dd6-2ed4c695aa28"
 ]
 
-VerificationTest[
+TestCreate[
 	lazyGenerator[f, -1, -Infinity, 3]
 	,
 	lazyList[f[-1], lazyLists`Private`leftSidedGenerator[f, -1 + 1, 3, 1]
@@ -127,7 +122,7 @@ VerificationTest[
 	TestID -> "e1c956b5-2151-43f7-8b7e-5ff206119768"
 ]
 
-VerificationTest[
+TestCreate[
 	lazyGenerator[f, 4, -Infinity, 3]
 	,
 	lazyList[]
@@ -137,7 +132,7 @@ VerificationTest[
 	TestID -> "8c7e86ea-620b-44ab-8aa2-db140ee35dc8"
 ]
 
-VerificationTest[
+TestCreate[
 	lazySetState[lazyGenerator[f, -1, -Infinity, 3], 2]
 	,
 	lazyList[f[2], lazyLists`Private`leftSidedGenerator[f, 2 + 1, 3, 1]]
@@ -145,7 +140,7 @@ VerificationTest[
 	TestID -> "98c938f6-fac2-4cc9-95fb-c832d1147566"
 ]
 
-VerificationTest[
+TestCreate[
 	lazySetState[lazyGenerator[f, -1, -Infinity, 3], 4]
 	,
 	lazyList[f[-1], lazyLists`Private`leftSidedGenerator[f, -1 + 1, 3, 1]
@@ -156,7 +151,7 @@ VerificationTest[
 	TestID -> "c916b38f-189f-4976-a05c-81f6f5de2fae"
 ]
 
-VerificationTest[
+TestCreate[
 	lazyGenerator[f, -1, -3, 3]
 	,
 	lazyList[f[-1], lazyLists`Private`finiteGenerator[f, -1 + 1, -3, 3, 1
@@ -165,7 +160,7 @@ VerificationTest[
 	TestID -> "3a1febb1-5752-484e-ab0e-9d9bb308b1aa"
 ]
 
-VerificationTest[
+TestCreate[
 	lazyGenerator[f, -4, -3, 3]
 	,
 	lazyList[]
@@ -175,7 +170,7 @@ VerificationTest[
 	TestID -> "da930bb9-74f3-4be8-adde-86d727d0db26"
 ]
 
-VerificationTest[
+TestCreate[
 	lazyGenerator[f, 4, -3, 3]
 	,
 	lazyList[]
@@ -185,7 +180,7 @@ VerificationTest[
 	TestID -> "8063f64e-dd4e-4afa-82ca-728521dba0e5"
 ]
 
-VerificationTest[
+TestCreate[
 	lazySetState[lazyGenerator[f, -1, -3, 3], 2]
 	,
 	lazyList[f[2], lazyLists`Private`finiteGenerator[f, 2 + 1, -3, 3, 1]]
@@ -193,7 +188,7 @@ VerificationTest[
 	TestID -> "cbb5d08c-2a18-491c-abbb-c81f5dc99a56"
 ]
 
-VerificationTest[
+TestCreate[
 	lazySetState[lazyGenerator[f, -1, -3, 3], 4]
 	,
 	lazyList[f[-1], lazyLists`Private`finiteGenerator[f, -1 + 1, -3, 3, 1
@@ -204,7 +199,7 @@ VerificationTest[
 	TestID -> "4ba95654-41db-45e9-a5c3-e270b62d5e8c"
 ]
 
-VerificationTest[
+TestCreate[
 	lazySetState[lazyGenerator[f, -1, -3, 3], -4]
 	,
 	lazyList[f[-1], lazyLists`Private`finiteGenerator[f, -1 + 1, -3, 3, 1
@@ -215,7 +210,7 @@ VerificationTest[
 	TestID -> "ab0b420c-b3a3-4a33-9395-035ca9c2ada2"
 ]
 
-VerificationTest[
+TestCreate[
 	symbolicGenerator = lazyGenerator[f, start, -Infinity, Infinity, step
 		]
 	,
@@ -225,7 +220,7 @@ VerificationTest[
 	TestID -> "e9ed830c-b556-4951-868b-db5959c367f7"
 ]
 
-VerificationTest[
+TestCreate[
 	First[symbolicGenerator]
 	,
 	f[start]
@@ -233,7 +228,7 @@ VerificationTest[
 	TestID -> "03b84bb1-f51d-4db8-8121-cedb17db058e"
 ]
 
-VerificationTest[
+TestCreate[
 	Rest[symbolicGenerator]
 	,
 	lazyList[f[start + step], lazyLists`Private`twoSidedGenerator[f, (start
@@ -242,7 +237,7 @@ VerificationTest[
 	TestID -> "ffc71697-2ed6-473e-9aa6-f1ab34671b59"
 ]
 
-VerificationTest[
+TestCreate[
 	Most[symbolicGenerator]
 	,
 	{f[start]}
@@ -250,7 +245,7 @@ VerificationTest[
 	TestID -> "b184721d-1ebf-4a52-b653-c207188109bf"
 ]
 
-VerificationTest[
+TestCreate[
 	Last[symbolicGenerator]
 	,
 	lazyList[f[start + step], lazyLists`Private`twoSidedGenerator[f, (start
@@ -259,7 +254,7 @@ VerificationTest[
 	TestID -> "7c737812-143f-476b-a401-9e63785cb078"
 ]
 
-VerificationTest[
+TestCreate[
 	First[Take[symbolicGenerator, 5]]
 	,
 	{f[start], f[start + step], f[start + 2 * step], f[start + 3 * step],
@@ -268,7 +263,7 @@ VerificationTest[
 	TestID -> "08ed6fb4-ba7e-4b2c-af71-c73815d1f2ae"
 ]
 
-VerificationTest[
+TestCreate[
 	First[Take[lazyGenerator[f, 2, 1, 10, 2], 50]]
 	,
 	{f[2], f[4], f[6], f[8], f[10]}
@@ -276,7 +271,7 @@ VerificationTest[
 	TestID -> "c1fb5cd2-752c-4f59-a9e0-1ccded5e3e9c"
 ]
 
-VerificationTest[
+TestCreate[
 	Take[lazyGenerator[f, 2, 1, 10, 2], All]
 	,
 	lazyList[{f[2], f[4], f[6], f[8], f[10]}, lazyList[]]
@@ -284,7 +279,7 @@ VerificationTest[
 	TestID -> "e955f0bb-c384-4afa-86f8-e4a14194aab4"
 ]
 
-VerificationTest[
+TestCreate[
 	LengthWhile[lazyGenerator[f, 2, 1, 10, 2]]
 	,
 	Association["Index" -> 5, "Element" -> lazyList[f[10], lazyList[]]]
@@ -292,7 +287,7 @@ VerificationTest[
 	TestID -> "aaba755e-f009-4647-9b80-513c0b1fbbc1"
 ]
 
-VerificationTest[
+TestCreate[
 	lazyGenerator[f, 2, 1, 10, 2][[{-1}]]
 	,
 	lazyList[f[10], lazyList[]]
@@ -300,7 +295,7 @@ VerificationTest[
 	TestID -> "f1a60652-a2d1-4d3d-bd51-b266b6fb7327"
 ]
 
-VerificationTest[
+TestCreate[
 	lazyGenerator[f, 2, 1, 10, 2][[-1]]
 	,
 	f[10]
@@ -308,7 +303,7 @@ VerificationTest[
 	TestID -> "1a693f76-eb36-4d09-8805-38dc77a07a9d"
 ]
 
-VerificationTest[
+TestCreate[
 	l = Take[lazyGenerator[f, 2, 1, 10, 2], 3]
 	,
 	lazyList[{f[2], f[4], f[6]}, lazyLists`Private`finiteGenerator[f, 6 +
@@ -317,7 +312,7 @@ VerificationTest[
 	TestID -> "b37425f9-c20f-4f84-a718-f951063df8be"
 ]
 
-VerificationTest[
+TestCreate[
 	Take[lazySetState[Last[l], 3], 3]
 	,
 	lazyList[{f[3], f[5], f[7]}, lazyLists`Private`finiteGenerator[f, 7 +
@@ -326,7 +321,7 @@ VerificationTest[
 	TestID -> "0e297879-53fe-4b9e-8edc-e03241aabc38"
 ]
 
-VerificationTest[
+TestCreate[
 	First[lazySetState[lazyRange[start, Infinity, step], newStart]]
 	,
 	newStart
@@ -334,7 +329,7 @@ VerificationTest[
 	TestID -> "41a767ac-0948-486e-ad67-68276213a197"
 ]
 
-VerificationTest[
+TestCreate[
 	First[lazySetState[lazyPowerRange[start, r], newStart]]
 	,
 	newStart
@@ -342,7 +337,7 @@ VerificationTest[
 	TestID -> "17271240-7711-4341-9f6b-d73ae952bafb"
 ]
 
-VerificationTest[
+TestCreate[
 	First[lazySetState[lazyNestList[f, start], newStart]]
 	,
 	newStart
@@ -350,7 +345,7 @@ VerificationTest[
 	TestID -> "85d28eb3-0b69-4023-9a62-e0bca0fea29a"
 ]
 
-VerificationTest[
+TestCreate[
 	infiniteInBothDirections = lazyGenerator[f]
 	,
 	lazyList[f[1], lazyLists`Private`twoSidedGenerator[f, 1 + 1, 1]]
@@ -358,7 +353,7 @@ VerificationTest[
 	TestID -> "7d510cd5-6253-419a-909d-b1a1b71cb108"
 ]
 
-VerificationTest[
+TestCreate[
 	First[Take[infiniteInBothDirections, 5]]
 	,
 	{f[1], f[2], f[3], f[4], f[5]}
@@ -370,7 +365,7 @@ EndTestSection[]
 
 BeginTestSection["lazyRange"]
 
-VerificationTest[
+TestCreate[
 	First[lazyRange[]]
 	,
 	1
@@ -378,7 +373,7 @@ VerificationTest[
 	TestID -> "5a25109e-e409-4241-87e2-2e902c6c5621"
 ]
 
-VerificationTest[
+TestCreate[
 	First[lazyRange[4]]
 	,
 	4
@@ -386,7 +381,7 @@ VerificationTest[
 	TestID -> "db625667-1aaa-4627-a9e3-474c84985890"
 ]
 
-VerificationTest[
+TestCreate[
 	{Most[Take[lazyRange[1, 15], 10]], Most[Take[lazyRange[1, 5], 10]]}
 	,
 	{{{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}}, {{1, 2, 3, 4, 5}}}
@@ -394,7 +389,7 @@ VerificationTest[
 	TestID -> "5a845995-c79a-4f99-a247-3473502b6cd5"
 ]
 
-VerificationTest[
+TestCreate[
 	{Most[Take[lazyRange[1, 15, 3], 10]], Most[Take[lazyRange[1, 5, 3], 10
 		]]}
 	,
@@ -403,7 +398,7 @@ VerificationTest[
 	TestID -> "eba44c9b-1827-4313-b0fc-32218485593a"
 ]
 
-VerificationTest[
+TestCreate[
 	First[lazyRange[4, Infinity, 2]]
 	,
 	4
@@ -411,7 +406,7 @@ VerificationTest[
 	TestID -> "4bdbc2fc-4056-40de-8e7c-2bfa553ba08d"
 ]
 
-VerificationTest[
+TestCreate[
 	lazyRange[4, Infinity, 2][[2]]
 	,
 	6
@@ -419,7 +414,7 @@ VerificationTest[
 	TestID -> "9d97b9e9-95d1-4c32-be7b-1c7af9a10f48"
 ]
 
-VerificationTest[
+TestCreate[
 	First[lazyRange[m][[{1, 2}]]]
 	,
 	{m, 1 + m}
@@ -427,7 +422,7 @@ VerificationTest[
 	TestID -> "208d84be-1c98-4209-a0f6-d832e7fc2b83"
 ]
 
-VerificationTest[
+TestCreate[
 	First[lazyRange[m, Infinity, n][[1 ;; 3]]]
 	,
 	{m, m + n, m + 2 * n}
@@ -435,7 +430,7 @@ VerificationTest[
 	TestID -> "e5808f50-f05b-429f-b532-45a4451a62f8"
 ]
 
-VerificationTest[
+TestCreate[
 	First[lazyRange[]]
 	,
 	1
@@ -443,7 +438,7 @@ VerificationTest[
 	TestID -> "b9198889-9149-4424-b10c-43d57703131e"
 ]
 
-VerificationTest[
+TestCreate[
 	Most[lazyRange[]]
 	,
 	{1}
@@ -451,7 +446,7 @@ VerificationTest[
 	TestID -> "dbf3e3e3-8e73-4b2f-a1d7-0f145d1e87e1"
 ]
 
-VerificationTest[
+TestCreate[
 	First[Last[lazyRange[]]]
 	,
 	2
@@ -459,7 +454,7 @@ VerificationTest[
 	TestID -> "d4851321-d20b-4240-83d1-aa2d81aa1e7c"
 ]
 
-VerificationTest[
+TestCreate[
 	Rest[lazyRange[]]
 	,
 	Last[lazyRange[]]
@@ -471,7 +466,7 @@ EndTestSection[]
 
 BeginTestSection["Part & Take"]
 
-VerificationTest[
+TestCreate[
 	lazyRange[][[4]]
 	,
 	4
@@ -479,7 +474,7 @@ VerificationTest[
 	TestID -> "ba87fc3c-eb8d-4448-8546-547454d4a9fb"
 ]
 
-VerificationTest[
+TestCreate[
 	lz = lazyRange[][[{4}]]; First[lz]
 	,
 	4
@@ -487,7 +482,7 @@ VerificationTest[
 	TestID -> "a4bc3d25-02c8-423d-92b4-9c5ac9fdff09"
 ]
 
-VerificationTest[
+TestCreate[
 	First[Last[lz]]
 	,
 	5
@@ -495,7 +490,7 @@ VerificationTest[
 	TestID -> "29f5d1ec-7934-4a76-81d2-ec1ec1be6c80"
 ]
 
-VerificationTest[
+TestCreate[
 	First[Rest[lz]]
 	,
 	5
@@ -503,7 +498,7 @@ VerificationTest[
 	TestID -> "8d821ca7-a9b9-4630-99f7-8a40c4cfaf6f"
 ]
 
-VerificationTest[
+TestCreate[
 	First[lazyRange[][[{1, 4, 10, 5}]]]
 	,
 	{1, 4, 10, 5}
@@ -511,7 +506,7 @@ VerificationTest[
 	TestID -> "6b6636be-5f74-4d4d-918b-e44168475c5f"
 ]
 
-VerificationTest[
+TestCreate[
 	First[lazyRange[][[10 ;; 2 ;; -2]]]
 	,
 	{10, 8, 6, 4, 2}
@@ -519,7 +514,7 @@ VerificationTest[
 	TestID -> "26072312-18bb-48bd-8b29-c63cce600e6f"
 ]
 
-VerificationTest[
+TestCreate[
 	First /@ lazyPartMap[lazyRange[], Range[2, 22, 4]]
 	,
 	{2, 6, 10, 14, 18, 22}
@@ -527,7 +522,7 @@ VerificationTest[
 	TestID -> "95dae054-97de-45f6-ae80-bbbdcead8954"
 ]
 
-VerificationTest[
+TestCreate[
 	lz = lazyList[Range[4]]; First[lz[[{1, 2, 3, 4}]]]
 	,
 	{1, 2, 3, 4}
@@ -535,7 +530,7 @@ VerificationTest[
 	TestID -> "63bec182-5474-409f-81ca-9f28d83c0dfc"
 ]
 
-VerificationTest[
+TestCreate[
 	lz[[5]]
 	,
 	$Failed
@@ -545,7 +540,7 @@ VerificationTest[
 	TestID -> "71b8cba2-0230-4342-90a4-9e869195a1c2"
 ]
 
-VerificationTest[
+TestCreate[
 	lz[[{5}]]
 	,
 	$Failed
@@ -555,7 +550,7 @@ VerificationTest[
 	TestID -> "6a91f54c-35b3-4c44-86c6-96c0bde3c0df"
 ]
 
-VerificationTest[
+TestCreate[
 	lz[[{2, 5}]]
 	,
 	$Failed
@@ -565,7 +560,7 @@ VerificationTest[
 	TestID -> "b2b4c750-b002-45f9-854c-da29568cb0c9"
 ]
 
-VerificationTest[
+TestCreate[
 	lz[[2 ;; 5]]
 	,
 	$Failed
@@ -575,7 +570,7 @@ VerificationTest[
 	TestID -> "2bd7171f-20a3-4542-954e-8137f83dc785"
 ]
 
-VerificationTest[
+TestCreate[
 	lz = Take[lazyRange[], 4]; First[lz]
 	,
 	{1, 2, 3, 4}
@@ -583,7 +578,7 @@ VerificationTest[
 	TestID -> "5e0a950c-6c9b-479a-9577-f510d070b785"
 ]
 
-VerificationTest[
+TestCreate[
 	Most[lz]
 	,
 	{{1, 2, 3, 4}}
@@ -591,7 +586,7 @@ VerificationTest[
 	TestID -> "fbd20cda-4809-49ed-91df-ad61c9b9c942"
 ]
 
-VerificationTest[
+TestCreate[
 	First[Rest[lz]]
 	,
 	5
@@ -599,7 +594,7 @@ VerificationTest[
 	TestID -> "11352ee2-0d75-44ae-b3cd-6f4a282119a2"
 ]
 
-VerificationTest[
+TestCreate[
 	First[Last[lz]]
 	,
 	5
@@ -607,7 +602,7 @@ VerificationTest[
 	TestID -> "27f2157e-5ce0-4e7b-9b23-c2c1c7ff64cb"
 ]
 
-VerificationTest[
+TestCreate[
 	First[Take[Last[lz], 5]]
 	,
 	{5, 6, 7, 8, 9}
@@ -615,7 +610,7 @@ VerificationTest[
 	TestID -> "fcd31aec-14e9-41b1-bd12-6ce307d8406f"
 ]
 
-VerificationTest[
+TestCreate[
 	First[Take[lazyRange[], {5, 10}]]
 	,
 	{5, 6, 7, 8, 9, 10}
@@ -623,7 +618,7 @@ VerificationTest[
 	TestID -> "55c73f74-6a40-47f7-89eb-d36da337137c"
 ]
 
-VerificationTest[
+TestCreate[
 	lz = Take[lazyRange[], {10, 5}]; First[lz]
 	,
 	{10, 9, 8, 7, 6, 5}
@@ -631,7 +626,7 @@ VerificationTest[
 	TestID -> "e961e37f-0278-4737-bff0-90e02ec06117"
 ]
 
-VerificationTest[
+TestCreate[
 	First[Last[lz]]
 	,
 	11
@@ -639,7 +634,7 @@ VerificationTest[
 	TestID -> "576c82be-5968-4ce2-b54c-9a1c73b197e5"
 ]
 
-VerificationTest[
+TestCreate[
 	lz = lazyList[Range[4]]; Take[lz, 5]
 	,
 	lazyList[{1, 2, 3, 4}, lazyList[]]
@@ -647,7 +642,7 @@ VerificationTest[
 	TestID -> "edf4f33b-9540-4ae5-b809-3e26f8ae02f8"
 ]
 
-VerificationTest[
+TestCreate[
 	Take[lz, {3, 5}]
 	,
 	lazyList[{3, 4}, lazyList[]]
@@ -655,7 +650,7 @@ VerificationTest[
 	TestID -> "871119d8-1679-42f3-b233-42e5a60e8432"
 ]
 
-VerificationTest[
+TestCreate[
 	Take[lz, {5, 10}]
 	,
 	lazyList[]
@@ -663,7 +658,7 @@ VerificationTest[
 	TestID -> "7125c3bc-998d-4824-92b5-8eadb7c0e4ff"
 ]
 
-VerificationTest[
+TestCreate[
 	Take[lz, {10, 3}]
 	,
 	lazyList[{4, 3}, lazyList[]]
@@ -671,7 +666,7 @@ VerificationTest[
 	TestID -> "dfcd0c72-873e-4da7-8046-867f8377fe08"
 ]
 
-VerificationTest[
+TestCreate[
 	lazyList[1, lazyRange[]]
 	,
 	lazyList[1, lazyRange[]]
@@ -679,7 +674,7 @@ VerificationTest[
 	TestID -> "b015e0c0-8f15-4ee7-940e-c628d027f9eb"
 ]
 
-VerificationTest[
+TestCreate[
 	TakeDrop[lazyRange[], 5]
 	,
 	{{1, 2, 3, 4, 5}, _lazyList}
@@ -689,7 +684,7 @@ VerificationTest[
 	SameTest -> MatchQ
 ]
 
-VerificationTest[
+TestCreate[
 	AssociationMap[TakeDrop[lazyList[Range[3]], #1]&, Range[5]]
 	,
 	Association[1 -> {{1}, lazyList[2, _lazyList]}, 2 -> {{1, 2}, lazyList[
@@ -701,7 +696,7 @@ VerificationTest[
 	SameTest -> MatchQ
 ]
 
-VerificationTest[
+TestCreate[
 	Drop[lazyRange[], 5]
 	,
 	Last[Take[lazyRange[], 5]]
@@ -709,7 +704,7 @@ VerificationTest[
 	TestID -> "2cad0899-c41a-4b5c-a2ca-09822b847b3e"
 ]
 
-VerificationTest[
+TestCreate[
 	(Drop[lazyList[Range[3]], #1]&) /@ Range[4]
 	,
 	(Last[Take[lazyList[Range[3]], #1]]&) /@ Range[4]
@@ -721,7 +716,7 @@ EndTestSection[]
 
 BeginTestSection["TakeWhile & LengthWhile"]
 
-VerificationTest[
+TestCreate[
 	TakeWhile[lazyPowerRange[2, 2], #1 < 100&]
 	,
 	lazyList[{2, 4, 8, 16, 32, 64}, lazyList[_, _]]
@@ -731,7 +726,7 @@ VerificationTest[
 	SameTest -> MatchQ
 ]
 
-VerificationTest[
+TestCreate[
 	LengthWhile[lazyPowerRange[2, 2], #1 < 100&]
 	,
 	Association["Index" -> 6, "Element" -> lazyList[64, _lazyList]]
@@ -745,7 +740,7 @@ EndTestSection[]
 
 BeginTestSection["Finite lists"]
 
-VerificationTest[
+TestCreate[
 	lazyList[Fibonacci[Range[10]]]
 	,
 	lazyList[1, lazyList[{1, 2, 3, 5, 8, 13, 21, 34, 55}]]
@@ -753,7 +748,7 @@ VerificationTest[
 	TestID -> "d8d804be-7edb-4c0f-9fc4-74513e0d407d"
 ]
 
-VerificationTest[
+TestCreate[
 	First[Take[lazyList[Fibonacci[Range[10]]], 5]]
 	,
 	{1, 1, 2, 3, 5}
@@ -761,7 +756,7 @@ VerificationTest[
 	TestID -> "6972598e-d646-4f13-8632-ea6074b82608"
 ]
 
-VerificationTest[
+TestCreate[
 	fibList = Fibonacci[Range[10]]; finiteLz = lazyList[Hold[fibList]]
 	,
 	lazyList[1, lazyLists`Private`lazyFiniteList[fibList, 1 + 1]]
@@ -769,7 +764,7 @@ VerificationTest[
 	TestID -> "dd7dc047-d5b9-4a27-bdd5-eea56763a8ee"
 ]
 
-VerificationTest[
+TestCreate[
 	First[Take[finiteLz, All]]
 	,
 	{1, 1, 2, 3, 5, 8, 13, 21, 34, 55}
@@ -777,7 +772,7 @@ VerificationTest[
 	TestID -> "6cabf47c-9bca-4941-93f1-b4db9a6519dd"
 ]
 
-VerificationTest[
+TestCreate[
 	fibList = Fibonacci[Range[20]]; First[Take[finiteLz, All]]
 	,
 	{1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597,
@@ -786,7 +781,7 @@ VerificationTest[
 	TestID -> "4b556f22-babb-4365-9b20-0f83c95616ef"
 ]
 
-VerificationTest[
+TestCreate[
 	fibList = Fibonacci[Range[1000]]; lazyFinitePart[finiteLz, 4]
 	,
 	fibList[[4]]
@@ -794,7 +789,7 @@ VerificationTest[
 	TestID -> "1f75b7a2-c9d4-4047-bbaa-274f038436fd"
 ]
 
-VerificationTest[
+TestCreate[
 	lazyFiniteTake[finiteLz, {2, 4}]
 	,
 	Take[fibList, {2, 4}]
@@ -802,7 +797,7 @@ VerificationTest[
 	TestID -> "fcb2dcea-1434-4617-9121-24c0f4abf5ab"
 ]
 
-VerificationTest[
+TestCreate[
 	lazySetState[finiteLz, -1]
 	,
 	lazyList[43466557686937456435688527675040625802564660517371780402481729089536555417949051890403879840079255169295922593080322634775209689623239873322471161642996440906533187938298969649928516003704476137795166849228875,
@@ -811,7 +806,7 @@ VerificationTest[
 	TestID -> "4fd54ea8-9db6-4091-bebe-646a9fa05b5a"
 ]
 
-VerificationTest[
+TestCreate[
 	First[Take[lazyTranspose[{lazyRange[], lazyConstantArray[0]}], 5]]
 	,
 	{{1, 0}, {2, 0}, {3, 0}, {4, 0}, {5, 0}}
@@ -819,7 +814,7 @@ VerificationTest[
 	TestID -> "4b2cca41-177e-4c1e-a292-185fd30f3cd8"
 ]
 
-VerificationTest[
+TestCreate[
 	First[Take[lazyTranspose[{lazyRange[], Range[5]}], All]]
 	,
 	{{1, 1}, {2, 2}, {3, 3}, {4, 4}, {5, 5}}
@@ -827,7 +822,7 @@ VerificationTest[
 	TestID -> "7e29229f-4c36-47c4-b0cf-77b1e12970de"
 ]
 
-VerificationTest[
+TestCreate[
 	First[Take[lazyTruncate[lazyRange[], 10], 5]]
 	,
 	{1, 2, 3, 4, 5}
@@ -835,7 +830,7 @@ VerificationTest[
 	TestID -> "e0cea9ea-d5de-4f48-bd29-23d139e578c5"
 ]
 
-VerificationTest[
+TestCreate[
 	First[Take[Log /@ lazyTruncate[lazyRange[], 10], 5]]
 	,
 	{0, Log[2], Log[3], Log[4], Log[5]}
@@ -843,7 +838,7 @@ VerificationTest[
 	TestID -> "aeb778a2-d1ff-4dfe-a1b3-39ac250af7dc"
 ]
 
-VerificationTest[
+TestCreate[
 	First[Take[lazyTruncate[Log /@ lazyRange[], 10], 5]]
 	,
 	{0, Log[2], Log[3], Log[4], Log[5]}
@@ -851,7 +846,7 @@ VerificationTest[
 	TestID -> "c1ee8cf5-1678-4774-aab4-865c3590c396"
 ]
 
-VerificationTest[
+TestCreate[
 	First[Take[lazyTruncate[lazyRange[], 10], 20]]
 	,
 	{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
@@ -859,7 +854,7 @@ VerificationTest[
 	TestID -> "4b303bf3-71dd-47e9-8208-93dfd28bd79a"
 ]
 
-VerificationTest[
+TestCreate[
 	First[Take[Log /@ lazyTruncate[lazyRange[], 10], 20]]
 	,
 	{0, Log[2], Log[3], Log[4], Log[5], Log[6], Log[7], Log[8], Log[9], Log[
@@ -868,7 +863,7 @@ VerificationTest[
 	TestID -> "bf209a66-bfc9-42b0-93f3-5819df531373"
 ]
 
-VerificationTest[
+TestCreate[
 	First[Take[lazyTruncate[Log /@ lazyRange[], 10], 20]]
 	,
 	{0, Log[2], Log[3], Log[4], Log[5], Log[6], Log[7], Log[8], Log[9], Log[
