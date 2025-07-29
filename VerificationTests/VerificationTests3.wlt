@@ -921,9 +921,7 @@ TestCreate[
 		]
 		,
 		20
-]
-	,
-	Take[
+	] === Take[
 		Sin /@
 			(
 				If[#1 === 10,
@@ -934,7 +932,9 @@ TestCreate[
 			) /@ lazyRange[]
 		,
 		20
-]
+	]
+	,
+	True
 	,
 	TestID -> "d8075c3e-aa4f-4c8f-b42e-6b89ece12e84"
 ]
