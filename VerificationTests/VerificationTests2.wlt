@@ -528,6 +528,15 @@ TestCreate[
 ]
 
 TestCreate[
+	Transpose[rangeTuplesAtPositions[{4,  3, 2}][Range[24]]]
+	,
+	{{1,  1, 1},  {1,  1, 2}, {1,  2, 1}, {1,  2, 2}, {1,  3, 1}, {1,  3, 2}, {2,  1, 1}, {2,  1, 2}, {2,  2, 1}, {2,  2, 2}, {2,  3, 1}, {2,  3, 2}, {3,  1, 1},
+{3,  1, 2}, {3,  2, 1}, {3,  2, 2}, {3,  3, 1}, {3,  3, 2}, {4,  1, 1}, {4,  1, 2}, {4,  2, 1}, {4,  2, 2}, {4,  3, 1}, {4,  3, 2}}
+	,
+	TestID->"Test-a5f4ccb6-3991-4c82-840b-5732491e3bb4"
+]
+
+TestCreate[
 	tuplesGenerator = rangeTuplesAtPositions[integers]; Head[tuplesGenerator
 		] === CompiledFunction
 	,
@@ -546,9 +555,9 @@ TestCreate[
 ]
 
 TestCreate[
-	tuplesGenerator[randomPositions]
+	tuplesGenerator[randomPositions] === Transpose[Tuples[Range /@ integers][[randomPositions]]]
 	,
-	Transpose[Tuples[Range /@ integers][[randomPositions]]]
+	True
 	,
 	TestID -> "84552981-9693-4342-93a1-48f1974e46dc"
 ]
